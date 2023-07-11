@@ -2,39 +2,21 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane minHeight="0.0" minWidth="0.0" prefHeight="507.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-         <bottom>
-            <HBox fx:id="hboxValNode" alignment="TOP_RIGHT" prefHeight="1.0" prefWidth="500.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Text stroke="#252323" strokeType="OUTSIDE" strokeWidth="0.0" text="v =" textAlignment="CENTER" wrappingWidth="26.80224609375">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Text>
-                  <TextField prefHeight="11.0" prefWidth="120.0">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <StackPane fx:id="stackPaneBtn" prefHeight="63.0" prefWidth="65.0">
-                     <children>
-                        <Button fx:id="btnInsert" contentDisplay="TOP" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Insert" />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" text="Delete" />
-                     </children>
-                  </StackPane>
-               </children>
-            </HBox>
-         </bottom>
+<BorderPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox prefHeight="63.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
@@ -52,7 +34,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer">
+            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#ff6666">
                <font>
                   <Font size="24.0" />
                </font>
@@ -63,42 +45,415 @@
          </children>
       </VBox>
    </top>
-   <left>
-      <HBox prefHeight="215.0" prefWidth="98.0" BorderPane.alignment="CENTER">
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+   <bottom>
+            <StackPane fx:id="stackPaneInput" prefHeight="63.0" prefWidth="65.0" BorderPane.alignment="CENTER">
          <children>
-                  <TitledPane animated="false" prefHeight="167.0" prefWidth="97.0" text="Operations">
+            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="node = ">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfNodeSearch" onAction="#tfNodeSearchTyping" prefHeight="26.0" prefWidth="80.0">
+                     <HBox.margin>
+                        <Insets left="4.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#btnSearchPressed" text="Search">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+               <children>
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" text="Random" />
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0">
+                     <children>
+                        <Label text="root = ">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfRootCreate" onAction="#tfRootCreateTyping" prefHeight="26.0" prefWidth="80.0">
+                           <HBox.margin>
+                              <Insets right="30.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#btnCreatePressed" prefHeight="25.0" prefWidth="75.0" text="Create">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox fx:id="hBoxTraverse" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label text="Algorithm: ">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="radioBtnBFS" mnemonicParsing="false" onAction="#radioBtnBFSPressed" text="BFS">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="radioBtnDFS" mnemonicParsing="false" onAction="#radioBtnDFSPressed" text="DFS">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <Button fx:id="btnTraverse" mnemonicParsing="false" onAction="#btnTraversePressed" prefHeight="25.0" prefWidth="75.0" text="Traverse">
+                     <HBox.margin>
+                        <Insets left="60.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox fx:id="hBoxDelete" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label text="node = ">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfNodeDelete" onAction="#tfNodeDeleteTyping" prefHeight="26.0" prefWidth="80.0">
+                     <HBox.margin>
+                        <Insets left="4.0" />
+                     </HBox.margin>
+                  </TextField>
+                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeletePressed" prefHeight="25.0" prefWidth="75.0" text="Delete">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+                  <HBox fx:id="hBoxInsert" alignment="CENTER_RIGHT" fillHeight="false" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                  <Label text="parent = ">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfParentInsert" onAction="#tfParentInsertTyping" prefHeight="26.0" prefWidth="80.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="node = ">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                        <TextField fx:id="tfNodeInsert" onAction="#tfNodeInsertTyping" prefHeight="26.0" prefWidth="80.0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="btnInsert" contentDisplay="TOP" mnemonicParsing="false" onAction="#btnInsertPressed" prefHeight="25.0" prefWidth="75.0" text="Insert">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                     </children>
+                  </HBox>
+            <HBox fx:id="hBoxUpdate" alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="500.0" visible="false">
+               <children>
+                  <Label text="old node = ">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfOldNodeUpdate" onAction="#tfOldNodeUpdateTyping" prefHeight="26.0" prefWidth="80.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="new node = ">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfNewNodeUpdate" onAction="#tfNewNodeUpdateTyping" prefHeight="26.0" prefWidth="80.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdatePressed" prefHeight="25.0" prefWidth="75.0" text="Update">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+            </StackPane>
+   </bottom>
+   <center>
+      <Pane prefHeight="368.0" prefWidth="488.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+         <children>
+                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: 78C1F3;" text="Operations" textFill="#e42c2c">
                      <content>
-                        <VBox prefHeight="167.0" prefWidth="100.0">
+                        <VBox prefHeight="373.0" prefWidth="95.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="99.0" text="Create">
+                              <Button fx:id="btnOpsCreate" mnemonicParsing="false" onAction="#btnOpsCreatePressed" prefHeight="26.0" prefWidth="99.0" text="Create">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#operationInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
+                              <Button fx:id="btnOpsInsert" mnemonicParsing="false" onAction="#btnOpsInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#operationDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
+                              <Button fx:id="btnOpsDelete" mnemonicParsing="false" onAction="#btnOpsDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Update">
+                              <Button fx:id="btnOpsUpdate" mnemonicParsing="false" onAction="#btnOpsUpdatePressed" prefHeight="26.0" prefWidth="82.0" text="Update">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" text="Traverse" />
+                              <Button fx:id="btnOpsTraverse" mnemonicParsing="false" onAction="#btnOpsTraversePressed" prefHeight="26.0" prefWidth="97.0" text="Traverse">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin></Button>
+                        <Button fx:id="btnOpsSearch" mnemonicParsing="false" onAction="#btnOpsSearchPressed" prefHeight="26.0" prefWidth="97.0" text="Search" />
                            </children>
                         </VBox>
                      </content>
                   </TitledPane>
          </children>
-      </HBox>
-   </left>
-   <padding>
-      <Insets top="10.0" />
-   </padding>
+         
+      </Pane>
+   </center>
+   <right>
+      <VBox fx:id="vBoxPseudo" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane fx:id="stackPanePseudo" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3f2e3e" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <StackPane prefHeight="121.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="vBoxBFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <StackPane fx:id="pseudoBFS1" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                                    <Label prefHeight="20.0" prefWidth="160.0" text="  q.enqueue(root)">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoBFS2" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                                    <Label prefHeight="20.0" prefWidth="160.0" text="  while q is not empty:">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="psudoBFS3" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                                    <Label prefHeight="20.0" prefWidth="160.0" text="        u = q.dequeue()">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoBFS4" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                                    <Label prefHeight="20.0" prefWidth="160.0" text="        for child v of u:" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoBFS5" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                                    <Label prefHeight="20.0" prefWidth="160.0" text="            q.enqueue(v)">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vBoxDFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <StackPane fx:id="pseudoDFS1" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="190.0" />
+                                    <Label prefHeight="20.0" prefWidth="190.0" text="  stack.push(root)">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoDFS2" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="190.0" />
+                                    <Label prefHeight="20.0" prefWidth="190.0" text="  while stack is not empty:">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="psudoDFS3" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="190.0" />
+                                    <Label prefHeight="20.0" prefWidth="190.0" text="        u = stack.pop()">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoDFS4" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="WHITE" strokeType="INSIDE" width="190.0" />
+                                    <Label prefHeight="20.0" prefWidth="190.0" text="        for child v of u:" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                              <StackPane fx:id="pseudoDFS5" prefHeight="20.0" prefWidth="200.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="190.0" />
+                                    <Label prefHeight="20.0" prefWidth="190.0" text="            stack.push(v)">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </StackPane>
+            <StackPane fx:id="stackPaneController" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a78295" height="150.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <StackPane prefHeight="30.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <ProgressBar prefWidth="200.0" progress="0.24" />
+                              <Label text="in progress..." />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <Label text="Controller">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                          <buttons>
+                            <Button mnemonicParsing="false" text="Forward" />
+                              <Button mnemonicParsing="false" text="Backward" />
+                          </buttons>
+                           <VBox.margin>
+                              <Insets right="20.0" />
+                           </VBox.margin>
+                        </ButtonBar>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                          <buttons>
+                            <Button mnemonicParsing="false" text="Pause" />
+                              <Button mnemonicParsing="false" text="Continue" />
+                          </buttons>
+                           <VBox.margin>
+                              <Insets right="20.0" />
+                           </VBox.margin>
+                        </ButtonBar>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+   </right>
       </BorderPane>
