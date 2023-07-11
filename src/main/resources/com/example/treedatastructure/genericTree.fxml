@@ -8,8 +8,10 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="507.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -41,41 +43,6 @@
          </children>
       </VBox>
    </top>
-   <left>
-      <HBox prefHeight="215.0" prefWidth="98.0" BorderPane.alignment="CENTER">
-         <children>
-                  <TitledPane animated="false" prefHeight="167.0" prefWidth="97.0" text="Operations">
-                     <content>
-                        <VBox prefHeight="373.0" prefWidth="95.0">
-                           <children>
-                              <Button fx:id="btnOpsCreate" mnemonicParsing="false" onAction="#btnOpsCreatePressed" prefHeight="26.0" prefWidth="99.0" text="Create">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsInsert" mnemonicParsing="false" onAction="#btnOpsInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsDelete" mnemonicParsing="false" onAction="#btnOpsDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsUpdate" mnemonicParsing="false" onAction="#btnOpsUpdatePressed" prefHeight="26.0" prefWidth="82.0" text="Update">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsTraverse" mnemonicParsing="false" onAction="#btnOpsTraversePressed" prefHeight="26.0" prefWidth="97.0" text="Traverse" />
-                           </children>
-                        </VBox>
-                     </content>
-                  </TitledPane>
-         </children>
-      </HBox>
-   </left>
    <padding>
       <Insets top="10.0" />
    </padding>
@@ -204,7 +171,7 @@
                   </Button>
                      </children>
                   </HBox>
-            <HBox fx:id="hBoxUpdate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="hBoxUpdate" alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="500.0">
                <children>
                   <Label text="old node = ">
                      <HBox.margin>
@@ -242,4 +209,176 @@
          </children>
             </StackPane>
    </bottom>
+   <center>
+      <Pane prefHeight="368.0" prefWidth="488.0" BorderPane.alignment="CENTER">
+         <children>
+                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" text="Operations">
+                     <content>
+                        <VBox prefHeight="373.0" prefWidth="95.0">
+                           <children>
+                              <Button fx:id="btnOpsCreate" mnemonicParsing="false" onAction="#btnOpsCreatePressed" prefHeight="26.0" prefWidth="99.0" text="Create">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsInsert" mnemonicParsing="false" onAction="#btnOpsInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsDelete" mnemonicParsing="false" onAction="#btnOpsDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsUpdate" mnemonicParsing="false" onAction="#btnOpsUpdatePressed" prefHeight="26.0" prefWidth="82.0" text="Update">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsTraverse" mnemonicParsing="false" onAction="#btnOpsTraversePressed" prefHeight="26.0" prefWidth="97.0" text="Traverse" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+            <StackPane layoutX="300.0" layoutY="218.0" prefHeight="121.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="vBoxBFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <StackPane fx:id="pseudoBFS1" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="  q.enqueue(root)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoBFS2" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="  while q is not empty:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="psudoBFS3" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="        u = q.dequeue()">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoBFS4" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="        for child v of u:" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoBFS5" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="            q.enqueue(v)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vBoxDFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <StackPane fx:id="pseudoDFS1" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="  stack.push(root)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoDFS2" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="  while stack is not empty:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="psudoDFS3" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="        u = stack.pop()">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoDFS4" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="        for child v of u:" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane fx:id="pseudoDFS5" prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#99f28a" height="30.0" stroke="WHITE" strokeType="INSIDE" width="160.0" />
+                              <Label prefHeight="20.0" prefWidth="160.0" text="            stack.push(v)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </children>
+         
+      </Pane>
+   </center>
       </BorderPane>
