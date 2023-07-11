@@ -8,6 +8,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -51,7 +52,7 @@
    <bottom>
             <StackPane fx:id="stackPaneInput" prefHeight="63.0" prefWidth="65.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
                <children>
                   <Label text="node = ">
                      <HBox.margin>
@@ -73,15 +74,18 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" text="Random" />
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual">
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" selected="true" text="Random">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="radiobtnCreate" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual" toggleGroup="$radiobtnCreate">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0">
+                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0" visible="false">
                      <children>
                         <Label text="root = ">
                            <HBox.margin>

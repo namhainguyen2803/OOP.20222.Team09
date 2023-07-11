@@ -173,10 +173,14 @@ public class genericTreeController {
     }
 
     @FXML
-    private void radioBtnRandomPressed(ActionEvent event) {}
+    private void radioBtnRandomPressed(ActionEvent event) {
+        hBoxManual.setVisible(false);
+    }
 
     @FXML
-    private void radioBtnManualPressed(ActionEvent event) {}
+    private void radioBtnManualPressed(ActionEvent event) {
+        hBoxManual.setVisible(true);
+    }
 
     @FXML
     private void tfRootCreateTyping(ActionEvent event) {}
