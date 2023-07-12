@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-color: EFE1D1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: EFE1D1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="757.0" layoutY="310.0">
+      <VBox layoutX="178.0" layoutY="182.0">
          <children>
             <Button fx:id="btnGenericTree" mnemonicParsing="false" onAction="#btnGenericTreePressed" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: A78295;" text="Generic Tree">
                <VBox.margin>
@@ -36,7 +36,7 @@
       </VBox>
       <VBox>
          <children>
-            <Label alignment="CENTER" prefHeight="110.0" prefWidth="1800.0" text="Tree Data Structure Visualizer" textFill="#688d8f">
+            <Label alignment="CENTER" prefHeight="110.0" prefWidth="600.0" text="Tree Data Structure Visualizer" textFill="#688d8f">
                <font>
                   <Font size="24.0" />
                </font>

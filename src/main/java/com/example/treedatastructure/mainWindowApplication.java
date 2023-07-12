@@ -14,7 +14,7 @@ public class mainWindowApplication extends Application {
             FXMLLoader mainLoader = new FXMLLoader(mainWindowApplication.class.getResource("mainWindow.fxml"));
             mainWindowController mainController = new mainWindowController();
             mainLoader.setController(mainController);
-            Scene scene = new Scene(mainLoader.load(), 1800, 600);
+            Scene scene = new Scene(mainLoader.load(), 600, 600);
             stage.setTitle("Tree View Visualizer");
             stage.setScene(scene);
 //            stage.setFullScreen(true);
