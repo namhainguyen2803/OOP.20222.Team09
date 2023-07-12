@@ -7,36 +7,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-color: EFE1D1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="154.0" layoutY="183.0" prefHeight="190.0" prefWidth="242.0">
+      <VBox layoutX="757.0" layoutY="310.0">
          <children>
-            <Button fx:id="btnGenericTree" mnemonicParsing="false" onAction="#btnGenericTreePressed" prefHeight="2.0" prefWidth="242.0" text="Generic Tree">
+            <Button fx:id="btnGenericTree" mnemonicParsing="false" onAction="#btnGenericTreePressed" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: A78295;" text="Generic Tree">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnBinaryTree" mnemonicParsing="false" onAction="#btnBinaryTreePressed" prefHeight="26.0" prefWidth="242.0" text="Binary Tree">
+            <Button fx:id="btnBinaryTree" mnemonicParsing="false" onAction="#btnBinaryTreePressed" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: A78295;" text="Binary Tree">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnBalancedTree" mnemonicParsing="false" onAction="#btnBalancedTreePressed" prefHeight="26.0" prefWidth="244.0" text="Balanced Tree">
+            <Button fx:id="btnBalancedTree" mnemonicParsing="false" onAction="#btnBalancedTreePressed" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: A78295;" text="Balanced Tree">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnBalancedBinaryTree" mnemonicParsing="false" onAction="#btnBalancedBinaryTreePressed" prefHeight="26.0" prefWidth="243.0" text="Balanced Binary Tree">
+            <Button fx:id="btnBalancedBinaryTree" mnemonicParsing="false" onAction="#btnBalancedBinaryTreePressed" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: A78295;" text="Balanced Binary Tree">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#btnExitPressed" prefHeight="26.0" prefWidth="262.0" text="Exit" />
+            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#btnExitPressed" prefHeight="26.0" prefWidth="240.0" text="Exit" />
          </children>
       </VBox>
-      <VBox prefHeight="132.0" prefWidth="600.0">
+      <VBox>
          <children>
-            <Label alignment="CENTER" prefHeight="110.0" prefWidth="600.0" text="Tree Data Structure Visualizer" textFill="#688d8f">
+            <Label alignment="CENTER" prefHeight="110.0" prefWidth="1800.0" text="Tree Data Structure Visualizer" textFill="#688d8f">
                <font>
                   <Font size="24.0" />
                </font>

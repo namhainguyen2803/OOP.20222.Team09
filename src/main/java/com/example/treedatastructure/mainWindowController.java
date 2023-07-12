@@ -61,8 +61,7 @@ public class mainWindowController {
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         genericTreeController genericController = new genericTreeController(mainStage);
         loader.setController(genericController);
-        mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(loader.load(), 600, 500);
+        Scene scene = new Scene(loader.load(), 600, 600);
         this.mainStage.setTitle("Balanced Tree");
         this.mainStage.setScene(scene);
         this.mainStage.show();
@@ -74,8 +73,7 @@ public class mainWindowController {
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         genericTreeController genericController = new genericTreeController(mainStage);
         loader.setController(genericController);
-        mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(loader.load(), 600, 500);
+        Scene scene = new Scene(loader.load(), 600, 600);
         this.mainStage.setTitle("Balanced Binary Tree");
         this.mainStage.setScene(scene);
         this.mainStage.show();

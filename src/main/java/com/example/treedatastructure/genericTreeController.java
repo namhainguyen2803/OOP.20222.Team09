@@ -3,12 +3,12 @@ package com.example.treedatastructure;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -113,9 +113,18 @@ public class genericTreeController {
     private StackPane stackPaneController;
 
 
+    @FXML
+    private String valRootNodeCreate;
+
+    @FXML
+    private Pane scenePane;
+
+
 
 
     private Stage menuStage;
+
+    private Scene mainScene;
 
     public genericTreeController(Stage stage) {
         this.menuStage = stage;
@@ -124,8 +133,8 @@ public class genericTreeController {
     @FXML
     private void initialize() {
         stackPaneInput.setVisible(false);
-        stackPanePseudo.setVisible(false);
-        stackPaneController.setVisible(false);
+        stackPanePseudo.setVisible(true);
+        stackPaneController.setVisible(true);
     }
 
 
@@ -149,6 +158,8 @@ public class genericTreeController {
         stackPaneInput.setVisible(true);
 
         setControl(hBoxCreate);
+
+
     }
 
     @FXML
@@ -183,10 +194,18 @@ public class genericTreeController {
     }
 
     @FXML
-    private void tfRootCreateTyping(ActionEvent event) {}
+    private void tfRootCreateTyping(ActionEvent event) {
+//            String valRootNodeCreate = tfRootCreate.getText();
+//            System.out.println(valRootNodeCreate);
+    }
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) {}
+    private void btnCreatePressed(ActionEvent event) {
+        String valRootNodeCreate = tfRootCreate.getText();
+        System.out.println(valRootNodeCreate);
+        Node root = new Node(valRootNodeCreate);
+        scenePane.getChildren().add(root);
+    }
 
     @FXML
     private void radioBtnBFSPressed(ActionEvent event) {}
