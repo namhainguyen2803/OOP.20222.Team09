@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GenericTreeController {
 
@@ -348,7 +349,30 @@ public class GenericTreeController {
     private void tfNodeDeleteTyping(ActionEvent event) {}
 
     @FXML
-    private void btnDeletePressed(ActionEvent event) {}
+    private void btnDeletePressed(ActionEvent event) {
+        String delNodeVal = tfNodeDelete.getText();
+
+        int intDelNodeVal = Integer.parseInt(delNodeVal);
+        try {
+            Node nodeObject = genericTree.searchNode(intDelNodeVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            SequentialTransition tmp = drawAnimationsDelete(search_direction, nodeObject);
+            tmp.play();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like the node you want to delete does not exist.");
+
+            alert.showAndWait();
+        }
+        tfNodeInsert.clear();
+        tfParentInsert.clear();
+    }
+
 
     @FXML
     private void tfParentInsertTyping(ActionEvent event) {}
@@ -359,16 +383,28 @@ public class GenericTreeController {
     @FXML
     private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
 
-        String node_val = tfNodeInsert.getText();
-        String parent_val = tfParentInsert.getText();
-        int intNodeVal = Integer.parseInt(node_val);
-        int intParentVal = Integer.parseInt(parent_val);
         try {
-            Node childNode = genericTree.insertNode(intParentVal, intNodeVal);
-            scenePane.getChildren().add(childNode.getParentLine());
-            scenePane.getChildren().add(childNode);
 
-        } catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
+            String node_val = tfNodeInsert.getText();
+            String parent_val = tfParentInsert.getText();
+            int intNodeVal = Integer.parseInt(node_val);
+            int intParentVal = Integer.parseInt(parent_val);
+
+            genericTree.checkInsertNode(intParentVal, intNodeVal);
+
+            Node nodeObject = genericTree.searchNode(intParentVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            SequentialTransition tmp = drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
+            tmp.play();
+
+
+            tfNodeInsert.clear();
+            tfParentInsert.clear();
+        }
+
+        catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
@@ -376,8 +412,6 @@ public class GenericTreeController {
 
             alert.showAndWait();
         }
-        tfNodeInsert.clear();
-        tfParentInsert.clear();
     }
 
     @FXML
@@ -387,7 +421,40 @@ public class GenericTreeController {
     private void tfNewNodeUpdateTyping(ActionEvent event) {}
 
     @FXML
-    private void btnUpdatePressed(ActionEvent event) {}
+    private void btnUpdatePressed(ActionEvent event) {
+        String new_val = tfNewNodeUpdate.getText();
+        String old_val = tfOldNodeUpdate.getText();
+
+        int intNewVal = Integer.parseInt(new_val);
+        int intOldVal = Integer.parseInt(old_val);
+        try {
+            genericTree.checkUpdateNode(intOldVal, intNewVal);
+            Node nodeObject = genericTree.searchNode(intOldVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            SequentialTransition tmp = drawAnimationsUpdate(search_direction, nodeObject, intNewVal);
+            tmp.play();
+
+
+        } catch (NodeNotExistsException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like old node does not exist.");
+
+            alert.showAndWait();
+        } catch (NodeExistedException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like new node have existed.");
+
+            alert.showAndWait();
+        }
+        tfNodeInsert.clear();
+        tfParentInsert.clear();
+    }
 
     @FXML // will have animation, not implemented yet
     void btnSearchPressed(ActionEvent event) throws InterruptedException {
@@ -399,7 +466,8 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            drawAnimations(search_direction);
+            SequentialTransition tmp = drawAnimationsSearch(search_direction);
+            tmp.play();
         }
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -412,11 +480,12 @@ public class GenericTreeController {
         tfNodeSearch.clear();
     }
 
-    private void drawAnimations(ArrayList<Node> list_nodes) {
+    private SequentialTransition drawAnimationsSearch(ArrayList<Node> list_nodes) {
         SequentialTransition sequentialTransition = new SequentialTransition();
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-        sequentialTransition.setOnFinished(event -> showPopupWindow(listLines, listStackPane));
+
+        sequentialTransition.setOnFinished(event -> showPopupWindowSearch(listLines, listStackPane));
 
         for (Node node : list_nodes) {
 
@@ -467,16 +536,292 @@ public class GenericTreeController {
 
         }
 
-        sequentialTransition.play();
+        return sequentialTransition;
 
     }
 
-    private void turnOffAnimations(ArrayList<Line> listLines, ArrayList<Circle> listCircles) {
-        scenePane.getChildren().removeAll(listLines);
-        scenePane.getChildren().removeAll(listCircles);
+    private SequentialTransition drawAnimationsUpdate(ArrayList<Node> list_nodes, Node oldNode, int newNodeVal) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+
+        sequentialTransition.setOnFinished(event -> turnOffAnimationsUpdate(listLines, listStackPane, oldNode, newNodeVal));
+
+        for (Node node : list_nodes) {
+
+            Line connectedLine = node.getParentLine();
+            Duration durationLine = Duration.seconds(1);
+            Color fromLineColor = node.getColorStrokeLine();
+            Color toLineColor = node.getColorFontText();
+            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
+            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
+            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
+            strokeLineTransition.setAutoReverse(true);
+
+            Duration durationNode = Duration.seconds(1);
+            Color fromNodeColor = node.getColorStrokeCircle();
+            Color toNodeColor = node.getColorFontText();
+            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
+            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
+            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
+            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
+//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
+            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
+            strokeNodeTransition.setAutoReverse(true);
+
+            Text copiedText = new Text(String.valueOf(node.getNodeId()));
+            Duration durationText = Duration.seconds(0.1);
+            copiedText.setStrokeWidth(node.getStrokeWidthText());
+            copiedText.setStroke(node.getColorStrokeText());
+            copiedText.setFill(node.getColorFontText());
+            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
+            strokeTextTransition.setAutoReverse(true);
+
+            StackPane tmpPane = new StackPane();
+            tmpPane.getChildren().add(copied_circle);
+            tmpPane.getChildren().add(copiedText);
+
+            tmpPane.setLayoutX(node.getLayoutX());
+            tmpPane.setLayoutY(node.getLayoutY());
+
+            sequentialTransition.getChildren().add(strokeLineTransition);
+            sequentialTransition.getChildren().add(strokeNodeTransition);
+            sequentialTransition.getChildren().add(strokeTextTransition);
+
+            scenePane.getChildren().add(copiedLine);
+            scenePane.getChildren().add(tmpPane);
+
+            listLines.add(copiedLine);
+            listStackPane.add(tmpPane);
+
+        }
+
+        return sequentialTransition;
+
     }
 
-    private void showPopupWindow(ArrayList<Line> listLines, ArrayList<StackPane> listPane) {
+    private SequentialTransition drawAnimationsInsert(ArrayList<Node> list_nodes, int intParentVal, int intNodeVal) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+
+        sequentialTransition.setOnFinished(event -> turnOffAnimationsInsert(listLines, listStackPane, intParentVal, intNodeVal));
+
+        for (Node node : list_nodes) {
+
+            Line connectedLine = node.getParentLine();
+            Duration durationLine = Duration.seconds(0.5);
+            Color fromLineColor = node.getColorStrokeLine();
+            Color toLineColor = node.getColorFontText();
+            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
+            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
+            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
+            strokeLineTransition.setAutoReverse(true);
+
+            Duration durationNode = Duration.seconds(0.5);
+            Color fromNodeColor = node.getColorStrokeCircle();
+            Color toNodeColor = node.getColorFontText();
+            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
+            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
+            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
+            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
+//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
+            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
+            strokeNodeTransition.setAutoReverse(true);
+
+            Text copiedText = new Text(String.valueOf(node.getNodeId()));
+            Duration durationText = Duration.seconds(0.1);
+            copiedText.setStrokeWidth(node.getStrokeWidthText());
+            copiedText.setStroke(node.getColorStrokeText());
+            copiedText.setFill(node.getColorFontText());
+            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
+            strokeTextTransition.setAutoReverse(true);
+
+            StackPane tmpPane = new StackPane();
+            tmpPane.getChildren().add(copied_circle);
+            tmpPane.getChildren().add(copiedText);
+
+            tmpPane.setLayoutX(node.getLayoutX());
+            tmpPane.setLayoutY(node.getLayoutY());
+
+            sequentialTransition.getChildren().add(strokeLineTransition);
+            sequentialTransition.getChildren().add(strokeNodeTransition);
+            sequentialTransition.getChildren().add(strokeTextTransition);
+
+            scenePane.getChildren().add(copiedLine);
+            scenePane.getChildren().add(tmpPane);
+
+            listLines.add(copiedLine);
+            listStackPane.add(tmpPane);
+
+        }
+
+        return sequentialTransition;
+    }
+
+    private SequentialTransition drawAnimationsDelete(ArrayList<Node> list_nodes, Node delNode) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+
+        sequentialTransition.setOnFinished(event -> turnOffAnimationsDelete(listLines, listStackPane, delNode));
+
+        for (Node node : list_nodes) {
+
+            Line connectedLine = node.getParentLine();
+            Duration durationLine = Duration.seconds(0.5);
+            Color fromLineColor = node.getColorStrokeLine();
+            Color toLineColor = node.getColorFontText();
+            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
+            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
+            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
+            strokeLineTransition.setAutoReverse(true);
+
+            Duration durationNode = Duration.seconds(0.5);
+            Color fromNodeColor = node.getColorStrokeCircle();
+            Color toNodeColor = node.getColorFontText();
+            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
+            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
+            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
+            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
+//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
+            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
+            strokeNodeTransition.setAutoReverse(true);
+
+            Text copiedText = new Text(String.valueOf(node.getNodeId()));
+            Duration durationText = Duration.seconds(0.1);
+            copiedText.setStrokeWidth(node.getStrokeWidthText());
+            copiedText.setStroke(node.getColorStrokeText());
+            copiedText.setFill(node.getColorFontText());
+            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
+            strokeTextTransition.setAutoReverse(true);
+
+            StackPane tmpPane = new StackPane();
+            tmpPane.getChildren().add(copied_circle);
+            tmpPane.getChildren().add(copiedText);
+
+            tmpPane.setLayoutX(node.getLayoutX());
+            tmpPane.setLayoutY(node.getLayoutY());
+
+            sequentialTransition.getChildren().add(strokeLineTransition);
+            sequentialTransition.getChildren().add(strokeNodeTransition);
+            sequentialTransition.getChildren().add(strokeTextTransition);
+
+            scenePane.getChildren().add(copiedLine);
+            scenePane.getChildren().add(tmpPane);
+
+            listLines.add(copiedLine);
+            listStackPane.add(tmpPane);
+
+        }
+
+        return sequentialTransition;
+    }
+
+    private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
+        try {
+            Node parent = genericTree.searchNode(intParentVal);
+            Node childNode = parent.addChild(intNodeVal);
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+            scenePane.getChildren().add(childNode.getParentLine());
+            scenePane.getChildren().add(childNode);
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void turnOffAnimationsUpdate(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, Node childNode, int newNodeVal) {
+        try {
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+
+            childNode.getTfId().setText(String.valueOf(newNodeVal));
+            childNode.updateId(newNodeVal);
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void rebuildTree() {
+        Node root = genericTree.getRootNode();
+
+        scenePane.getChildren().remove(root);
+        ArrayList<Node> listNodeDel = new ArrayList<Node>(root.getListOfChildren());
+        while (listNodeDel.size() > 0) {
+            Node tmp = listNodeDel.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNodeDel.addAll(tmp.getListOfChildren());
+            }
+            scenePane.getChildren().remove(tmp);
+            scenePane.getChildren().remove(tmp.getParentLine());
+        }
+
+        scenePane.getChildren().add(root);
+        ArrayList<Node> listNode = new ArrayList<Node>();
+        listNode.add(root);
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                ArrayList<Node> tmpListNode = new ArrayList<Node>();
+                tmpListNode.addAll(tmp.getListOfChildren());
+                tmp.getListOfChildren().removeAll(tmp.getListOfChildren());
+                for (Node childNode: tmpListNode) {
+                    tmp.addChild(childNode);
+                    listNode.add(childNode);
+                }
+            }
+
+            if (!tmp.equals(root)) {
+                scenePane.getChildren().add(tmp);
+                scenePane.getChildren().add(tmp.getParentLine());
+            }
+        }
+    }
+
+    private void deleteSubtree(Node root) {
+        scenePane.getChildren().remove(root);
+        if (!root.equals(genericTree.getRootNode())) {
+            scenePane.getChildren().remove(root.getParentLine());
+            root.getParentNode().getListOfChildren().remove(root);
+        }
+
+        ArrayList<Node> listNode = new ArrayList<Node>(root.getListOfChildren());
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNode.addAll(tmp.getListOfChildren());
+            }
+            tmp.getParentNode().getListOfChildren().remove(tmp);
+            tmp.setId(null);
+            scenePane.getChildren().remove(tmp);
+            scenePane.getChildren().remove(tmp.getParentLine());
+        }
+    }
+
+    private void turnOffAnimationsDelete(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, Node delRootNode) {
+        try {
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+
+            deleteSubtree(delRootNode);
+
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+            rebuildTree();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showPopupWindowSearch(ArrayList<Line> listLines, ArrayList<StackPane> listPane) {
         PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
         pauseTransition.setOnFinished(event -> {
             Platform.runLater(() -> {
