@@ -1,21 +1,30 @@
 package com.example.treedatastructure;
 
+import com.example.treedatastructure.exception.NodeExistedException;
+import com.example.treedatastructure.exception.NodeFullChildrenException;
+import com.example.treedatastructure.exception.NodeNotExistsException;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class genericTreeController {
 
@@ -113,9 +122,25 @@ public class genericTreeController {
     private StackPane stackPaneController;
 
 
+    @FXML
+    private String valRootNodeCreate;
+
+    @FXML
+    private Pane scenePane;
+
+    @FXML
+    private TextField tfNodeSearch;
+
+
 
 
     private Stage menuStage;
+
+    private Scene mainScene;
+
+    private GenericTree genericTree = new GenericTree();
+
+    private String algorithm;
 
     public genericTreeController(Stage stage) {
         this.menuStage = stage;
@@ -129,7 +154,7 @@ public class genericTreeController {
     }
 
 
-    @FXML
+    @FXML // done
     void btnOpsInsertPressed(ActionEvent event) {
         stackPaneInput.setVisible(true);
 
@@ -137,28 +162,30 @@ public class genericTreeController {
 
     }
 
-    @FXML
+    @FXML // done
     void btnOpsDeletePressed(ActionEvent event) {
         stackPaneInput.setVisible(true);
 
         setControl(hBoxDelete);
     }
 
-    @FXML
+    @FXML //done
     void btnOpsCreatePressed(ActionEvent event) {
         stackPaneInput.setVisible(true);
 
         setControl(hBoxCreate);
+
+
     }
 
-    @FXML
+    @FXML // done
     void btnOpsUpdatePressed(ActionEvent event) {
         stackPaneInput.setVisible(true);
 
         setControl(hBoxUpdate);
     }
 
-    @FXML
+    @FXML // done
     void btnOpsTraversePressed(ActionEvent event) {
         stackPaneInput.setVisible(true);
 
@@ -186,7 +213,20 @@ public class genericTreeController {
     private void tfRootCreateTyping(ActionEvent event) {}
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) {}
+    private void btnCreatePressed(ActionEvent event) {
+        String rootId = tfRootCreate.getText();
+        int rootIdInt;
+        if (rootId.equals("")){
+            rootIdInt = 1;
+        }
+        else{
+            rootIdInt = Integer.parseInt(rootId);
+        }
+        genericTree.createTree(rootIdInt);
+        Node root = genericTree.getRootNode();
+
+        scenePane.getChildren().add(root);
+    }
 
     @FXML
     private void radioBtnBFSPressed(ActionEvent event) {}
@@ -213,7 +253,27 @@ public class genericTreeController {
     private void tfNodeInsertTyping(ActionEvent event) {}
 
     @FXML
-    private void btnInsertPressed(ActionEvent event) {}
+    private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+        String node_val = tfNodeInsert.getText();
+        String parent_val = tfParentInsert.getText();
+        int intNodeVal = Integer.parseInt(node_val);;
+        int intParentVal = Integer.parseInt(parent_val);
+        try {
+            Node childNode = genericTree.insertNode(intParentVal, intNodeVal);
+            scenePane.getChildren().add(childNode.getParentLine());
+            scenePane.getChildren().add(childNode);
+
+        } catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like you have tried invalid insertion operation.");
+
+            alert.showAndWait();
+        }
+        tfNodeInsert.clear();
+        tfParentInsert.clear();
+    }
 
     @FXML
     private void tfOldNodeUpdateTyping(ActionEvent event) {}
@@ -224,8 +284,54 @@ public class genericTreeController {
     @FXML
     private void btnUpdatePressed(ActionEvent event) {}
 
-    @FXML
-    void btnSearchPressed(ActionEvent event) {}
+    @FXML // will have animation, not implemented yet
+    void btnSearchPressed(ActionEvent event) {
+        String val_node = tfNodeSearch.getText();
+        int intNodeVal = Integer.parseInt(val_node);
+
+        Node nodeObject = genericTree.searchNode(intNodeVal);
+        ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+
+
+        ArrayList<Line> list_edges = new ArrayList<Line>();
+        for (Node node: search_direction) {
+            if (!node.equals(genericTree.getRootNode())) {
+                list_edges.add(node.getParentLine());
+                System.out.println(node.getNodeId());
+            }
+        }
+        Collections.reverse(list_edges);
+
+        ArrayList<Line> listAnimatedLine = new ArrayList<Line>();
+        for (Line line: list_edges) {
+            if (line != null) {
+                Line animated_line = drawLineAnimation(line);
+                listAnimatedLine.add(animated_line);
+            }
+        }
+        scenePane.getChildren().addAll(listAnimatedLine);
+    }
+
+
+    private Line drawLineAnimation(Line connectedLine) {
+
+        Line copiedLine = new Line();
+        copiedLine.setStrokeWidth(2.0);
+        copiedLine.setStartX(connectedLine.getStartX());
+        copiedLine.setStartY(connectedLine.getStartY());
+        copiedLine.setEndX(connectedLine.getEndX());
+        copiedLine.setEndY(connectedLine.getEndY());
+
+        Duration duration = Duration.seconds(3);
+        Color fromColor = Color.BLACK;
+        Color toColor = Color.LIGHTYELLOW;
+
+        StrokeTransition strokeTransition = new StrokeTransition(duration, copiedLine, fromColor, toColor);
+        strokeTransition.setAutoReverse(true);
+        strokeTransition.play();
+
+        return copiedLine;
+    }
 
     @FXML
     void tfNodeSearchTyping(ActionEvent event) {}

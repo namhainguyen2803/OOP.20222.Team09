@@ -10,34 +10,101 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 public class Node extends StackPane {
-    public static ArrayList<Integer> listValue = new ArrayList<Integer>();
-    private int value;
-    private ArrayList<Node> childNodes = new ArrayList<Node>();
-    private Node parentNode;
-    private Circle circle;
-    private Text nodeValue;
-    private Line parentLine;
+    /*
+    Các attribute của Node (KHÔNG FXML)
+     */
+    private int nodeId;
+    private ArrayList<Node> listOfChildren = new ArrayList<Node>();
+
     private int depth = 0;
-    private int state = 1;
-    private boolean leave;
 
-    public Node(int value) {
-        this.value = value;
-        if (value != 0) {
-            listValue.add(this.value);
-        }
-        this.setPrefSize(60, 60);
-        this.parentLine = new Line();
+    private Node parentNode = null;
 
-        circle = new Circle(30, Color.WHITE);
-        circle.setStroke(Color.BLACK);
-        this.getChildren().add(circle);
+    /*
+    Các attribute của FXML
+     */
+    private double cirleRadius = 10;
+    private Circle circle;
+    private Text tfId;
+    private Line parentLine;
+    /**
+     * Constructor
+     * @param nodeId
+     */
+    public Node(int nodeId){
+        this.nodeId = nodeId;
 
-        nodeValue = new Text(value + "");
-        this.getChildren().add(nodeValue);
-        
-        this.setLayoutY(199);
-        this.setLayoutY(66);
+        //FXML
+        this.setPrefSize(cirleRadius, cirleRadius);
+        circle = new Circle(cirleRadius, Color.WHITE);
+        tfId = new Text(nodeId+"");
+        parentLine = new Line();
+
+        this.getChildren().addAll(circle, tfId);
+        this.setLayoutX(410);
+        this.setLayoutY(55);
+    }
+
+    /*
+    Getter và Setter
+     */
+    public int getNodeId(){
+        return this.nodeId;
+    }
+
+    public ArrayList<Node> getListOfChildren(){
+        return this.listOfChildren;
+    }
+
+    public int getDepth() {
+        return this.depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public Node getParentNode(){
+        return parentNode;
+    }
+
+    public void setParentNode(Node parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    public Line getParentLine() {
+        return parentLine;
+    }
+
+    public Circle getCircle(){
+        return circle;
+    }
+
+    /*
+    Hai method addChild()
+     */
+//    public Node addChild(int childId){
+//        Node child = new Node(childId);
+//        child.depth = this.depth +1;
+//        child.parentNode = this;
+//        listOfChildren.add(child);
+//
+//        //FXML: setX,Y cho StackPane và cho parentLine
+//        double distanceX_from_parentNode = 3*cirleRadius*(this.getNumChildren()-3);
+//        double distanceY_from_parentNode = cirleRadius*4;
+//        child.setLayoutX(this.getLayoutX()+distanceX_from_parentNode);
+//        child.setLayoutY(this.getLayoutY()+distanceY_from_parentNode);
+//        child.getParentLine().setStartX(this.getLayoutX()+this.circle.getRadius());
+//        child.getParentLine().setStartY(this.getLayoutY()+this.circle.getRadius()*2);
+//        child.getParentLine().setEndX(child.getLayoutX()+this.circle.getRadius());
+//        child.getParentLine().setEndY(child.getLayoutY());
+//        return child;
+//    }
+
+    public Node addChild(int childId){
+        Node newNode = new Node(childId);
+        addChild(newNode);
+        return newNode;
     }
 
     public void addChild(Node childNode) {
@@ -45,40 +112,26 @@ public class Node extends StackPane {
         childNode.setDepth(this.getDepth() + 1);
 
         childNode.setLayoutY(this.getLayoutY() + 100);
-        if (this.childNodes.isEmpty()) {
+        if (this.getListOfChildren().isEmpty()) {
             childNode.setLayoutX(this.getLayoutX());
         } else if (childNode.getDepth() == 1) {
-            childNode.setLayoutX(this.childNodes.get(this.childNodes.size() - 1).getLayoutX() + 500);
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 500);
         } else if (childNode.getDepth() == 2) {
-            childNode.setLayoutX(this.childNodes.get(this.childNodes.size() - 1).getLayoutX() + 220);
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 220);
         } else {
-            childNode.setLayoutX(this.childNodes.get(this.childNodes.size() - 1).getLayoutX() + 80);
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 80);
         }
         Line line = childNode.getParentLine();
         line.setLayoutX(this.getLayoutX() + 30);
         line.setLayoutY(this.getLayoutY() + 60);
         line.setEndX(childNode.getLayoutX() - this.getLayoutX());
 
-        childNode.setLeave(true);
-        this.setLeave(false);
+//        childNode.setLeave(true);
+//        this.setLeave(false);
         line.setEndY(40);
 
-        this.childNodes.add(childNode);
+        this.getListOfChildren().add(childNode);
         childNode.setParentNode(this);
-    }
-
-    public void deleteChild(int nodeValue) {
-        Node.listValue.remove(Integer.valueOf(nodeValue));
-
-        for (Node node : this.childNodes) {
-            if (node.getValue() == nodeValue) {
-                this.childNodes.remove(node);
-                break;
-            }
-        }
-        if (childNodes.isEmpty()) {
-            this.leave = true;
-        }
     }
 
     public void addUpdate() {
@@ -97,8 +150,8 @@ public class Node extends StackPane {
 
         while (!queue.isEmpty()) {
             currentNode = queue.get(0);
-            if (!currentNode.getChildNodes().isEmpty()) {
-                for (Node node : currentNode.getChildNodes()) {
+            if (!currentNode.getListOfChildren().isEmpty()) {
+                for (Node node : currentNode.getListOfChildren()) {
                     node.setLayoutX(node.getLayoutX() - distance);
                     node.getParentLine().setLayoutX(currentNode.getLayoutX() + 30);
                     node.getParentLine().setEndX(node.getLayoutX() - currentNode.getLayoutX());
@@ -109,103 +162,76 @@ public class Node extends StackPane {
         }
     }
 
-    public void deleteUpdate() {
+
+//    public void addChild(Node child){ // method này dùng cho makeBalance() trong BalancedTree
+//        child.depth = this.depth + 1;
+//        child.parentNode = this;
+//        listOfChildren.add(child);
+//
+//        if (child.getNumChildren()>0){ // nếu là 1 subtree
+//
+//            ArrayList<Node> queue = new ArrayList<Node>();
+//            queue.add(child);
+//
+//            Node tmp;
+//            while (queue.size() > 0){
+//                tmp = queue.remove(0); // lấy node đầu tiên của queue
+//
+//                if (tmp.getNumChildren() > 0) {
+//                    for (Node n : tmp.getListOfChildren()) {
+//                        n.depth = tmp.depth + 1;
+//                        queue.add(n);
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+
+    public int getNumChildren(){
+        return this.listOfChildren.size();
+    }
+
+    public void updateId(int newId){
+        this.nodeId = newId;
+    }
+
+    public boolean isLeaf(){
+        return this.getNumChildren() == 0;
+    }
+
+    public boolean isAncestor(Node node){
         ArrayList<Node> queue = new ArrayList<Node>();
+
         queue.add(this);
-        Node currentNode;
 
-        while (!queue.isEmpty()) {
-            currentNode = queue.get(0);
+        Node tmp;
+        while (queue.size() > 0){
+            tmp = queue.remove(0); // lấy node đầu tiên của queue
 
-            if (!currentNode.getChildNodes().isEmpty()) {
-                for (Node node : currentNode.getChildNodes()) {
-                    if (node.getDepth() == 1) {
-                        node.setLayoutX(node.getLayoutX() + 250);
-                    } else if (node.getDepth() == 2) {
-                        node.setLayoutX(node.getLayoutX() + 110);
-                    } else {
-                        node.setLayoutX(node.getLayoutX() + 40);
+            if (tmp.getNumChildren() > 0) {
+                for (Node n : tmp.getListOfChildren()) {
+                    if (n.equals(node)){
+                        return true;
                     }
-                    node.getParentLine().setLayoutX(currentNode.getLayoutX() + 30);
-                    node.getParentLine().setEndX(node.getLayoutX() - currentNode.getLayoutX());
-                    queue.add(node);
+                    queue.add(n);
                 }
             }
-            queue.remove(0);
         }
+
+        return false;
     }
-    
-    
-    public boolean equals(Object o) {
-        if (o instanceof Node) {
-            Node node = (Node) o;
-            return node.value == this.value;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Node){
+            Node tmp = (Node) obj;
+            return tmp.nodeId ==this.nodeId;
         }
         return false;
     }
 
-    public void setChildNodes(ArrayList<Node> childNodes) {
-        this.childNodes = childNodes;
-    }
 
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public ArrayList<Node> getChildNodes() {
-        return childNodes;
-    }
-
-    public Line getParentLine() {
-        return parentLine;
-    }
-
-    public Node getParentNode() {
-        return parentNode;
-    }
-
-    public void setParentNode(Node parentNode) {
-        this.parentNode = parentNode;
-    }
-
-    public Circle getCircle() {
-        return circle;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-        if (state == 0) {
-            circle.setFill(Color.WHITE);
-        } else if (state == 1) {
-            circle.setFill(Color.LIGHTYELLOW);
-        } else if (state == 2) {
-            circle.setFill(Color.LIGHTBLUE);
-        }
-    }
-
-    public void setValue(int value) {
-        int valueIndex = Node.listValue.indexOf(this.value);
-        Node.listValue.remove(valueIndex);
-        this.value = value;
-        this.nodeValue.setText(String.valueOf(value));
-        Node.listValue.add(value);
-    }
-
-    public boolean isLeave() {
-        return leave;
-    }
-
-    public void setLeave(boolean leave) {
-        this.leave = leave;
-    }
 }
 
 

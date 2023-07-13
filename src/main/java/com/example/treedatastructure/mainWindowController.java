@@ -37,9 +37,10 @@ public class mainWindowController {
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         genericTreeController genericController = new genericTreeController(mainStage);
         loader.setController(genericController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Generic Tree");
         this.mainStage.setScene(scene);
+//        this.mainStage.setFullScreen(true);
         this.mainStage.show();
     }
 
@@ -51,6 +52,7 @@ public class mainWindowController {
         loader.setController(genericController);
         Scene scene = new Scene(loader.load(), 600, 600);
         this.mainStage.setTitle("Binary Tree");
+//        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
         this.mainStage.show();
     }
@@ -61,9 +63,9 @@ public class mainWindowController {
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         genericTreeController genericController = new genericTreeController(mainStage);
         loader.setController(genericController);
-        mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(loader.load(), 600, 500);
+        Scene scene = new Scene(loader.load(), 600, 600);
         this.mainStage.setTitle("Balanced Tree");
+//        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
         this.mainStage.show();
     }
@@ -74,9 +76,9 @@ public class mainWindowController {
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
         genericTreeController genericController = new genericTreeController(mainStage);
         loader.setController(genericController);
-        mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(loader.load(), 600, 500);
+        Scene scene = new Scene(loader.load(), 600, 600);
         this.mainStage.setTitle("Balanced Binary Tree");
+//        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
         this.mainStage.show();
     }
