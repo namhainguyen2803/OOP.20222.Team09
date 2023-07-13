@@ -278,6 +278,9 @@ public class GenericTreeController {
         else {
             Random randint = new Random();
             int numNodes = randint.nextInt(6);
+            while (numNodes <= 0) {
+                numNodes = randint.nextInt(6);
+            }
 //            System.out.println(numNodes);
             ArrayList<Integer> listValNodes = new ArrayList<Integer>();
             for (int i = 0; i < numNodes; i++) {
@@ -391,12 +394,22 @@ public class GenericTreeController {
         String val_node = tfNodeSearch.getText();
         int intNodeVal = Integer.parseInt(val_node);
 
-        Node nodeObject = genericTree.searchNode(intNodeVal);
-        ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-        Collections.reverse(search_direction);
+        try {
+            Node nodeObject = genericTree.searchNode(intNodeVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            drawAnimations(search_direction);
+        }
+        catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like the node you are searching for does not exist.");
 
-        drawAnimations(search_direction);
-
+            alert.showAndWait();
+        }
+        tfNodeSearch.clear();
     }
 
     private void drawAnimations(ArrayList<Node> list_nodes) {
@@ -409,24 +422,31 @@ public class GenericTreeController {
 
             Line connectedLine = node.getParentLine();
             Duration durationLine = Duration.seconds(1);
-            Color fromLineColor = Color.BLACK;
-            Color toLineColor = Color.WHITE;
+            Color fromLineColor = node.getColorStrokeLine();
+            Color toLineColor = node.getColorFontText();
             Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
-            copiedLine.setStrokeWidth(3.0);
+            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
             StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
             strokeLineTransition.setAutoReverse(true);
 
             Duration durationNode = Duration.seconds(1);
-            Color fromNodeColor = Color.BLACK;
-            Color toNodeColor = Color.GREEN;
-            Circle copied_circle = new Circle(node.getCircle().getRadius(), Color.LIGHTPINK);
-            copied_circle.setCenterX(node.getLayoutX() + node.cirleRadius);
-            copied_circle.setCenterY(node.getLayoutY()+ node.cirleRadius);
+            Color fromNodeColor = node.getColorStrokeCircle();
+            Color toNodeColor = node.getColorFontText();
+            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
+            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
+            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
+            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
 //            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
             StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
             strokeNodeTransition.setAutoReverse(true);
 
-            Text copiedText = new Text(node.getNodeId() +"");
+            Text copiedText = new Text(String.valueOf(node.getNodeId()));
+            Duration durationText = Duration.seconds(0.1);
+            copiedText.setStrokeWidth(node.getStrokeWidthText());
+            copiedText.setStroke(node.getColorStrokeText());
+            copiedText.setFill(node.getColorFontText());
+            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
+            strokeTextTransition.setAutoReverse(true);
 
             StackPane tmpPane = new StackPane();
             tmpPane.getChildren().add(copied_circle);
@@ -437,6 +457,7 @@ public class GenericTreeController {
 
             sequentialTransition.getChildren().add(strokeLineTransition);
             sequentialTransition.getChildren().add(strokeNodeTransition);
+            sequentialTransition.getChildren().add(strokeTextTransition);
 
             scenePane.getChildren().add(copiedLine);
             scenePane.getChildren().add(tmpPane);
@@ -460,9 +481,9 @@ public class GenericTreeController {
         pauseTransition.setOnFinished(event -> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Animation Finished");
+                alert.setTitle("Complete Searching Operation");
                 alert.setHeaderText(null);
-                alert.setContentText("The animation has finished!");
+                alert.setContentText("Node required searching has been found.");
 
                 ButtonType okayButton = new ButtonType("Okay");
                 alert.getButtonTypes().setAll(okayButton);
@@ -541,19 +562,6 @@ public class GenericTreeController {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @FXML

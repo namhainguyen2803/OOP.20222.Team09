@@ -19,7 +19,7 @@
 
 <BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <VBox prefHeight="63.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="63.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -35,7 +35,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#ff6666">
+            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#6528f7">
                <font>
                   <Font size="24.0" />
                </font>
@@ -229,14 +229,14 @@
             </StackPane>
    </bottom>
    <center>
-      <Pane fx:id="scenePane" prefHeight="368.0" prefWidth="488.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER" />
+      <Pane fx:id="scenePane" prefHeight="368.0" prefWidth="488.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER" />
    </center>
    <right>
-      <VBox fx:id="vBoxPseudo" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vBoxPseudo" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
             <StackPane fx:id="stackPanePseudo" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3f2e3e" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e966a0" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                   <StackPane prefHeight="121.0" prefWidth="200.0">
                      <children>
                         <VBox fx:id="vBoxBFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
@@ -424,7 +424,7 @@
       </VBox>
    </right>
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
                   <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#e42c2c">
                      <content>
