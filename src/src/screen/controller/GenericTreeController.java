@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class genericTreeController {
+public class GenericTreeController {
 
     @FXML
     private Button btnOpsCreate;
@@ -162,7 +162,7 @@ public class genericTreeController {
 
     private String algorithm;
 
-    public genericTreeController(Stage stage) {
+    public GenericTreeController(Stage stage) {
         this.menuStage = stage;
     }
 
@@ -264,6 +264,7 @@ public class genericTreeController {
             rootIdInt = Integer.parseInt(rootId);
         }
         genericTree.createTree(rootIdInt);
+        genericTree.setTreeController(this);
         Node root = genericTree.getRootNode();
 
         scenePane.getChildren().add(root);

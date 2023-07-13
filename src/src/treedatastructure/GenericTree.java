@@ -4,7 +4,7 @@ import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 import src.exception.NoneAlgorithmSpecifiedException;
-import src.screen.controller.genericTreeController;
+import src.screen.controller.GenericTreeController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -17,7 +17,7 @@ import java.util.Stack;
 
 public class GenericTree {
     private Node rootNode;
-    private genericTreeController treeController;
+    private GenericTreeController treeController;
 
     private double timesleep = 1;
 
@@ -64,7 +64,7 @@ public class GenericTree {
         return timeline;
     }
 
-    public void setTreeController(genericTreeController treeController) {
+    public void setTreeController(GenericTreeController treeController) {
         this.treeController = treeController;
     }
 
