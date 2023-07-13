@@ -35,11 +35,14 @@ public class Node extends StackPane {
         this.nodeId = nodeId;
 
         //FXML
+        this.setPrefSize(cirleRadius, cirleRadius);
         circle = new Circle(cirleRadius, Color.WHITE);
         tfId = new Text(nodeId+"");
         parentLine = new Line();
 
         this.getChildren().addAll(circle, tfId);
+        this.setLayoutX(410);
+        this.setLayoutY(55);
     }
 
     /*
@@ -80,47 +83,117 @@ public class Node extends StackPane {
     /*
     Hai method addChild()
      */
-    public Node addChild(int childId){
-        Node child = new Node(childId);
-        child.depth = this.depth +1;
-        child.parentNode = this;
-        listOfChildren.add(child);
+//    public Node addChild(int childId){
+//        Node child = new Node(childId);
+//        child.depth = this.depth +1;
+//        child.parentNode = this;
+//        listOfChildren.add(child);
+//
+//        //FXML: setX,Y cho StackPane và cho parentLine
+//        double distanceX_from_parentNode = 3*cirleRadius*(this.getNumChildren()-3);
+//        double distanceY_from_parentNode = cirleRadius*4;
+//        child.setLayoutX(this.getLayoutX()+distanceX_from_parentNode);
+//        child.setLayoutY(this.getLayoutY()+distanceY_from_parentNode);
+//        child.getParentLine().setStartX(this.getLayoutX()+this.circle.getRadius());
+//        child.getParentLine().setStartY(this.getLayoutY()+this.circle.getRadius()*2);
+//        child.getParentLine().setEndX(child.getLayoutX()+this.circle.getRadius());
+//        child.getParentLine().setEndY(child.getLayoutY());
+//        return child;
+//    }
 
-        //FXML: setX,Y cho StackPane và cho parentLine
-        double distanceX_from_parentNode = 3*cirleRadius*(this.getNumChildren()-3);
-        double distanceY_from_parentNode = cirleRadius*4;
-        child.setLayoutX(this.getLayoutX()+distanceX_from_parentNode);
-        child.setLayoutY(this.getLayoutY()+distanceY_from_parentNode);
-        child.getParentLine().setStartX(this.getLayoutX()+this.circle.getRadius());
-        child.getParentLine().setStartY(this.getLayoutY()+this.circle.getRadius()*2);
-        child.getParentLine().setEndX(child.getLayoutX()+this.circle.getRadius());
-        child.getParentLine().setEndY(child.getLayoutY());
-        return child;
+    public Node addChild(int childId){
+        Node newNode = new Node(childId);
+        addChild(newNode);
+        return newNode;
     }
 
-    public void addChild(Node child){ // method này dùng cho makeBalance() trong BalancedTree
-        child.depth = this.depth + 1;
-        child.parentNode = this;
-        listOfChildren.add(child);
+    public void addChild(Node childNode) {
+        this.addUpdate();
+        childNode.setDepth(this.getDepth() + 1);
 
-        if (child.getNumChildren()>0){ // nếu là 1 subtree
+        childNode.setLayoutY(this.getLayoutY() + 100);
+        if (this.getListOfChildren().isEmpty()) {
+            childNode.setLayoutX(this.getLayoutX());
+        } else if (childNode.getDepth() == 1) {
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 500);
+        } else if (childNode.getDepth() == 2) {
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 220);
+        } else {
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 80);
+        }
+        
+        System.out.println(this.getLayoutX() + " " + this.getLayoutY());
+        System.out.println(childNode.getLayoutX() + " " + childNode.getLayoutY());
 
-            ArrayList<Node> queue = new ArrayList<Node>();
-            queue.add(child);
+        Line line = childNode.getParentLine();
+        line.setStrokeWidth(2.0);
+        line.setStartX(this.getLayoutX() + this.cirleRadius);
+        line.setStartY(this.getLayoutY() + 2 * this.cirleRadius);
+        line.setEndX(childNode.getLayoutX() + this.cirleRadius);
+        line.setEndY(childNode.getLayoutY());
+        System.out.println(line.getStartX() + " " + line.getStartY() + " " + line.getEndX() + " " + line.getEndY());
 
-            Node tmp;
-            while (queue.size() > 0){
-                tmp = queue.remove(0); // lấy node đầu tiên của queue
+        this.getListOfChildren().add(childNode);
+        childNode.setParentNode(this);
+    }
 
-                if (tmp.getNumChildren() > 0) {
-                    for (Node n : tmp.getListOfChildren()) {
-                        n.depth = tmp.depth + 1;
-                        queue.add(n);
-                    }
+    public void addUpdate() {
+        ArrayList<Node> queue = new ArrayList<Node>();
+        queue.add(this);
+        Node currentNode;
+
+        int distance;
+        if (depth == 0) {
+            distance = 250;
+        } else if (depth == 1) {
+            distance = 110;
+        } else {
+            distance = 40;
+        }
+
+        while (!queue.isEmpty()) {
+            currentNode = queue.get(0);
+            if (!currentNode.getListOfChildren().isEmpty()) {
+                for (Node node : currentNode.getListOfChildren()) {
+                    node.setLayoutX(node.getLayoutX() - distance);
+
+                    Line line = node.getParentLine();
+                    line.setStartX(currentNode.getLayoutX() + this.cirleRadius);
+                    line.setStartY(currentNode.getLayoutY() + 2 * this.cirleRadius);
+                    line.setEndX(node.getLayoutX() + this.cirleRadius);
+                    line.setEndY(node.getLayoutY());
+
+                    queue.add(node);
                 }
             }
+            queue.remove(0);
         }
     }
+
+
+//    public void addChild(Node child){ // method này dùng cho makeBalance() trong BalancedTree
+//        child.depth = this.depth + 1;
+//        child.parentNode = this;
+//        listOfChildren.add(child);
+//
+//        if (child.getNumChildren()>0){ // nếu là 1 subtree
+//
+//            ArrayList<Node> queue = new ArrayList<Node>();
+//            queue.add(child);
+//
+//            Node tmp;
+//            while (queue.size() > 0){
+//                tmp = queue.remove(0); // lấy node đầu tiên của queue
+//
+//                if (tmp.getNumChildren() > 0) {
+//                    for (Node n : tmp.getListOfChildren()) {
+//                        n.depth = tmp.depth + 1;
+//                        queue.add(n);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     public int getNumChildren(){

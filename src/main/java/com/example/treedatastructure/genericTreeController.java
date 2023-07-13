@@ -3,23 +3,26 @@ package com.example.treedatastructure;
 import com.example.treedatastructure.exception.NodeExistedException;
 import com.example.treedatastructure.exception.NodeFullChildrenException;
 import com.example.treedatastructure.exception.NodeNotExistsException;
+import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class genericTreeController {
 
@@ -219,10 +222,7 @@ public class genericTreeController {
         }
         genericTree.createTree(rootIdInt);
         Node root = genericTree.getRootNode();
-        root.setLayoutX(200);
-        root.setLayoutY(20);
-//        root.setLayoutX(scenePane.getPrefWidth()*1.5);
-//        root.setLayoutY(scenePane.getPrefHeight()/4);
+
         scenePane.getChildren().add(root);
     }
 
@@ -258,8 +258,8 @@ public class genericTreeController {
         int intParentVal = Integer.parseInt(parent_val);
         try {
             Node childNode = genericTree.insertNode(intParentVal, intNodeVal);
-            scenePane.getChildren().add(childNode);
             scenePane.getChildren().add(childNode.getParentLine());
+            scenePane.getChildren().add(childNode);
 
         } catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -283,9 +283,127 @@ public class genericTreeController {
     private void btnUpdatePressed(ActionEvent event) {}
 
     @FXML // will have animation, not implemented yet
-    void btnSearchPressed(ActionEvent event) {
+    void btnSearchPressed(ActionEvent event) throws InterruptedException {
         String val_node = tfNodeSearch.getText();
+        int intNodeVal = Integer.parseInt(val_node);
 
+        Node nodeObject = genericTree.searchNode(intNodeVal);
+        ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+        Collections.reverse(search_direction);
+
+        drawAnimations(search_direction);
+
+    }
+
+    private void drawAnimations(ArrayList<Node> list_nodes) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        sequentialTransition.setOnFinished(event -> turnOffAnimations(sequentialTransition));
+
+        for (Node node : list_nodes) {
+
+            Line connectedLine = node.getParentLine();
+
+            Duration durationLine = Duration.seconds(1);
+            Color fromLineColor = Color.BLACK;
+            Color toLineColor = Color.GREEN;
+
+            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, connectedLine, fromLineColor, toLineColor);
+            strokeLineTransition.setAutoReverse(true);
+
+            Duration durationNode = Duration.seconds(1);
+            Color fromNodeColor = Color.BLACK;
+            Color toNodeColor = Color.GREEN;
+
+            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, node.getCircle(), fromNodeColor, toNodeColor);
+            strokeNodeTransition.setAutoReverse(true);
+
+            sequentialTransition.getChildren().add(strokeLineTransition);
+            sequentialTransition.getChildren().add(strokeNodeTransition);
+
+        }
+
+        sequentialTransition.play();
+
+    }
+
+    private void turnOffAnimations(SequentialTransition sequentialTransition) {
+        sequentialTransition.stop();
+//        for(Animation stroke: sequentialTransition.getChildren()) {
+//            stroke.pause();
+//        }
+    }
+
+    private void showPopupWindow(SequentialTransition sequentialTransition) {
+        sequentialTransition.setOnFinished(null);
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
+        pauseTransition.setOnFinished(event -> {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Animation Finished");
+                alert.setHeaderText(null);
+                alert.setContentText("The animation has finished!");
+
+                ButtonType okayButton = new ButtonType("Okay");
+                alert.getButtonTypes().setAll(okayButton);
+
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType == okayButton) {
+                        sequentialTransition.stop();
+                        System.out.println("stop");
+                    }
+                });
+            });
+        });
+
+        pauseTransition.play();
+    }
+
+    private ArrayList<Line> drawLineAnimation(ArrayList<Line> list_lines) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        ArrayList<Line> listAnimatedLines = new ArrayList<Line>();
+        for (Line connectedLine : list_lines) {
+
+            Line copiedLine = new Line();
+            copiedLine.setStrokeWidth(2.0);
+            copiedLine.setStartX(connectedLine.getStartX());
+            copiedLine.setStartY(connectedLine.getStartY());
+            copiedLine.setEndX(connectedLine.getEndX());
+            copiedLine.setEndY(connectedLine.getEndY());
+
+            Duration duration = Duration.seconds(2);
+            Color fromColor = Color.BLACK;
+            Color toColor = Color.GREEN;
+
+            StrokeTransition strokeTransition = new StrokeTransition(duration, copiedLine, fromColor, toColor);
+            strokeTransition.setAutoReverse(true);
+            sequentialTransition.getChildren().add(strokeTransition);
+            listAnimatedLines.add(copiedLine);
+        }
+
+        sequentialTransition.play();
+
+        return listAnimatedLines;
+    }
+
+
+    private Line drawLineAnimation(Line connectedLine) {
+
+        Line copiedLine = new Line();
+        copiedLine.setStrokeWidth(2.0);
+        copiedLine.setStartX(connectedLine.getStartX());
+        copiedLine.setStartY(connectedLine.getStartY());
+        copiedLine.setEndX(connectedLine.getEndX());
+        copiedLine.setEndY(connectedLine.getEndY());
+        System.out.println(connectedLine.getStartX() + "" + connectedLine.getStartY() + "" + connectedLine.getEndX() + "" + connectedLine.getEndY());
+        Duration duration = Duration.seconds(3);
+        Color fromColor = Color.BLACK;
+        Color toColor = Color.LIGHTYELLOW;
+
+        StrokeTransition strokeTransition = new StrokeTransition(duration, copiedLine, fromColor, toColor);
+        strokeTransition.setAutoReverse(true);
+        strokeTransition.play();
+
+        return copiedLine;
     }
 
     @FXML

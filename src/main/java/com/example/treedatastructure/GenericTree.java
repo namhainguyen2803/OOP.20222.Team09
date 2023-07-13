@@ -5,7 +5,10 @@ import com.example.treedatastructure.exception.NodeFullChildrenException;
 import com.example.treedatastructure.exception.NodeNotExistsException;
 import com.example.treedatastructure.exception.NoneAlgorithmSpecifiedException;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GenericTree {
     private Node rootNode;
@@ -63,27 +66,26 @@ public class GenericTree {
 
 
     public void traverseTreeBFS(){
-        ArrayList<Node> queue = new ArrayList<Node>();
+        Queue<Node> queue = new LinkedList<Node>();
 
         // Xử lý rootnode
         System.out.println(rootNode.getNodeId());
         queue.add(rootNode);
         Node tmp;
         while (queue.size() > 0){
-            tmp = queue.remove(0); // lấy node đầu tiên của queue
+            tmp = queue.remove(); // lấy node đầu tiên của queue
 
             if (tmp.getNumChildren() > 0) {
                 for (Node n : tmp.getListOfChildren()) {
                     // Xử lý node con
                     System.out.println(n.getNodeId()+" "+n.getDepth()+" "+n.getParentNode().getNodeId()); // print node tmp
-
                     queue.add(n);
                 }
             }
         }}
 
     public void traverseTreeDFS(){
-        ArrayList<Node> stack = new ArrayList<Node>();
+        Stack<Node> stack = new Stack<Node>();
         stack.add(rootNode);
 
         Node tmp;
@@ -116,6 +118,7 @@ public class GenericTree {
      * @param searchId
      * @return
      */
+
     public Node searchNode(int searchId){
         ArrayList<Node> queue = new ArrayList<Node>();
         if (rootNode.getNodeId()==searchId){
@@ -138,6 +141,66 @@ public class GenericTree {
         }
 
         return null;
+    }
+    public Node searchNodeByBFS(int searchId){
+        ArrayList<Node> queue = new ArrayList<Node>();
+        if (rootNode.getNodeId()==searchId){
+            return rootNode;
+        }
+        queue.add(rootNode);
+
+        Node tmp;
+        while (queue.size() > 0){
+            tmp = queue.remove(0); // lấy node đầu tiên của queue
+
+            if (tmp.getNumChildren() > 0) {
+                for (Node n : tmp.getListOfChildren()) {
+                    if (n.getNodeId() == searchId) {
+                        return n;
+                    }
+                    queue.add(n);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Node> getDirectionByDFS(int searchId){
+        Stack<Node> stack = new Stack<Node>();
+        ArrayList<Node> visited_nodes = new ArrayList<Node>();
+
+        stack.push(rootNode);
+        visited_nodes.add(rootNode);
+        if (rootNode.getNodeId()==searchId){
+            return visited_nodes;
+        }
+
+        Node tmp;
+        while (stack.size() > 0){
+            tmp = stack.remove(stack.size()-1); // lấy node đầu tiên của queue
+
+            if (tmp.getNumChildren() > 0) {
+                for (Node n : tmp.getListOfChildren()) {
+                    stack.push(n);
+                    visited_nodes.add(n);
+                    if (n.getNodeId() == searchId) {
+                        return visited_nodes;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Node> getPathToRoot(Node node) {
+        ArrayList<Node> list_node = new ArrayList<Node>();
+        while (!node.equals(this.rootNode)) {
+            list_node.add(node);
+            node = node.getParentNode();
+        }
+        return list_node;
     }
 
     public Node insertNode(int parentId, int childId) throws NodeNotExistsException, NodeExistedException, NodeFullChildrenException {

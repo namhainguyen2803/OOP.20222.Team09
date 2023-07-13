@@ -8,7 +8,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -17,11 +16,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="1048.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <VBox prefHeight="63.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="63.0" prefWidth="500.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <Label onMouseClicked="#backPressed" text="Back">
                      <HBox.margin>
@@ -35,7 +34,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#ff6666">
+            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#ff6666" VBox.vgrow="ALWAYS">
                <font>
                   <Font size="24.0" />
                </font>
@@ -52,7 +51,7 @@
    <bottom>
             <StackPane fx:id="stackPaneInput" prefHeight="63.0" prefWidth="65.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label text="node = ">
                      <HBox.margin>
@@ -74,18 +73,15 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
                <children>
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" selected="true" text="Random">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="radiobtnCreate" />
-                     </toggleGroup></RadioButton>
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual" toggleGroup="$radiobtnCreate">
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" text="Random" />
+                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0" visible="false">
+                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0">
                      <children>
                         <Label text="root = ">
                            <HBox.margin>
@@ -229,12 +225,49 @@
             </StackPane>
    </bottom>
    <center>
-      <Pane fx:id="scenePane" prefHeight="368.0" prefWidth="488.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER" />
+      <Pane fx:id="scenePane" prefHeight="368.0" prefWidth="488.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+         <children>
+                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: 78C1F3;" text="Operations" textFill="#e42c2c">
+                     <content>
+                        <VBox prefHeight="373.0" prefWidth="95.0">
+                           <children>
+                              <Button fx:id="btnOpsCreate" mnemonicParsing="false" onAction="#btnOpsCreatePressed" prefHeight="26.0" prefWidth="99.0" text="Create">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsInsert" mnemonicParsing="false" onAction="#btnOpsInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsDelete" mnemonicParsing="false" onAction="#btnOpsDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsUpdate" mnemonicParsing="false" onAction="#btnOpsUpdatePressed" prefHeight="26.0" prefWidth="82.0" text="Update">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="btnOpsTraverse" mnemonicParsing="false" onAction="#btnOpsTraversePressed" prefHeight="26.0" prefWidth="97.0" text="Traverse">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin></Button>
+                        <Button fx:id="btnOpsSearch" mnemonicParsing="false" onAction="#btnOpsSearchPressed" prefHeight="26.0" prefWidth="97.0" text="Search" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+         </children>
+         
+      </Pane>
    </center>
    <right>
-      <VBox fx:id="vBoxPseudo" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vBoxPseudo" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
          <children>
-            <StackPane fx:id="stackPanePseudo" prefHeight="150.0" prefWidth="200.0" visible="false">
+            <StackPane fx:id="stackPanePseudo" prefHeight="150.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3f2e3e" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                   <StackPane prefHeight="121.0" prefWidth="200.0">
@@ -305,7 +338,7 @@
                               </StackPane>
                            </children>
                         </VBox>
-                        <VBox fx:id="vBoxDFS" alignment="CENTER_RIGHT">
+                        <VBox fx:id="vBoxDFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <StackPane fx:id="pseudoDFS1" prefHeight="20.0" prefWidth="200.0">
                                  <children>
@@ -375,7 +408,7 @@
                   </StackPane>
                </children>
             </StackPane>
-            <StackPane fx:id="stackPaneController" prefHeight="150.0" prefWidth="200.0" visible="false">
+            <StackPane fx:id="stackPaneController" prefHeight="150.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a78295" height="150.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                   <VBox prefHeight="200.0" prefWidth="100.0">
@@ -390,7 +423,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </StackPane>
-                        <Label text="Controller" textFill="WHITE">
+                        <Label text="Controller">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -423,44 +456,4 @@
          </children>
       </VBox>
    </right>
-   <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
-         <children>
-                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#e42c2c">
-                     <content>
-                        <VBox prefHeight="373.0" prefWidth="95.0">
-                           <children>
-                              <Button fx:id="btnOpsCreate" mnemonicParsing="false" onAction="#btnOpsCreatePressed" prefHeight="26.0" prefWidth="99.0" text="Create">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsInsert" mnemonicParsing="false" onAction="#btnOpsInsertPressed" prefHeight="26.0" prefWidth="92.0" text="Insert">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsDelete" mnemonicParsing="false" onAction="#btnOpsDeletePressed" prefHeight="26.0" prefWidth="99.0" text="Delete">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsUpdate" mnemonicParsing="false" onAction="#btnOpsUpdatePressed" prefHeight="26.0" prefWidth="82.0" text="Update">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="btnOpsTraverse" mnemonicParsing="false" onAction="#btnOpsTraversePressed" prefHeight="26.0" prefWidth="97.0" text="Traverse">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="btnOpsSearch" mnemonicParsing="false" onAction="#btnOpsSearchPressed" prefHeight="26.0" prefWidth="97.0" text="Search" />
-                           </children>
-                        </VBox>
-                     </content>
-                  </TitledPane>
-         </children>
-      </VBox>
-   </left>
       </BorderPane>
