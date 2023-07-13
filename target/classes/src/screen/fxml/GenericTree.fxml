@@ -76,11 +76,11 @@
             </HBox>
             <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnRandomPressed" selected="true" text="Random">
+                  <RadioButton fx:id="radioBtnRandom" mnemonicParsing="false" onAction="#radioBtnRandomPressed" selected="true" text="Random">
                      <toggleGroup>
                         <ToggleGroup fx:id="radiobtnCreate" />
                      </toggleGroup></RadioButton>
-                  <RadioButton mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual" toggleGroup="$radiobtnCreate">
+                  <RadioButton fx:id="radioBtnManual" mnemonicParsing="false" onAction="#radioBtnManualPressed" text="Manual" toggleGroup="$radiobtnCreate">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>

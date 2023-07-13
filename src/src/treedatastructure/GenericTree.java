@@ -4,7 +4,7 @@ import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 import src.exception.NoneAlgorithmSpecifiedException;
-import src.screen.controller.genericTreeController;
+import src.screen.controller.GenericTreeController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -13,11 +13,12 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 public class GenericTree {
     private Node rootNode;
-    private genericTreeController treeController;
+    private GenericTreeController treeController;
 
     private double timesleep = 1;
 
@@ -64,25 +65,18 @@ public class GenericTree {
         return timeline;
     }
 
-    public void setTreeController(genericTreeController treeController) {
+    public void setTreeController(GenericTreeController treeController) {
         this.treeController = treeController;
     }
 
 
-    //    constructor used for Manual option
     public void createTree(int rootId) {
-        rootNode = new Node(rootId);
+        this.rootNode = new Node(rootId);
     }
 
-    /**
-     * Tạo 1 cái cây mới; khởi tạo rootNode của nó với ID = 3.
-     * Có thể thay đổi bằng hàm random hoặc nhập input từ user
-     */
-
-//    constructor used for Random option, not implemented yet
     public void createTree() {
-        int id = 3;
-        createTree(id);
+        int id = 1;
+        this.rootNode = new Node(id);
     }
 
     public void traverseTreeBFS() {
