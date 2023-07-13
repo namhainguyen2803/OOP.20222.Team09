@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 public class GenericTree {
@@ -69,20 +70,13 @@ public class GenericTree {
     }
 
 
-    //    constructor used for Manual option
     public void createTree(int rootId) {
-        rootNode = new Node(rootId);
+        this.rootNode = new Node(rootId);
     }
 
-    /**
-     * Tạo 1 cái cây mới; khởi tạo rootNode của nó với ID = 3.
-     * Có thể thay đổi bằng hàm random hoặc nhập input từ user
-     */
-
-//    constructor used for Random option, not implemented yet
     public void createTree() {
-        int id = 3;
-        createTree(id);
+        int id = 1;
+        this.rootNode = new Node(id);
     }
 
     public void traverseTreeBFS() {

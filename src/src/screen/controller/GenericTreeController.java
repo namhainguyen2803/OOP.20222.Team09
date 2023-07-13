@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 public class GenericTreeController {
 
@@ -152,6 +153,12 @@ public class GenericTreeController {
     @FXML
     private VBox vBoxDFS;
 
+    @FXML
+    private RadioButton radioBtnManual;
+
+    @FXML
+    private RadioButton radioBtnRandom;
+
 
 
     private Stage menuStage;
@@ -215,8 +222,6 @@ public class GenericTreeController {
         stackPaneInput.setVisible(true);
 
         setControl(hBoxCreate);
-
-
     }
 
     @FXML // done
@@ -254,30 +259,58 @@ public class GenericTreeController {
     private void tfRootCreateTyping(ActionEvent event) {}
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) {
-        String rootId = tfRootCreate.getText();
-        int rootIdInt;
-        if (rootId.equals("")){
-            rootIdInt = 1;
-        }
-        else{
-            rootIdInt = Integer.parseInt(rootId);
-        }
-        genericTree.createTree(rootIdInt);
-        genericTree.setTreeController(this);
-        Node root = genericTree.getRootNode();
+    private void btnCreatePressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
 
-        scenePane.getChildren().add(root);
+        if (radioBtnManual.isSelected()) {
+            String rootId = tfRootCreate.getText();
+            int rootIdInt;
+            if (rootId.equals("")){
+                rootIdInt = 1;
+            }
+            else{
+                rootIdInt = Integer.parseInt(rootId);
+            }
+            genericTree.createTree(rootIdInt);
+            genericTree.setTreeController(this);
+            Node root = genericTree.getRootNode();
+            scenePane.getChildren().add(root);
+        }
+        else {
+            Random randint = new Random();
+            int numNodes = randint.nextInt(6);
+//            System.out.println(numNodes);
+            ArrayList<Integer> listValNodes = new ArrayList<Integer>();
+            for (int i = 0; i < numNodes; i++) {
+                int newVal = randint.nextInt(10);
+                while (listValNodes.contains(newVal)) {
+                    newVal = randint.nextInt(10);
+                }
+//                System.out.println(newVal);
+                listValNodes.add(newVal);
+            }
+            // set root node
+            Node root = new Node(listValNodes.get(0));
+            genericTree.setTreeController(this);
+            genericTree.setRootNode(root);
+            scenePane.getChildren().add(root);
+
+            for (int i = 1; i < numNodes; i++) {
+                int parentDecision = randint.nextInt(i);
+                Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
+                scenePane.getChildren().add(childNode.getParentLine());
+                scenePane.getChildren().add(childNode);
+            }
+        }
     }
 
     @FXML
     private void radioBtnBFSPressed(ActionEvent event) {
-        algorithm = "BFS";
+        this.algorithm = "BFS";
     }
 
     @FXML
     private void radioBtnDFSPressed(ActionEvent event) {
-        algorithm = "DFS";
+        this.algorithm = "DFS";
     }
 
     @FXML
@@ -322,6 +355,7 @@ public class GenericTreeController {
 
     @FXML
     private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+
         String node_val = tfNodeInsert.getText();
         String parent_val = tfParentInsert.getText();
         int intNodeVal = Integer.parseInt(node_val);
