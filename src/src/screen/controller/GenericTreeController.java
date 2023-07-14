@@ -160,6 +160,9 @@ public class GenericTreeController {
     @FXML
     private RadioButton radioBtnRandom;
 
+    @FXML
+    private Label mainLabel;
+
 
 
     private Stage menuStage;
@@ -170,8 +173,11 @@ public class GenericTreeController {
 
     private String algorithm;
 
-    public GenericTreeController(Stage stage) {
+    private String treeType;
+
+    public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
+        this.treeType = treeType;
     }
 
     @FXML
@@ -179,6 +185,7 @@ public class GenericTreeController {
         stackPaneInput.setVisible(false);
         stackPanePseudo.setVisible(false);
         stackPaneController.setVisible(false);
+        mainLabel.setText(this.treeType);
     }
 
 
@@ -762,7 +769,7 @@ public class GenericTreeController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.menuStage.setTitle("Tree View Visualizer");
         this.menuStage.setScene(scene);
         this.menuStage.show();
@@ -770,6 +777,11 @@ public class GenericTreeController {
 
     @FXML
     void helpPressed() {
+
+    }
+
+    @FXML
+    void undoPressed() {
 
     }
 

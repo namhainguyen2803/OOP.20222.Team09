@@ -34,7 +34,7 @@ public class mainWindowController {
     void btnGenericTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage);
+        GenericTreeController genericController = new GenericTreeController(mainStage, "Generic Tree Visualizer");
         loader.setController(genericController);
         Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Generic Tree");
@@ -47,9 +47,9 @@ public class mainWindowController {
     void btnBinaryTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage);
+        GenericTreeController genericController = new GenericTreeController(mainStage, "Binary Tree Visualizer");
         loader.setController(genericController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Binary Tree");
 //        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
@@ -60,9 +60,9 @@ public class mainWindowController {
     void btnBalancedTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage);
+        GenericTreeController genericController = new GenericTreeController(mainStage, "Balanced Tree Visualizer");
         loader.setController(genericController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Balanced Tree");
 //        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
@@ -73,9 +73,9 @@ public class mainWindowController {
     void btnBalancedBinaryTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage);
+        GenericTreeController genericController = new GenericTreeController(mainStage, "Balanced Binary Tree Visualizer");
         loader.setController(genericController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Balanced Binary Tree");
 //        this.mainStage.setFullScreen(true);
         this.mainStage.setScene(scene);
