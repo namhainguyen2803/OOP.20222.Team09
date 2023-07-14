@@ -1,5 +1,6 @@
 package src.screen.controller;
 
+import src.screen.controller.operation.*;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
 import src.exception.NodeExistedException;
@@ -26,11 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class GenericTreeController {
 
@@ -175,6 +172,8 @@ public class GenericTreeController {
 
     private String treeType;
 
+    private ArrayList<UserAction> history = new ArrayList<UserAction>();
+
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
         this.treeType = treeType;
@@ -266,54 +265,20 @@ public class GenericTreeController {
     @FXML
     private void tfRootCreateTyping(ActionEvent event) {}
 
+
+
     @FXML
     private void btnCreatePressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
-
+        CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
-            String rootId = tfRootCreate.getText();
-            int rootIdInt;
-            if (rootId.equals("")){
-                rootIdInt = 1;
-            }
-            else{
-                rootIdInt = Integer.parseInt(rootId);
-            }
-            genericTree.createTree(rootIdInt);
-            genericTree.setTreeController(this);
-            Node root = genericTree.getRootNode();
-            scenePane.getChildren().add(root);
-
-            tfRootCreate.clear();
+            createPressed = new CreatePressed(this, genericTree, scenePane, tfRootCreate.getText());
         }
         else {
-            Random randint = new Random();
-            int numNodes = randint.nextInt(6);
-            while (numNodes <= 0) {
-                numNodes = randint.nextInt(6);
-            }
-//            System.out.println(numNodes);
-            ArrayList<Integer> listValNodes = new ArrayList<Integer>();
-            for (int i = 0; i < numNodes; i++) {
-                int newVal = randint.nextInt(10);
-                while (listValNodes.contains(newVal)) {
-                    newVal = randint.nextInt(10);
-                }
-//                System.out.println(newVal);
-                listValNodes.add(newVal);
-            }
-            // set root node
-            Node root = new Node(listValNodes.get(0));
-            genericTree.setTreeController(this);
-            genericTree.setRootNode(root);
-            scenePane.getChildren().add(root);
-
-            for (int i = 1; i < numNodes; i++) {
-                int parentDecision = randint.nextInt(i);
-                Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
-                scenePane.getChildren().add(childNode.getParentLine());
-                scenePane.getChildren().add(childNode);
-            }
+            createPressed = new CreatePressed(this, genericTree, scenePane);
         }
+        createPressed.run();
+        history.add((UserAction) createPressed);
+        tfRootCreate.clear();
     }
 
     @FXML
@@ -355,7 +320,10 @@ public class GenericTreeController {
     }
 
     @FXML
-    private void tfNodeDeleteTyping(ActionEvent event) {}
+    private void tfNodeDeleteTyping(ActionEvent event) {
+        this.btnDeletePressed(event);
+    }
+
 
     @FXML
     private void btnDeletePressed(ActionEvent event) {
@@ -363,11 +331,9 @@ public class GenericTreeController {
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
         try {
-            Node nodeObject = genericTree.searchNode(intDelNodeVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-            drawAnimationsDelete(search_direction, nodeObject);
+            DeletePressed deletePressed = new DeletePressed(genericTree, scenePane, this, intDelNodeVal);
+            deletePressed.run();
+            history.add(deletePressed);
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -377,8 +343,7 @@ public class GenericTreeController {
 
             alert.showAndWait();
         }
-        tfNodeInsert.clear();
-        tfParentInsert.clear();
+        tfNodeDelete.clear();
     }
 
 
@@ -400,14 +365,11 @@ public class GenericTreeController {
 
             genericTree.checkInsertNode(intParentVal, intNodeVal);
 
-            Node nodeObject = genericTree.searchNode(intParentVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-            drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
+            InsertPressed insertPressed = new InsertPressed(genericTree, this, scenePane, intNodeVal, intParentVal);
 
-            tfNodeInsert.clear();
-            tfParentInsert.clear();
+            insertPressed.run();
+
+            history.add(insertPressed);
         }
 
         catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
@@ -418,6 +380,8 @@ public class GenericTreeController {
 
             alert.showAndWait();
         }
+        tfNodeInsert.clear();
+        tfParentInsert.clear();
     }
 
     @FXML
@@ -433,13 +397,12 @@ public class GenericTreeController {
 
         int intNewVal = Integer.parseInt(new_val);
         int intOldVal = Integer.parseInt(old_val);
+
         try {
-            genericTree.checkUpdateNode(intOldVal, intNewVal);
-            Node nodeObject = genericTree.searchNode(intOldVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-            drawAnimationsUpdate(search_direction, nodeObject, intNewVal);
+            UpdatePressed updatePressed = new UpdatePressed(genericTree, this, scenePane, intOldVal, intNewVal);
+            updatePressed.run();
+
+            history.add(updatePressed);
 
         } catch (NodeNotExistsException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -466,12 +429,8 @@ public class GenericTreeController {
         int intNodeVal = Integer.parseInt(val_node);
 
         try {
-            Node nodeObject = genericTree.searchNode(intNodeVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-
-            drawAnimationsSearch(search_direction);
+            SearchPressed searchPressed = new SearchPressed(genericTree, this, scenePane, intNodeVal);
+            searchPressed.run();
         }
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -540,7 +499,7 @@ public class GenericTreeController {
 
     }
 
-    private void drawAnimationsSearch(ArrayList<Node> search_direction) {
+    public void drawAnimationsSearch(ArrayList<Node> search_direction) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
         SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
@@ -548,7 +507,7 @@ public class GenericTreeController {
         seq.play();
     }
 
-    private void drawAnimationsUpdate(ArrayList<Node> search_direction, Node oldNode, int newNodeVal) {
+    public void drawAnimationsUpdate(ArrayList<Node> search_direction, Node oldNode, int newNodeVal) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
         SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
@@ -556,7 +515,7 @@ public class GenericTreeController {
         seq.play();
     }
 
-    private void drawAnimationsInsert(ArrayList<Node> search_direction, int intParentVal, int intNodeVal) {
+    public void drawAnimationsInsert(ArrayList<Node> search_direction, int intParentVal, int intNodeVal) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
         SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
@@ -564,7 +523,7 @@ public class GenericTreeController {
         seq.play();
     }
 
-    private void drawAnimationsDelete(ArrayList<Node> search_direction, Node delNode) {
+    public void drawAnimationsDelete(ArrayList<Node> search_direction, Node delNode) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
         SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
@@ -604,7 +563,7 @@ public class GenericTreeController {
         }
     }
 
-    private void rebuildTree() {
+    public void rebuildTree() {
         Node root = genericTree.getRootNode();
 
         scenePane.getChildren().remove(root);
@@ -782,11 +741,14 @@ public class GenericTreeController {
 
     @FXML
     void undoPressed() {
-
+        if (history.size() > 0) {
+            UserAction lastAction = history.remove(history.size() - 1);
+            lastAction.undo();
+        }
     }
 
     @FXML
-    void resetPressed() {
+    public void resetPressed() {
         if (genericTree.getRootNode() != null) {
             this.deleteSubtree(genericTree.getRootNode());
         }

@@ -1,0 +1,87 @@
+package src.screen.controller.operation;
+
+import javafx.scene.layout.Pane;
+import src.exception.NodeExistedException;
+import src.exception.NodeFullChildrenException;
+import src.exception.NodeNotExistsException;
+import src.screen.controller.GenericTreeController;
+import src.treedatastructure.GenericTree;
+import src.treedatastructure.Node;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class CreatePressed implements UserAction {
+    private boolean isRandom;
+    private String rootId;
+    private GenericTreeController genericTreeController;
+    private Pane scenePane;
+    private GenericTree genericTree;
+
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane, String rootId) {
+        this.rootId = rootId;
+        this.isRandom = false;
+        this.genericTreeController = genericTreeController;
+        this.scenePane = scenePane;
+        this.genericTree = genericTree;
+    }
+
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane) {
+        this.isRandom = true;
+        this.genericTreeController = genericTreeController;
+        this.scenePane = scenePane;
+        this.genericTree = genericTree;
+    }
+
+    @Override
+    public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+        if (this.isRandom) {
+            Random randint = new Random();
+            int numNodes = randint.nextInt(6);
+            while (numNodes <= 0) {
+                numNodes = randint.nextInt(6);
+            }
+            ArrayList<Integer> listValNodes = new ArrayList<Integer>();
+            for (int i = 0; i < numNodes; i++) {
+                int newVal = randint.nextInt(10);
+                while (listValNodes.contains(newVal)) {
+                    newVal = randint.nextInt(10);
+                }
+                listValNodes.add(newVal);
+            }
+            // set root node
+            Node root = new Node(listValNodes.get(0));
+            this.rootId = String.valueOf(listValNodes.get(0));
+            genericTree.setTreeController(genericTreeController);
+            genericTree.setRootNode(root);
+            scenePane.getChildren().add(root);
+
+            for (int i = 1; i < numNodes; i++) {
+                int parentDecision = randint.nextInt(i);
+                Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
+                scenePane.getChildren().add(childNode.getParentLine());
+                scenePane.getChildren().add(childNode);
+            }
+        }
+        else {
+            int rootIdInt;
+            if (rootId.equals("")){
+                rootIdInt = 1;
+            }
+            else{
+                rootIdInt = Integer.parseInt(rootId);
+            }
+            genericTree.createTree(rootIdInt);
+            genericTree.setTreeController(genericTreeController);
+            Node root = genericTree.getRootNode();
+            scenePane.getChildren().add(root);
+        }
+        System.out.println("Create operation.");
+    }
+
+    @Override
+    public void undo() {
+        this.genericTreeController.resetPressed();
+        System.out.println("Create operation undo.");
+    }
+}
