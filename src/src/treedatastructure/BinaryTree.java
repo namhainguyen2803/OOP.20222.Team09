@@ -4,8 +4,12 @@ import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 
-public class BinaryTree extends GenericTree{
+public class BinaryTree extends GenericTree {
     public static final int MAX_CHILDREN = 2;
+
+    public BinaryTree() {
+        this.setTreeType("binary");
+    }
 
     @Override
     public Node insertNode(int parentId, int childId) throws NodeNotExistsException, NodeFullChildrenException, NodeExistedException {

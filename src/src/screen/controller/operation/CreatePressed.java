@@ -4,11 +4,13 @@ import javafx.scene.layout.Pane;
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
+import src.screen.controller.BinaryTreeController;
 import src.screen.controller.GenericTreeController;
-import src.treedatastructure.GenericTree;
-import src.treedatastructure.Node;
+import src.treedatastructure.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class CreatePressed implements UserAction {
@@ -17,6 +19,8 @@ public class CreatePressed implements UserAction {
     private GenericTreeController genericTreeController;
     private Pane scenePane;
     private GenericTree genericTree;
+    private String treeType;
+
 
     public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane, String rootId) {
         this.rootId = rootId;
@@ -36,6 +40,7 @@ public class CreatePressed implements UserAction {
     @Override
     public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
         if (this.isRandom) {
+
             Random randint = new Random();
             int numNodes = randint.nextInt(6);
             while (numNodes <= 0) {
@@ -49,19 +54,67 @@ public class CreatePressed implements UserAction {
                 }
                 listValNodes.add(newVal);
             }
-            // set root node
-            Node root = new Node(listValNodes.get(0));
-            this.rootId = String.valueOf(listValNodes.get(0));
-            genericTree.setTreeController(genericTreeController);
-            genericTree.setRootNode(root);
-            scenePane.getChildren().add(root);
 
-            for (int i = 1; i < numNodes; i++) {
-                int parentDecision = randint.nextInt(i);
-                Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
-                scenePane.getChildren().add(childNode.getParentLine());
-                scenePane.getChildren().add(childNode);
+            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedBinaryTree) {
+
             }
+
+            else if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
+
+            }
+
+            else if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
+
+                System.out.println("Create Binary Tree");
+
+                Node root = new Node(listValNodes.get(0));
+                this.rootId = String.valueOf(listValNodes.get(0));
+                genericTree.setTreeController(genericTreeController);
+                genericTree.setRootNode(root);
+                scenePane.getChildren().add(root);
+                HashMap<Integer, Integer> numChildNode = new HashMap<Integer, Integer>();
+
+                for (int i = 0; i < numNodes; i++) {
+                    numChildNode.put(i , 0);
+                }
+
+                for (int i = 1; i < numNodes; i++) {
+
+                    ArrayList<Integer> possibleParent = new ArrayList<Integer>();
+                    for (int j = 0; j < i; j ++) {
+                        if (numChildNode.get(j) < 2) {
+                            possibleParent.add(j);
+                        }
+                    }
+
+                    int parentDecision = possibleParent.get(randint.nextInt(possibleParent.size()));
+                    Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
+                    numChildNode.put(parentDecision, numChildNode.get(parentDecision) + 1);
+
+                    scenePane.getChildren().add(childNode.getParentLine());
+                    scenePane.getChildren().add(childNode);
+                }
+            }
+
+            else if (this.genericTreeController.getTreeDataStructure() instanceof GenericTree) {
+
+                System.out.println("Create Generic Tree");
+
+                // set root node
+                Node root = new Node(listValNodes.get(0));
+                this.rootId = String.valueOf(listValNodes.get(0));
+                genericTree.setTreeController(genericTreeController);
+                genericTree.setRootNode(root);
+                scenePane.getChildren().add(root);
+
+                for (int i = 1; i < numNodes; i++) {
+                    int parentDecision = randint.nextInt(i);
+                    Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
+                    scenePane.getChildren().add(childNode.getParentLine());
+                    scenePane.getChildren().add(childNode);
+                }
+            }
+
         }
         else {
             int rootIdInt;

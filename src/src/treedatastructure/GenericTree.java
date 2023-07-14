@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class GenericTree {
+public class GenericTree extends Tree {
     private Node rootNode;
     private GenericTreeController treeController;
 
@@ -33,11 +33,17 @@ public class GenericTree {
 
     private Node traverseNode; // Node này sử dụng cho hàm traverse
 
+    public GenericTree () {
+        this.setTreeType("generic");
+    }
+
+    @Override
     public Node getRootNode() {
         return this.rootNode;
     }
 
     //    why we need this method?
+    @Override
     public void setRootNode(Node newRoot) {
         this.rootNode = newRoot;
         this.rootNode.setDepth(0);
@@ -70,6 +76,7 @@ public class GenericTree {
     }
 
 
+    @Override
     public void createTree(int rootId) {
         this.rootNode = new Node(rootId);
     }
@@ -278,7 +285,8 @@ public class GenericTree {
         return list_node;
     }
 
-    public Node insertNode ( int parentId, int childId) throws
+    @Override
+    public Node insertNode (int parentId, int childId) throws
     NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
         Node parent = searchNode(parentId);
         if (parent == null) { // có thể throw 1 cái exception ở đây
@@ -312,6 +320,7 @@ public class GenericTree {
      * Sử dụng BFS để tìm kiếm và xoá node
      * @param delId
      */
+    @Override
     public void deleteNode ( int delId) throws
     NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
         ArrayList<Node> queue = new ArrayList<Node>();
@@ -339,6 +348,7 @@ public class GenericTree {
         throw new NodeNotExistsException("The node does not exist! Can't delete");
     }
 
+    @Override
     public void updateNode ( int oldId, int newId) throws NodeNotExistsException, NodeExistedException {
         Node oldNode = searchNode(oldId);
         if (oldNode == null) {

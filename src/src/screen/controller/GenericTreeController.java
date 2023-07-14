@@ -29,7 +29,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.*;
 
-public class GenericTreeController {
+public class GenericTreeController extends TreeController {
 
     @FXML
     private Button btnOpsCreate;
@@ -160,13 +160,9 @@ public class GenericTreeController {
     @FXML
     private Label mainLabel;
 
-
-
     private Stage menuStage;
 
     private Scene mainScene;
-
-    private GenericTree genericTree = new GenericTree();
 
     private String algorithm;
 
@@ -177,8 +173,8 @@ public class GenericTreeController {
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
         this.treeType = treeType;
+        this.setTreeDataStructure(new GenericTree());
     }
-
     @FXML
     private void initialize() {
         stackPaneInput.setVisible(false);
@@ -271,10 +267,10 @@ public class GenericTreeController {
     private void btnCreatePressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
         CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
-            createPressed = new CreatePressed(this, genericTree, scenePane, tfRootCreate.getText());
+            createPressed = new CreatePressed(this, (GenericTree) this.getTreeDataStructure(), scenePane, tfRootCreate.getText());
         }
         else {
-            createPressed = new CreatePressed(this, genericTree, scenePane);
+            createPressed = new CreatePressed(this, (GenericTree) this.getTreeDataStructure(), scenePane);
         }
         createPressed.run();
         history.add((UserAction) createPressed);
@@ -307,7 +303,7 @@ public class GenericTreeController {
                 vBoxBFS.setVisible(false);
             }
             stackPaneController.setVisible(true);
-            genericTree.traverseTree(algorithm);
+            this.getTreeDataStructure().traverseTree(algorithm);
         } catch (NoneAlgorithmSpecifiedException e){
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -331,7 +327,7 @@ public class GenericTreeController {
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
         try {
-            DeletePressed deletePressed = new DeletePressed(genericTree, scenePane, this, intDelNodeVal);
+            DeletePressed deletePressed = new DeletePressed((GenericTree) this.getTreeDataStructure(), scenePane, this, intDelNodeVal);
             deletePressed.run();
             history.add(deletePressed);
 
@@ -363,9 +359,9 @@ public class GenericTreeController {
             int intNodeVal = Integer.parseInt(node_val);
             int intParentVal = Integer.parseInt(parent_val);
 
-            genericTree.checkInsertNode(intParentVal, intNodeVal);
+            this.getTreeDataStructure().checkInsertNode(intParentVal, intNodeVal);
 
-            InsertPressed insertPressed = new InsertPressed(genericTree, this, scenePane, intNodeVal, intParentVal);
+            InsertPressed insertPressed = new InsertPressed((GenericTree) this.getTreeDataStructure(), this, scenePane, intNodeVal, intParentVal);
 
             insertPressed.run();
 
@@ -399,7 +395,7 @@ public class GenericTreeController {
         int intOldVal = Integer.parseInt(old_val);
 
         try {
-            UpdatePressed updatePressed = new UpdatePressed(genericTree, this, scenePane, intOldVal, intNewVal);
+            UpdatePressed updatePressed = new UpdatePressed((GenericTree) this.getTreeDataStructure(), this, scenePane, intOldVal, intNewVal);
             updatePressed.run();
 
             history.add(updatePressed);
@@ -429,7 +425,7 @@ public class GenericTreeController {
         int intNodeVal = Integer.parseInt(val_node);
 
         try {
-            SearchPressed searchPressed = new SearchPressed(genericTree, this, scenePane, intNodeVal);
+            SearchPressed searchPressed = new SearchPressed((GenericTree) this.getTreeDataStructure(), this, scenePane, intNodeVal);
             searchPressed.run();
         }
         catch (Exception e) {
@@ -534,7 +530,7 @@ public class GenericTreeController {
 
     private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
         try {
-            Node parent = genericTree.searchNode(intParentVal);
+            Node parent = this.getTreeDataStructure().searchNode(intParentVal);
             Node childNode = parent.addChild(intNodeVal);
             int secondsToSleep = 1;
             long millisecondsToSleep = secondsToSleep * 1000;
@@ -564,7 +560,7 @@ public class GenericTreeController {
     }
 
     public void rebuildTree() {
-        Node root = genericTree.getRootNode();
+        Node root = this.getTreeDataStructure().getRootNode();
 
         scenePane.getChildren().remove(root);
         ArrayList<Node> listNodeDel = new ArrayList<Node>(root.getListOfChildren());
@@ -600,7 +596,7 @@ public class GenericTreeController {
 
     private void deleteSubtree(Node root) {
         scenePane.getChildren().remove(root);
-        if (!root.equals(genericTree.getRootNode())) {
+        if (!root.equals(this.getTreeDataStructure().getRootNode())) {
             scenePane.getChildren().remove(root.getParentLine());
             root.getParentNode().getListOfChildren().remove(root);
         }
@@ -723,7 +719,7 @@ public class GenericTreeController {
 
 
     @FXML
-    void backPressed() throws IOException {
+    public void backPressed() throws IOException {
 //        System.out.println("Back pressed"); for debugging
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
@@ -735,12 +731,12 @@ public class GenericTreeController {
     }
 
     @FXML
-    void helpPressed() {
+    public void helpPressed() {
 
     }
 
     @FXML
-    void undoPressed() {
+    public void undoPressed() {
         if (history.size() > 0) {
             UserAction lastAction = history.remove(history.size() - 1);
             lastAction.undo();
@@ -749,13 +745,13 @@ public class GenericTreeController {
 
     @FXML
     public void resetPressed() {
-        if (genericTree.getRootNode() != null) {
-            this.deleteSubtree(genericTree.getRootNode());
+        if (this.getTreeDataStructure().getRootNode() != null) {
+            this.deleteSubtree(this.getTreeDataStructure().getRootNode());
         }
     }
 
     @FXML
-    void mainLabelPressed() throws IOException {
+    public void mainLabelPressed() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
