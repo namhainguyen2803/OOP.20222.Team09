@@ -26,10 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class GenericTreeController {
@@ -175,6 +172,8 @@ public class GenericTreeController {
 
     private String treeType;
 
+    private ArrayList<UserAction> history = new ArrayList<UserAction>();
+
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
         this.treeType = treeType;
@@ -266,54 +265,90 @@ public class GenericTreeController {
     @FXML
     private void tfRootCreateTyping(ActionEvent event) {}
 
+    class CreatePressed implements UserAction {
+        private boolean isRandom;
+        private String rootId;
+        private GenericTreeController genericTreeController;
+        private Pane scenePane;
+
+        public CreatePressed(GenericTreeController genericTreeController, Pane scenePane, String rootId) {
+            this.rootId = rootId;
+            this.isRandom = false;
+            this.genericTreeController = genericTreeController;
+            this.scenePane = scenePane;
+        }
+
+        public CreatePressed(GenericTreeController genericTreeController, Pane scenePane) {
+            this.isRandom = true;
+            this.genericTreeController = genericTreeController;
+            this.scenePane = scenePane;
+        }
+
+        @Override
+        public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+            if (this.isRandom) {
+                Random randint = new Random();
+                int numNodes = randint.nextInt(6);
+                while (numNodes <= 0) {
+                    numNodes = randint.nextInt(6);
+                }
+                ArrayList<Integer> listValNodes = new ArrayList<Integer>();
+                for (int i = 0; i < numNodes; i++) {
+                    int newVal = randint.nextInt(10);
+                    while (listValNodes.contains(newVal)) {
+                        newVal = randint.nextInt(10);
+                    }
+                    listValNodes.add(newVal);
+                }
+                // set root node
+                Node root = new Node(listValNodes.get(0));
+                this.rootId = String.valueOf(listValNodes.get(0));
+                genericTree.setTreeController(genericTreeController);
+                genericTree.setRootNode(root);
+                scenePane.getChildren().add(root);
+
+                for (int i = 1; i < numNodes; i++) {
+                    int parentDecision = randint.nextInt(i);
+                    Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
+                    scenePane.getChildren().add(childNode.getParentLine());
+                    scenePane.getChildren().add(childNode);
+                }
+            }
+            else {
+                int rootIdInt;
+                if (rootId.equals("")){
+                    rootIdInt = 1;
+                }
+                else{
+                    rootIdInt = Integer.parseInt(rootId);
+                }
+                genericTree.createTree(rootIdInt);
+                genericTree.setTreeController(genericTreeController);
+                Node root = genericTree.getRootNode();
+                scenePane.getChildren().add(root);
+            }
+            System.out.println("Create operation.");
+        }
+
+        @Override
+        public void undo() {
+            this.genericTreeController.resetPressed();
+            System.out.println("Create operation undo.");
+        }
+    }
+
     @FXML
     private void btnCreatePressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
-
+        CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
-            String rootId = tfRootCreate.getText();
-            int rootIdInt;
-            if (rootId.equals("")){
-                rootIdInt = 1;
-            }
-            else{
-                rootIdInt = Integer.parseInt(rootId);
-            }
-            genericTree.createTree(rootIdInt);
-            genericTree.setTreeController(this);
-            Node root = genericTree.getRootNode();
-            scenePane.getChildren().add(root);
-
-            tfRootCreate.clear();
+            createPressed = new CreatePressed(this, scenePane, tfRootCreate.getText());
         }
         else {
-            Random randint = new Random();
-            int numNodes = randint.nextInt(6);
-            while (numNodes <= 0) {
-                numNodes = randint.nextInt(6);
-            }
-//            System.out.println(numNodes);
-            ArrayList<Integer> listValNodes = new ArrayList<Integer>();
-            for (int i = 0; i < numNodes; i++) {
-                int newVal = randint.nextInt(10);
-                while (listValNodes.contains(newVal)) {
-                    newVal = randint.nextInt(10);
-                }
-//                System.out.println(newVal);
-                listValNodes.add(newVal);
-            }
-            // set root node
-            Node root = new Node(listValNodes.get(0));
-            genericTree.setTreeController(this);
-            genericTree.setRootNode(root);
-            scenePane.getChildren().add(root);
-
-            for (int i = 1; i < numNodes; i++) {
-                int parentDecision = randint.nextInt(i);
-                Node childNode = genericTree.insertNode(listValNodes.get(parentDecision), listValNodes.get(i));
-                scenePane.getChildren().add(childNode.getParentLine());
-                scenePane.getChildren().add(childNode);
-            }
+            createPressed = new CreatePressed(this, scenePane);
         }
+        createPressed.run();
+        history.add((UserAction) createPressed);
+        tfRootCreate.clear();
     }
 
     @FXML
@@ -355,7 +390,76 @@ public class GenericTreeController {
     }
 
     @FXML
-    private void tfNodeDeleteTyping(ActionEvent event) {}
+    private void tfNodeDeleteTyping(ActionEvent event) {
+        this.btnDeletePressed(event);
+    }
+
+
+    // still implement, not done yet!!!
+    class DeletePressed implements UserAction {
+
+        private GenericTreeController genericTreeController;
+        private int intDelNodeVal;
+        private Node parentDelNode;
+        private GenericTree genericTree;
+        private Pane scenePane;
+        private HashMap<Integer, ArrayList<Integer>> listDelNode = new HashMap<>();
+
+        public DeletePressed(GenericTree genericTree, Pane scenePane, GenericTreeController genericTreeController, int intDelNodeVal) {
+            this.genericTreeController = genericTreeController;
+            this.genericTree = genericTree;
+            this.intDelNodeVal = intDelNodeVal;
+            this.scenePane = scenePane;
+        }
+
+        @Override
+        public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+
+            ArrayList<Node> queue = new ArrayList<Node>();
+            Node nodeObject = this.genericTree.searchNode(intDelNodeVal);
+            queue.add(nodeObject);
+            while (queue.size() > 0) {
+                Node tmp = queue.remove(0);
+                if (tmp.getListOfChildren().size() > 0) {
+                    queue.addAll(tmp.getListOfChildren());
+                    ArrayList<Integer> tmpChildren = new ArrayList<Integer>();
+                    for (Node child: tmp.getListOfChildren()) {
+                        tmpChildren.add(child.getNodeId());
+                    }
+                    listDelNode.put(tmp.getNodeId(), tmpChildren);
+                }
+            }
+
+            this.parentDelNode = nodeObject.getParentNode();
+            ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
+            search_direction.add(this.genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            this.genericTreeController.drawAnimationsDelete(search_direction, nodeObject);
+            System.out.println("Delete operation.");
+        }
+
+        @Override
+        public void undo() {
+            Node newNode = this.parentDelNode.addChild(intDelNodeVal);
+
+            ArrayList<Node> createdDelNode = new ArrayList<Node>();
+            createdDelNode.add(newNode);
+
+            while (createdDelNode.size() > 0) {
+                Node tmp = createdDelNode.remove(0);
+                if (listDelNode.containsKey(tmp.getNodeId())) {
+                    ArrayList<Integer> tmpChildrenVal = listDelNode.get(tmp.getNodeId());
+                    for (int childVal: tmpChildrenVal) {
+                        Node child = tmp.addChild(childVal);
+                        createdDelNode.add(child);
+                    }
+                }
+                this.scenePane.getChildren().add(tmp);
+                this.scenePane.getChildren().add(tmp.getParentLine());
+            }
+            System.out.println("Delete operation undo.");
+        }
+    }
 
     @FXML
     private void btnDeletePressed(ActionEvent event) {
@@ -363,11 +467,9 @@ public class GenericTreeController {
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
         try {
-            Node nodeObject = genericTree.searchNode(intDelNodeVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-            drawAnimationsDelete(search_direction, nodeObject);
+            DeletePressed deletePressed = new DeletePressed(genericTree, scenePane, this, intDelNodeVal);
+            deletePressed.run();
+            history.add(deletePressed);
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -388,6 +490,45 @@ public class GenericTreeController {
     @FXML
     private void tfNodeInsertTyping(ActionEvent event) {}
 
+
+    class InsertPressed implements UserAction {
+        private int nodeVal;
+        private int parentval;
+
+        private Node parent;
+        private GenericTreeController genericTreeController;
+        private GenericTree genericTree;
+        private Pane scenePane;
+
+        public InsertPressed(GenericTree genericTree, GenericTreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
+            this.genericTree = genericTree;
+            this.genericTreeController = genericTreeController;
+            this.scenePane = scenePane;
+            this.nodeVal = nodeVal;
+            this.parentval = parentval;
+        }
+
+        @Override
+        public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+            Node nodeObject = this.genericTree.searchNode(this.parentval);
+            this.parent = nodeObject;
+            ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
+            search_direction.add(this.genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            this.genericTreeController.drawAnimationsInsert(search_direction, parentval, nodeVal);
+            System.out.println("Insert operation.");
+        }
+
+        @Override
+        public void undo() {
+            Node insertedObject = this.genericTree.searchNode(this.nodeVal);
+            this.parent.getListOfChildren().remove(insertedObject);
+            this.scenePane.getChildren().remove(insertedObject);
+            this.scenePane.getChildren().remove(insertedObject.getParentLine());
+            this.genericTreeController.rebuildTree();
+            System.out.println("Insert operation undo.");
+        }
+    }
     @FXML
     private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
 
@@ -400,11 +541,11 @@ public class GenericTreeController {
 
             genericTree.checkInsertNode(intParentVal, intNodeVal);
 
-            Node nodeObject = genericTree.searchNode(intParentVal);
-            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
-            search_direction.add(genericTree.getRootNode());
-            Collections.reverse(search_direction);
-            drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
+            InsertPressed insertPressed = new InsertPressed(genericTree, this, scenePane, intNodeVal, intParentVal);
+
+            insertPressed.run();
+
+            history.add(insertPressed);
 
             tfNodeInsert.clear();
             tfParentInsert.clear();
@@ -782,7 +923,10 @@ public class GenericTreeController {
 
     @FXML
     void undoPressed() {
-
+        if (history.size() > 0) {
+            UserAction lastAction = history.remove(history.size() - 1);
+            lastAction.undo();
+        }
     }
 
     @FXML
