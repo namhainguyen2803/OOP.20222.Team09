@@ -294,6 +294,20 @@ public class GenericTree {
         return childNode;
     }
 
+    public void checkInsertNode ( int parentId, int childId) throws
+            NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
+        Node parent = searchNode(parentId);
+        if (parent == null) { // có thể throw 1 cái exception ở đây
+            throw new NodeNotExistsException("The parent node does not exist! Can't add!");
+        }
+
+        Node child = searchNode(childId);
+        if (child != null) { // có thể throw 1 cái exception ở đây
+            throw new NodeExistedException("The child node has already existed! Can't add!");
+        }
+
+    }
+
     /**
      * Sử dụng BFS để tìm kiếm và xoá node
      * @param delId
@@ -338,5 +352,18 @@ public class GenericTree {
 
         oldNode.updateId(newId);
     }
+    public void checkUpdateNode ( int oldId, int newId) throws NodeNotExistsException, NodeExistedException {
+        Node oldNode = searchNode(oldId);
+        if (oldNode == null) {
+            throw new NodeNotExistsException("The node does not exist! Can't update!");
+        }
+
+        Node newNode = searchNode(newId);
+        if (newNode != null) {
+            throw new NodeExistedException("The new ID has existed in another node! Can't update");
+        }
+
+    }
+
 
 }

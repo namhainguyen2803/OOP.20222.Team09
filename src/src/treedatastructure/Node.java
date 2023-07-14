@@ -78,6 +78,7 @@ public class Node extends StackPane {
     public Color getColorStrokeLine() {return this.colorStrokeLine;}
     public Color getColorStrokeCircle() {return this.colorStrokeCircle;}
     public double getStrokeWidthText() {return this.strokeWidthText;}
+    public Text getTfId() {return this.tfId;}
 
     /*
     Getter và Setter

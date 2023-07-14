@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GenericTreeController {
 
@@ -274,6 +275,8 @@ public class GenericTreeController {
             genericTree.setTreeController(this);
             Node root = genericTree.getRootNode();
             scenePane.getChildren().add(root);
+
+            tfRootCreate.clear();
         }
         else {
             Random randint = new Random();
@@ -348,7 +351,29 @@ public class GenericTreeController {
     private void tfNodeDeleteTyping(ActionEvent event) {}
 
     @FXML
-    private void btnDeletePressed(ActionEvent event) {}
+    private void btnDeletePressed(ActionEvent event) {
+        String delNodeVal = tfNodeDelete.getText();
+
+        int intDelNodeVal = Integer.parseInt(delNodeVal);
+        try {
+            Node nodeObject = genericTree.searchNode(intDelNodeVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            drawAnimationsDelete(search_direction, nodeObject);
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like the node you want to delete does not exist.");
+
+            alert.showAndWait();
+        }
+        tfNodeInsert.clear();
+        tfParentInsert.clear();
+    }
+
 
     @FXML
     private void tfParentInsertTyping(ActionEvent event) {}
@@ -359,16 +384,26 @@ public class GenericTreeController {
     @FXML
     private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
 
-        String node_val = tfNodeInsert.getText();
-        String parent_val = tfParentInsert.getText();
-        int intNodeVal = Integer.parseInt(node_val);
-        int intParentVal = Integer.parseInt(parent_val);
         try {
-            Node childNode = genericTree.insertNode(intParentVal, intNodeVal);
-            scenePane.getChildren().add(childNode.getParentLine());
-            scenePane.getChildren().add(childNode);
 
-        } catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
+            String node_val = tfNodeInsert.getText();
+            String parent_val = tfParentInsert.getText();
+            int intNodeVal = Integer.parseInt(node_val);
+            int intParentVal = Integer.parseInt(parent_val);
+
+            genericTree.checkInsertNode(intParentVal, intNodeVal);
+
+            Node nodeObject = genericTree.searchNode(intParentVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
+
+            tfNodeInsert.clear();
+            tfParentInsert.clear();
+        }
+
+        catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
@@ -376,8 +411,6 @@ public class GenericTreeController {
 
             alert.showAndWait();
         }
-        tfNodeInsert.clear();
-        tfParentInsert.clear();
     }
 
     @FXML
@@ -387,9 +420,40 @@ public class GenericTreeController {
     private void tfNewNodeUpdateTyping(ActionEvent event) {}
 
     @FXML
-    private void btnUpdatePressed(ActionEvent event) {}
+    private void btnUpdatePressed(ActionEvent event) {
+        String new_val = tfNewNodeUpdate.getText();
+        String old_val = tfOldNodeUpdate.getText();
 
-    @FXML // will have animation, not implemented yet
+        int intNewVal = Integer.parseInt(new_val);
+        int intOldVal = Integer.parseInt(old_val);
+        try {
+            genericTree.checkUpdateNode(intOldVal, intNewVal);
+            Node nodeObject = genericTree.searchNode(intOldVal);
+            ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
+            search_direction.add(genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            drawAnimationsUpdate(search_direction, nodeObject, intNewVal);
+
+        } catch (NodeNotExistsException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like old node does not exist.");
+
+            alert.showAndWait();
+        } catch (NodeExistedException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like new node have existed.");
+
+            alert.showAndWait();
+        }
+        tfNewNodeUpdate.clear();
+        tfOldNodeUpdate.clear();
+    }
+
+    @FXML
     void btnSearchPressed(ActionEvent event) throws InterruptedException {
         String val_node = tfNodeSearch.getText();
         int intNodeVal = Integer.parseInt(val_node);
@@ -399,7 +463,8 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            drawAnimations(search_direction);
+
+            drawAnimationsSearch(search_direction);
         }
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -412,11 +477,8 @@ public class GenericTreeController {
         tfNodeSearch.clear();
     }
 
-    private void drawAnimations(ArrayList<Node> list_nodes) {
+    private SequentialTransition drawAnimations(ArrayList<Node> list_nodes, ArrayList<Line> listLines, ArrayList<StackPane> listStackPane) {
         SequentialTransition sequentialTransition = new SequentialTransition();
-        ArrayList<Line> listLines = new ArrayList<Line>();
-        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-        sequentialTransition.setOnFinished(event -> showPopupWindow(listLines, listStackPane));
 
         for (Node node : list_nodes) {
 
@@ -467,16 +529,146 @@ public class GenericTreeController {
 
         }
 
-        sequentialTransition.play();
+        return sequentialTransition;
 
     }
 
-    private void turnOffAnimations(ArrayList<Line> listLines, ArrayList<Circle> listCircles) {
-        scenePane.getChildren().removeAll(listLines);
-        scenePane.getChildren().removeAll(listCircles);
+    private void drawAnimationsSearch(ArrayList<Node> search_direction) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(e -> showPopupWindowSearch(listLines, listStackPane));
+        seq.play();
     }
 
-    private void showPopupWindow(ArrayList<Line> listLines, ArrayList<StackPane> listPane) {
+    private void drawAnimationsUpdate(ArrayList<Node> search_direction, Node oldNode, int newNodeVal) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsUpdate(listLines, listStackPane, oldNode, newNodeVal));
+        seq.play();
+    }
+
+    private void drawAnimationsInsert(ArrayList<Node> search_direction, int intParentVal, int intNodeVal) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsInsert(listLines, listStackPane, intParentVal, intNodeVal));
+        seq.play();
+    }
+
+    private void drawAnimationsDelete(ArrayList<Node> search_direction, Node delNode) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsDelete(listLines, listStackPane, delNode));
+        seq.play();
+    }
+
+
+    private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
+        try {
+            Node parent = genericTree.searchNode(intParentVal);
+            Node childNode = parent.addChild(intNodeVal);
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+            scenePane.getChildren().add(childNode.getParentLine());
+            scenePane.getChildren().add(childNode);
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void turnOffAnimationsUpdate(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, Node childNode, int newNodeVal) {
+        try {
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+
+            childNode.getTfId().setText(String.valueOf(newNodeVal));
+            childNode.updateId(newNodeVal);
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void rebuildTree() {
+        Node root = genericTree.getRootNode();
+
+        scenePane.getChildren().remove(root);
+        ArrayList<Node> listNodeDel = new ArrayList<Node>(root.getListOfChildren());
+        while (listNodeDel.size() > 0) {
+            Node tmp = listNodeDel.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNodeDel.addAll(tmp.getListOfChildren());
+            }
+            scenePane.getChildren().remove(tmp);
+            scenePane.getChildren().remove(tmp.getParentLine());
+        }
+
+        scenePane.getChildren().add(root);
+        ArrayList<Node> listNode = new ArrayList<Node>();
+        listNode.add(root);
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                ArrayList<Node> tmpListNode = new ArrayList<Node>(tmp.getListOfChildren());
+                tmp.getListOfChildren().removeAll(tmp.getListOfChildren());
+                for (Node childNode: tmpListNode) {
+                    tmp.addChild(childNode);
+                    listNode.add(childNode);
+                }
+            }
+
+            if (!tmp.equals(root)) {
+                scenePane.getChildren().add(tmp);
+                scenePane.getChildren().add(tmp.getParentLine());
+            }
+        }
+    }
+
+    private void deleteSubtree(Node root) {
+        scenePane.getChildren().remove(root);
+        if (!root.equals(genericTree.getRootNode())) {
+            scenePane.getChildren().remove(root.getParentLine());
+            root.getParentNode().getListOfChildren().remove(root);
+        }
+
+        ArrayList<Node> listNode = new ArrayList<Node>(root.getListOfChildren());
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNode.addAll(tmp.getListOfChildren());
+            }
+            tmp.getParentNode().getListOfChildren().remove(tmp);
+            tmp.setId(null);
+            scenePane.getChildren().remove(tmp);
+            scenePane.getChildren().remove(tmp.getParentLine());
+        }
+    }
+
+    private void turnOffAnimationsDelete(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, Node delRootNode) {
+        try {
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+
+            deleteSubtree(delRootNode);
+
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+            rebuildTree();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showPopupWindowSearch(ArrayList<Line> listLines, ArrayList<StackPane> listPane) {
         PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
         pauseTransition.setOnFinished(event -> {
             Platform.runLater(() -> {
@@ -567,7 +759,7 @@ public class GenericTreeController {
     @FXML
     void backPressed() throws IOException {
 //        System.out.println("Back pressed"); for debugging
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
         Scene scene = new Scene(loader.load(), 600, 600);
@@ -582,11 +774,18 @@ public class GenericTreeController {
     }
 
     @FXML
+    void resetPressed() {
+        if (genericTree.getRootNode() != null) {
+            this.deleteSubtree(genericTree.getRootNode());
+        }
+    }
+
+    @FXML
     void mainLabelPressed() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.menuStage.setTitle("Tree View Visualizer");
         this.menuStage.setScene(scene);
         this.menuStage.show();

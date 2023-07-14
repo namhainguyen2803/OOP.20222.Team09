@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.RadioButton?>
@@ -10,8 +9,11 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
@@ -23,12 +25,17 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label onMouseClicked="#backPressed" text="Back">
+                  <Label onMouseClicked="#backPressed" text="Back" textFill="#6528f7">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label onMouseClicked="#helpPressed" text="Help">
+                  <Label onMouseClicked="#resetPressed" text="Reset" textFill="#6528f7">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label onMouseClicked="#helpPressed" text="Help" textFill="#6528f7">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -52,7 +59,7 @@
    <bottom>
             <StackPane fx:id="stackPaneInput" prefHeight="63.0" prefWidth="65.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            <HBox fx:id="hBoxSearch" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;" visible="false">
                <children>
                   <Label text="node = ">
                      <HBox.margin>
@@ -74,7 +81,7 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="hBoxCreate" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;">
                <children>
                   <RadioButton fx:id="radioBtnRandom" mnemonicParsing="false" onAction="#radioBtnRandomPressed" selected="true" text="Random">
                      <toggleGroup>
@@ -85,7 +92,7 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0" visible="false">
+                  <HBox fx:id="hBoxManual" alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="160.0" style="-fx-background-color: A076F9;" visible="false">
                      <children>
                         <Label text="root = ">
                            <HBox.margin>
@@ -109,7 +116,7 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxTraverse" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            <HBox fx:id="hBoxTraverse" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;" visible="false">
                <children>
                   <Label text="Algorithm: ">
                      <font>
@@ -133,7 +140,7 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxDelete" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            <HBox fx:id="hBoxDelete" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;" visible="false">
                <children>
                   <Label text="node = ">
                      <HBox.margin>
@@ -155,7 +162,7 @@
                   </Button>
                </children>
             </HBox>
-                  <HBox fx:id="hBoxInsert" alignment="CENTER_RIGHT" fillHeight="false" prefHeight="100.0" prefWidth="200.0" visible="false">
+                  <HBox fx:id="hBoxInsert" alignment="CENTER_RIGHT" fillHeight="false" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;" visible="false">
                      <children>
                   <Label text="parent = ">
                      <HBox.margin>
@@ -190,7 +197,7 @@
                   </Button>
                      </children>
                   </HBox>
-            <HBox fx:id="hBoxUpdate" alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="500.0" visible="false">
+            <HBox fx:id="hBoxUpdate" alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="500.0" style="-fx-background-color: A076F9;" visible="false">
                <children>
                   <Label text="old node = ">
                      <HBox.margin>
@@ -236,7 +243,7 @@
          <children>
             <StackPane fx:id="stackPanePseudo" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e966a0" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7bbf5" height="180.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                   <StackPane prefHeight="121.0" prefWidth="200.0">
                      <children>
                         <VBox fx:id="vBoxBFS" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
@@ -375,9 +382,9 @@
                   </StackPane>
                </children>
             </StackPane>
-            <StackPane fx:id="stackPaneController" prefHeight="150.0" prefWidth="200.0" visible="false">
+            <StackPane fx:id="stackPaneController" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a78295" height="150.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a076f9" height="150.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <StackPane prefHeight="30.0" prefWidth="200.0">
@@ -398,24 +405,25 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                          <buttons>
-                            <Button mnemonicParsing="false" text="Forward" />
-                              <Button mnemonicParsing="false" text="Backward" />
-                          </buttons>
+                        <GridPane alignment="CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Continue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Forward" />
+                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Backward" GridPane.columnIndex="1" />
+                            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Pause" GridPane.rowIndex="1" />
+                           </children>
                            <VBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="10.0" />
                            </VBox.margin>
-                        </ButtonBar>
-                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                          <buttons>
-                            <Button mnemonicParsing="false" text="Pause" />
-                              <Button mnemonicParsing="false" text="Continue" />
-                          </buttons>
-                           <VBox.margin>
-                              <Insets right="20.0" />
-                           </VBox.margin>
-                        </ButtonBar>
+                        </GridPane>
                      </children>
                   </VBox>
                </children>
@@ -426,7 +434,7 @@
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
-                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#e42c2c">
+                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#6528f7">
                      <content>
                         <VBox prefHeight="373.0" prefWidth="95.0">
                            <children>
