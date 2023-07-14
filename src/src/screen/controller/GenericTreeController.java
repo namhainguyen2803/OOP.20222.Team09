@@ -275,6 +275,8 @@ public class GenericTreeController {
             genericTree.setTreeController(this);
             Node root = genericTree.getRootNode();
             scenePane.getChildren().add(root);
+
+            tfRootCreate.clear();
         }
         else {
             Random randint = new Random();
@@ -358,8 +360,7 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            SequentialTransition tmp = drawAnimationsDelete(search_direction, nodeObject);
-            tmp.play();
+            drawAnimationsDelete(search_direction, nodeObject);
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -396,9 +397,7 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            SequentialTransition tmp = drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
-            tmp.play();
-
+            drawAnimationsInsert(search_direction, intParentVal, intNodeVal);
 
             tfNodeInsert.clear();
             tfParentInsert.clear();
@@ -433,9 +432,7 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            SequentialTransition tmp = drawAnimationsUpdate(search_direction, nodeObject, intNewVal);
-            tmp.play();
-
+            drawAnimationsUpdate(search_direction, nodeObject, intNewVal);
 
         } catch (NodeNotExistsException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -452,11 +449,11 @@ public class GenericTreeController {
 
             alert.showAndWait();
         }
-        tfNodeInsert.clear();
-        tfParentInsert.clear();
+        tfNewNodeUpdate.clear();
+        tfOldNodeUpdate.clear();
     }
 
-    @FXML // will have animation, not implemented yet
+    @FXML
     void btnSearchPressed(ActionEvent event) throws InterruptedException {
         String val_node = tfNodeSearch.getText();
         int intNodeVal = Integer.parseInt(val_node);
@@ -466,8 +463,8 @@ public class GenericTreeController {
             ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
             search_direction.add(genericTree.getRootNode());
             Collections.reverse(search_direction);
-            SequentialTransition tmp = drawAnimationsSearch(search_direction);
-            tmp.play();
+
+            drawAnimationsSearch(search_direction);
         }
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -480,12 +477,8 @@ public class GenericTreeController {
         tfNodeSearch.clear();
     }
 
-    private SequentialTransition drawAnimationsSearch(ArrayList<Node> list_nodes) {
+    private SequentialTransition drawAnimations(ArrayList<Node> list_nodes, ArrayList<Line> listLines, ArrayList<StackPane> listStackPane) {
         SequentialTransition sequentialTransition = new SequentialTransition();
-        ArrayList<Line> listLines = new ArrayList<Line>();
-        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-
-        sequentialTransition.setOnFinished(event -> showPopupWindowSearch(listLines, listStackPane));
 
         for (Node node : list_nodes) {
 
@@ -540,183 +533,38 @@ public class GenericTreeController {
 
     }
 
-    private SequentialTransition drawAnimationsUpdate(ArrayList<Node> list_nodes, Node oldNode, int newNodeVal) {
-        SequentialTransition sequentialTransition = new SequentialTransition();
+    private void drawAnimationsSearch(ArrayList<Node> search_direction) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-
-        sequentialTransition.setOnFinished(event -> turnOffAnimationsUpdate(listLines, listStackPane, oldNode, newNodeVal));
-
-        for (Node node : list_nodes) {
-
-            Line connectedLine = node.getParentLine();
-            Duration durationLine = Duration.seconds(1);
-            Color fromLineColor = node.getColorStrokeLine();
-            Color toLineColor = node.getColorFontText();
-            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
-            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
-            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
-            strokeLineTransition.setAutoReverse(true);
-
-            Duration durationNode = Duration.seconds(1);
-            Color fromNodeColor = node.getColorStrokeCircle();
-            Color toNodeColor = node.getColorFontText();
-            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
-            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
-            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
-            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
-//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
-            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
-            strokeNodeTransition.setAutoReverse(true);
-
-            Text copiedText = new Text(String.valueOf(node.getNodeId()));
-            Duration durationText = Duration.seconds(0.1);
-            copiedText.setStrokeWidth(node.getStrokeWidthText());
-            copiedText.setStroke(node.getColorStrokeText());
-            copiedText.setFill(node.getColorFontText());
-            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
-            strokeTextTransition.setAutoReverse(true);
-
-            StackPane tmpPane = new StackPane();
-            tmpPane.getChildren().add(copied_circle);
-            tmpPane.getChildren().add(copiedText);
-
-            tmpPane.setLayoutX(node.getLayoutX());
-            tmpPane.setLayoutY(node.getLayoutY());
-
-            sequentialTransition.getChildren().add(strokeLineTransition);
-            sequentialTransition.getChildren().add(strokeNodeTransition);
-            sequentialTransition.getChildren().add(strokeTextTransition);
-
-            scenePane.getChildren().add(copiedLine);
-            scenePane.getChildren().add(tmpPane);
-
-            listLines.add(copiedLine);
-            listStackPane.add(tmpPane);
-
-        }
-
-        return sequentialTransition;
-
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(e -> showPopupWindowSearch(listLines, listStackPane));
+        seq.play();
     }
 
-    private SequentialTransition drawAnimationsInsert(ArrayList<Node> list_nodes, int intParentVal, int intNodeVal) {
-        SequentialTransition sequentialTransition = new SequentialTransition();
+    private void drawAnimationsUpdate(ArrayList<Node> search_direction, Node oldNode, int newNodeVal) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-
-        sequentialTransition.setOnFinished(event -> turnOffAnimationsInsert(listLines, listStackPane, intParentVal, intNodeVal));
-
-        for (Node node : list_nodes) {
-
-            Line connectedLine = node.getParentLine();
-            Duration durationLine = Duration.seconds(0.5);
-            Color fromLineColor = node.getColorStrokeLine();
-            Color toLineColor = node.getColorFontText();
-            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
-            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
-            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
-            strokeLineTransition.setAutoReverse(true);
-
-            Duration durationNode = Duration.seconds(0.5);
-            Color fromNodeColor = node.getColorStrokeCircle();
-            Color toNodeColor = node.getColorFontText();
-            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
-            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
-            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
-            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
-//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
-            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
-            strokeNodeTransition.setAutoReverse(true);
-
-            Text copiedText = new Text(String.valueOf(node.getNodeId()));
-            Duration durationText = Duration.seconds(0.1);
-            copiedText.setStrokeWidth(node.getStrokeWidthText());
-            copiedText.setStroke(node.getColorStrokeText());
-            copiedText.setFill(node.getColorFontText());
-            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
-            strokeTextTransition.setAutoReverse(true);
-
-            StackPane tmpPane = new StackPane();
-            tmpPane.getChildren().add(copied_circle);
-            tmpPane.getChildren().add(copiedText);
-
-            tmpPane.setLayoutX(node.getLayoutX());
-            tmpPane.setLayoutY(node.getLayoutY());
-
-            sequentialTransition.getChildren().add(strokeLineTransition);
-            sequentialTransition.getChildren().add(strokeNodeTransition);
-            sequentialTransition.getChildren().add(strokeTextTransition);
-
-            scenePane.getChildren().add(copiedLine);
-            scenePane.getChildren().add(tmpPane);
-
-            listLines.add(copiedLine);
-            listStackPane.add(tmpPane);
-
-        }
-
-        return sequentialTransition;
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsUpdate(listLines, listStackPane, oldNode, newNodeVal));
+        seq.play();
     }
 
-    private SequentialTransition drawAnimationsDelete(ArrayList<Node> list_nodes, Node delNode) {
-        SequentialTransition sequentialTransition = new SequentialTransition();
+    private void drawAnimationsInsert(ArrayList<Node> search_direction, int intParentVal, int intNodeVal) {
         ArrayList<Line> listLines = new ArrayList<Line>();
         ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
-
-        sequentialTransition.setOnFinished(event -> turnOffAnimationsDelete(listLines, listStackPane, delNode));
-
-        for (Node node : list_nodes) {
-
-            Line connectedLine = node.getParentLine();
-            Duration durationLine = Duration.seconds(0.5);
-            Color fromLineColor = node.getColorStrokeLine();
-            Color toLineColor = node.getColorFontText();
-            Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
-            copiedLine.setStrokeWidth(connectedLine.getStrokeWidth());
-            StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
-            strokeLineTransition.setAutoReverse(true);
-
-            Duration durationNode = Duration.seconds(0.5);
-            Color fromNodeColor = node.getColorStrokeCircle();
-            Color toNodeColor = node.getColorFontText();
-            Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());
-            copied_circle.setStrokeWidth(node.getStrokeWidthCircle());
-            copied_circle.setCenterX(node.getLayoutX() + node.getCircleRadius());
-            copied_circle.setCenterY(node.getLayoutY()+ node.getCircleRadius());
-//            System.out.println(copied_circle.getCenterX() + " " + copied_circle.getCenterY() + " " + copied_circle.getRadius());
-            StrokeTransition strokeNodeTransition = new StrokeTransition(durationNode, copied_circle, fromNodeColor, toNodeColor);
-            strokeNodeTransition.setAutoReverse(true);
-
-            Text copiedText = new Text(String.valueOf(node.getNodeId()));
-            Duration durationText = Duration.seconds(0.1);
-            copiedText.setStrokeWidth(node.getStrokeWidthText());
-            copiedText.setStroke(node.getColorStrokeText());
-            copiedText.setFill(node.getColorFontText());
-            StrokeTransition strokeTextTransition = new StrokeTransition(durationText, copiedText, fromNodeColor, node.getColorFontText());
-            strokeTextTransition.setAutoReverse(true);
-
-            StackPane tmpPane = new StackPane();
-            tmpPane.getChildren().add(copied_circle);
-            tmpPane.getChildren().add(copiedText);
-
-            tmpPane.setLayoutX(node.getLayoutX());
-            tmpPane.setLayoutY(node.getLayoutY());
-
-            sequentialTransition.getChildren().add(strokeLineTransition);
-            sequentialTransition.getChildren().add(strokeNodeTransition);
-            sequentialTransition.getChildren().add(strokeTextTransition);
-
-            scenePane.getChildren().add(copiedLine);
-            scenePane.getChildren().add(tmpPane);
-
-            listLines.add(copiedLine);
-            listStackPane.add(tmpPane);
-
-        }
-
-        return sequentialTransition;
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsInsert(listLines, listStackPane, intParentVal, intNodeVal));
+        seq.play();
     }
+
+    private void drawAnimationsDelete(ArrayList<Node> search_direction, Node delNode) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsDelete(listLines, listStackPane, delNode));
+        seq.play();
+    }
+
 
     private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
         try {
@@ -769,8 +617,7 @@ public class GenericTreeController {
         while (listNode.size() > 0) {
             Node tmp = listNode.remove(0);
             if (tmp.getListOfChildren().size() > 0){
-                ArrayList<Node> tmpListNode = new ArrayList<Node>();
-                tmpListNode.addAll(tmp.getListOfChildren());
+                ArrayList<Node> tmpListNode = new ArrayList<Node>(tmp.getListOfChildren());
                 tmp.getListOfChildren().removeAll(tmp.getListOfChildren());
                 for (Node childNode: tmpListNode) {
                     tmp.addChild(childNode);
@@ -912,7 +759,7 @@ public class GenericTreeController {
     @FXML
     void backPressed() throws IOException {
 //        System.out.println("Back pressed"); for debugging
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
         Scene scene = new Scene(loader.load(), 600, 600);
@@ -927,11 +774,18 @@ public class GenericTreeController {
     }
 
     @FXML
+    void resetPressed() {
+        if (genericTree.getRootNode() != null) {
+            this.deleteSubtree(genericTree.getRootNode());
+        }
+    }
+
+    @FXML
     void mainLabelPressed() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
         mainWindowController mainController = new mainWindowController();
         loader.setController(mainController);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 1024, 768);
         this.menuStage.setTitle("Tree View Visualizer");
         this.menuStage.setScene(scene);
         this.menuStage.show();
