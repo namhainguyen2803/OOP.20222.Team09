@@ -4,6 +4,7 @@ module com.example.treedatastructure {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
 //    exports com.example.treedatastructure;
 //    opens com.example.treedatastructure to javafx.fxml;
