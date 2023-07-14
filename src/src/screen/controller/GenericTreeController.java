@@ -735,8 +735,16 @@ public class GenericTreeController {
     }
 
     @FXML
-    void helpPressed() {
-
+    void helpPressed() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/help.fxml"));
+        HelpController helpController = new HelpController();
+        loader.setController(helpController);
+        Stage helpStage = new Stage();
+        Scene scene = new Scene(loader.load());
+        helpStage.setScene(scene);
+        helpStage.setTitle("Help");
+        helpStage.initOwner(menuStage);
+        helpStage.showAndWait();
     }
 
     @FXML
