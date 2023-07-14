@@ -1,4 +1,4 @@
-package src.screen.controller;
+package src.screen.controller.operation;
 
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
