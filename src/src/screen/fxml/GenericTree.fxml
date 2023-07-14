@@ -35,6 +35,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
+                  <Label onMouseClicked="#undoPressed" text="Undo" textFill="#6528f7">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
                   <Label onMouseClicked="#helpPressed" text="Help" textFill="#6528f7">
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -42,7 +47,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#6528f7">
+            <Label fx:id="mainLabel" contentDisplay="CENTER" onMouseClicked="#mainLabelPressed" prefHeight="54.0" prefWidth="500.0" text="Generic Tree Visualizer" textFill="#6528f7">
                <font>
                   <Font size="24.0" />
                </font>
