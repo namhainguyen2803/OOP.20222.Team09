@@ -54,7 +54,7 @@ public abstract class Tree {
 
     public abstract void checkInsertNode(int intParentVal, int intNodeVal) throws TreeException;
 
-    public abstract Node insertNode(int parentId, int childId);
+    public abstract Node insertNode(int parentId, int childId) throws TreeException;
 
 //    public abstract void deleteNode(int delId) throws TreeException;
 
