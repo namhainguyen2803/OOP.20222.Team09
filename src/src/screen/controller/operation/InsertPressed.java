@@ -1,12 +1,13 @@
 package src.screen.controller.operation;
 
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 import src.screen.controller.GenericTreeController;
-import src.treedatastructure.GenericTree;
-import src.treedatastructure.Node;
+import src.screen.controller.TreeController;
+import src.treedatastructure.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +17,11 @@ public class InsertPressed implements UserAction {
     private int parentval;
 
     private Node parent;
-    private GenericTreeController genericTreeController;
-    private GenericTree genericTree;
+    private TreeController genericTreeController;
+    private Tree genericTree;
     private Pane scenePane;
 
-    public InsertPressed(GenericTree genericTree, GenericTreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
+    public InsertPressed(Tree genericTree, TreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
         this.genericTree = genericTree;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;
@@ -30,6 +31,7 @@ public class InsertPressed implements UserAction {
 
     @Override
     public void run() {
+
         Node nodeObject = this.genericTree.searchNode(this.parentval);
         this.parent = nodeObject;
         ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
@@ -37,6 +39,7 @@ public class InsertPressed implements UserAction {
         Collections.reverse(search_direction);
         this.genericTreeController.drawAnimationsInsert(search_direction, parentval, nodeVal);
         System.out.println("Insert operation.");
+
     }
 
     @Override

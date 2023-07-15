@@ -1,12 +1,9 @@
 package src.screen.controller;
 
+import src.exception.*;
 import src.screen.controller.operation.*;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
-import src.exception.NoneAlgorithmSpecifiedException;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -264,7 +261,8 @@ public class GenericTreeController extends TreeController {
 
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+    private void btnCreatePressed(ActionEvent event) {
+        this.resetPressed();
         CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
             createPressed = new CreatePressed(this, (GenericTree) this.getTreeDataStructure(), scenePane, tfRootCreate.getText());
@@ -316,22 +314,21 @@ public class GenericTreeController extends TreeController {
     }
 
     @FXML
-    private void tfNodeDeleteTyping(ActionEvent event) {
-        this.btnDeletePressed(event);
-    }
+    private void tfNodeDeleteTyping(ActionEvent event) {}
 
 
     @FXML
-    private void btnDeletePressed(ActionEvent event) {
+    private void btnDeletePressed(ActionEvent event) throws TreeException {
         String delNodeVal = tfNodeDelete.getText();
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
         try {
+            this.getTreeDataStructure().checkNodeExisted(intDelNodeVal);
             DeletePressed deletePressed = new DeletePressed((GenericTree) this.getTreeDataStructure(), scenePane, this, intDelNodeVal);
             deletePressed.run();
             history.add(deletePressed);
 
-        } catch (Exception e) {
+        } catch (NodeNotExistsException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
@@ -350,7 +347,7 @@ public class GenericTreeController extends TreeController {
     private void tfNodeInsertTyping(ActionEvent event) {}
 
     @FXML
-    private void btnInsertPressed(ActionEvent event) throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+    private void btnInsertPressed(ActionEvent event) throws TreeException {
 
         try {
 
@@ -368,7 +365,16 @@ public class GenericTreeController extends TreeController {
             history.add(insertPressed);
         }
 
-        catch (NodeNotExistsException | NodeExistedException | NodeFullChildrenException e){
+        catch (NodeExistedException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exception");
+            alert.setHeaderText(null);
+            alert.setContentText("Looks like you have tried invalid insertion operation.");
+
+            alert.showAndWait();
+        }
+
+        catch (NodeNotExistsException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
@@ -387,7 +393,7 @@ public class GenericTreeController extends TreeController {
     private void tfNewNodeUpdateTyping(ActionEvent event) {}
 
     @FXML
-    private void btnUpdatePressed(ActionEvent event) {
+    private void btnUpdatePressed(ActionEvent event) throws TreeException {
         String new_val = tfNewNodeUpdate.getText();
         String old_val = tfOldNodeUpdate.getText();
 
@@ -395,6 +401,8 @@ public class GenericTreeController extends TreeController {
         int intOldVal = Integer.parseInt(old_val);
 
         try {
+            this.getTreeDataStructure().checkUpdateNode(intOldVal, intNewVal);
+
             UpdatePressed updatePressed = new UpdatePressed((GenericTree) this.getTreeDataStructure(), this, scenePane, intOldVal, intNewVal);
             updatePressed.run();
 
@@ -420,20 +428,20 @@ public class GenericTreeController extends TreeController {
     }
 
     @FXML
-    void btnSearchPressed(ActionEvent event) throws InterruptedException {
+    void btnSearchPressed(ActionEvent event) throws TreeException {
         String val_node = tfNodeSearch.getText();
         int intNodeVal = Integer.parseInt(val_node);
 
         try {
+            this.getTreeDataStructure().checkNodeExisted(intNodeVal);
             SearchPressed searchPressed = new SearchPressed((GenericTree) this.getTreeDataStructure(), this, scenePane, intNodeVal);
             searchPressed.run();
         }
-        catch (Exception e) {
+        catch (NodeNotExistsException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the node you are searching for does not exist.");
-
             alert.showAndWait();
         }
         tfNodeSearch.clear();
@@ -530,8 +538,9 @@ public class GenericTreeController extends TreeController {
 
     private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
         try {
-            Node parent = this.getTreeDataStructure().searchNode(intParentVal);
-            Node childNode = parent.addChild(intNodeVal);
+//            Node parent = this.getTreeDataStructure().searchNode(intParentVal);
+            Node childNode = this.getTreeDataStructure().insertNode(intParentVal, intNodeVal);
+//            Node childNode = parent.addChild(intNodeVal);
             int secondsToSleep = 1;
             long millisecondsToSleep = secondsToSleep * 1000;
             scenePane.getChildren().add(childNode.getParentLine());

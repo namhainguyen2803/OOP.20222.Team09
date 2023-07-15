@@ -38,13 +38,13 @@ public class CreatePressed implements UserAction {
     }
 
     @Override
-    public void run() throws NodeExistedException, NodeFullChildrenException, NodeNotExistsException {
+    public void run() {
         if (this.isRandom) {
 
             Random randint = new Random();
-            int numNodes = randint.nextInt(6);
+            int numNodes = randint.nextInt(10);
             while (numNodes <= 0) {
-                numNodes = randint.nextInt(6);
+                numNodes = randint.nextInt(10);
             }
             ArrayList<Integer> listValNodes = new ArrayList<Integer>();
             for (int i = 0; i < numNodes; i++) {
@@ -55,15 +55,15 @@ public class CreatePressed implements UserAction {
                 listValNodes.add(newVal);
             }
 
-            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedBinaryTree) {
+//            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedBinaryTree) {
+//                System.out.println("Create Balanced Binary Tree");
+//            }
+//
+//            else if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
+//                System.out.println("Create Balanced Tree");
+//            }
 
-            }
-
-            else if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
-
-            }
-
-            else if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
+            if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
 
                 System.out.println("Create Binary Tree");
 

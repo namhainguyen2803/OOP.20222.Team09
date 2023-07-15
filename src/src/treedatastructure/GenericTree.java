@@ -1,9 +1,6 @@
 package src.treedatastructure;
 
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
-import src.exception.NoneAlgorithmSpecifiedException;
+import src.exception.*;
 import src.screen.controller.GenericTreeController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -69,10 +66,6 @@ public class GenericTree extends Tree {
 
     public Timeline getTimeline() {
         return timeline;
-    }
-
-    public void setTreeController(GenericTreeController treeController) {
-        this.treeController = treeController;
     }
 
 
@@ -200,18 +193,30 @@ public class GenericTree extends Tree {
         }
     }
 
+    public void checkNodeExisted(int searchId) throws TreeException {
+        Node tmp = searchNode(searchId);
+        if (tmp == null) {
+            throw new NodeNotExistsException("Node does not exist.");
+        }
+    }
 
-    public Node searchNode ( int searchId){
+    public void checkNodeNotExisted(int searchId) throws TreeException {
+        Node tmp = searchNode(searchId);
+        if (tmp != null) {
+            throw new NodeExistedException("Node does exist.");
+        }
+    }
+
+
+    public Node searchNode (int searchId){
         ArrayList<Node> queue = new ArrayList<Node>();
         if (rootNode.getNodeId() == searchId) {
             return rootNode;
         }
         queue.add(rootNode);
-
         Node tmp;
         while (queue.size() > 0) {
             tmp = queue.remove(0); // lấy node đầu tiên của queue
-
             if (tmp.getNumChildren() > 0) {
                 for (Node n : tmp.getListOfChildren()) {
                     if (n.getNodeId() == searchId) {
@@ -221,9 +226,9 @@ public class GenericTree extends Tree {
                 }
             }
         }
-
         return null;
     }
+
     public Node searchNodeByBFS ( int searchId){
         ArrayList<Node> queue = new ArrayList<Node>();
         if (rootNode.getNodeId() == searchId) {
@@ -286,92 +291,30 @@ public class GenericTree extends Tree {
     }
 
     @Override
-    public Node insertNode (int parentId, int childId) throws
-    NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
+    public Node insertNode (int parentId, int childId) {
         Node parent = searchNode(parentId);
-        if (parent == null) { // có thể throw 1 cái exception ở đây
-            throw new NodeNotExistsException("The parent node does not exist! Can't add!");
-        }
-
-        Node child = searchNode(childId);
-        if (child != null) { // có thể throw 1 cái exception ở đây
-            throw new NodeExistedException("The child node has already existed! Can't add!");
-        }
-
         Node childNode = parent.addChild(childId);
+//        this.addData(childNode);
         return childNode;
     }
 
-    public void checkInsertNode ( int parentId, int childId) throws
-            NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
-        Node parent = searchNode(parentId);
-        if (parent == null) { // có thể throw 1 cái exception ở đây
-            throw new NodeNotExistsException("The parent node does not exist! Can't add!");
-        }
-
-        Node child = searchNode(childId);
-        if (child != null) { // có thể throw 1 cái exception ở đây
-            throw new NodeExistedException("The child node has already existed! Can't add!");
-        }
-
+    public void checkInsertNode (int parentId, int childId) throws TreeException {
+        checkNodeExisted(parentId);
+        checkNodeNotExisted(childId);
     }
 
-    /**
-     * Sử dụng BFS để tìm kiếm và xoá node
-     * @param delId
-     */
-    @Override
-    public void deleteNode ( int delId) throws
-    NodeNotExistsException, NodeExistedException, NodeFullChildrenException {
-        ArrayList<Node> queue = new ArrayList<Node>();
-        if (rootNode.getNodeId() == delId) {
-            rootNode = null;
-            return;
-        }
-        queue.add(rootNode);
-
-        Node tmp;
-        while (queue.size() > 0) {
-            tmp = queue.remove(0); // lấy node đầu tiên của queue
-            if (tmp.getNumChildren() > 0) {
-                for (Node n : tmp.getListOfChildren()) {
-                    if (n.getNodeId() == delId) {
-                        tmp.getListOfChildren().remove(n);
-                        return;
-                    }
-
-                    queue.add(n);
-                }
-            }
-        }
-
-        throw new NodeNotExistsException("The node does not exist! Can't delete");
-    }
 
     @Override
-    public void updateNode ( int oldId, int newId) throws NodeNotExistsException, NodeExistedException {
+    public void updateNode ( int oldId, int newId) {
         Node oldNode = searchNode(oldId);
-        if (oldNode == null) {
-            throw new NodeNotExistsException("The node does not exist! Can't update!");
-        }
-
-        Node newNode = searchNode(newId);
-        if (newNode != null) {
-            throw new NodeExistedException("The new ID has existed in another node! Can't update");
-        }
-
         oldNode.updateId(newId);
     }
-    public void checkUpdateNode ( int oldId, int newId) throws NodeNotExistsException, NodeExistedException {
-        Node oldNode = searchNode(oldId);
-        if (oldNode == null) {
-            throw new NodeNotExistsException("The node does not exist! Can't update!");
-        }
 
-        Node newNode = searchNode(newId);
-        if (newNode != null) {
-            throw new NodeExistedException("The new ID has existed in another node! Can't update");
-        }
+    public void checkUpdateNode ( int oldId, int newId) throws TreeException {
+
+        checkNodeExisted(oldId);
+
+        checkNodeNotExisted(newId);
 
     }
 

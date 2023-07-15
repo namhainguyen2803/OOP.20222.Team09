@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
+import src.exception.TreeException;
 import src.screen.controller.GenericTreeController;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
@@ -27,8 +28,7 @@ public class UpdatePressed implements UserAction {
     }
 
     @Override
-    public void run() throws NodeExistedException, NodeNotExistsException {
-        genericTree.checkUpdateNode(intOldVal, intNewVal);
+    public void run() {
         Node nodeObject = genericTree.searchNode(intOldVal);
         ArrayList<Node> search_direction = genericTree.getPathToRoot(nodeObject);
         search_direction.add(genericTree.getRootNode());
