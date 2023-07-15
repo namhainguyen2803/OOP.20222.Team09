@@ -5,6 +5,8 @@ import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 import src.screen.controller.GenericTreeController;
+//import src.treedatastructure.BalancedBinaryTree;
+//import src.treedatastructure.BalancedTree;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
 
@@ -31,27 +33,30 @@ public class DeletePressed implements UserAction {
     @Override
     public void run() {
 
-        ArrayList<Node> queue = new ArrayList<Node>();
-        Node nodeObject = this.genericTree.searchNode(intDelNodeVal);
-        queue.add(nodeObject);
-        while (queue.size() > 0) {
-            Node tmp = queue.remove(0);
-            if (tmp.getListOfChildren().size() > 0) {
-                queue.addAll(tmp.getListOfChildren());
-                ArrayList<Integer> tmpChildren = new ArrayList<Integer>();
-                for (Node child: tmp.getListOfChildren()) {
-                    tmpChildren.add(child.getNodeId());
+        if (this.genericTreeController.getTreeDataStructure() instanceof GenericTree) {
+            ArrayList<Node> queue = new ArrayList<Node>();
+            Node nodeObject = this.genericTree.searchNode(intDelNodeVal);
+            queue.add(nodeObject);
+            while (queue.size() > 0) {
+                Node tmp = queue.remove(0);
+                if (tmp.getListOfChildren().size() > 0) {
+                    queue.addAll(tmp.getListOfChildren());
+                    ArrayList<Integer> tmpChildren = new ArrayList<Integer>();
+                    for (Node child : tmp.getListOfChildren()) {
+                        tmpChildren.add(child.getNodeId());
+                    }
+                    listDelNode.put(tmp.getNodeId(), tmpChildren);
                 }
-                listDelNode.put(tmp.getNodeId(), tmpChildren);
             }
-        }
 
-        this.parentDelNode = nodeObject.getParentNode();
-        ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
-        search_direction.add(this.genericTree.getRootNode());
-        Collections.reverse(search_direction);
-        this.genericTreeController.drawAnimationsDelete(search_direction, nodeObject);
-        System.out.println("Delete operation.");
+            this.parentDelNode = nodeObject.getParentNode();
+            ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
+            search_direction.add(this.genericTree.getRootNode());
+            Collections.reverse(search_direction);
+            this.genericTreeController.drawAnimationsDelete(search_direction, nodeObject);
+            System.out.println("Delete operation.");
+
+        }
     }
 
     @Override

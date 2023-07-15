@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import src.treedatastructure.BinaryTree;
 
 import java.io.IOException;
 
@@ -47,8 +48,8 @@ public class mainWindowController {
     void btnBinaryTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage, "Binary Tree Visualizer");
-        loader.setController(genericController);
+        BinaryTreeController binaryController = new BinaryTreeController(mainStage, "Binary Tree Visualizer");
+        loader.setController(binaryController);
         Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Binary Tree");
 //        this.mainStage.setFullScreen(true);
