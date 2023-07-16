@@ -48,16 +48,16 @@ public class BalancedTreeController extends GenericTreeController {
     @Override
     protected void btnInsertPressed(ActionEvent event) throws TreeException {
 
-        try {
+        String node_val = this.getTfNodeInsert().getText();
+        String parent_val = this.getTfParentInsert().getText();
+        int intNodeVal = Integer.parseInt(node_val);
+        int intParentVal = Integer.parseInt(parent_val);
 
-            String node_val = this.getTfNodeInsert().getText();
-            String parent_val = this.getTfParentInsert().getText();
-            int intNodeVal = Integer.parseInt(node_val);
-            int intParentVal = Integer.parseInt(parent_val);
+        try {
 
             this.getTreeDataStructure().checkInsertNode(intParentVal, intNodeVal);
 
-            InsertPressed insertPressed = new InsertPressed((GenericTree) this.getTreeDataStructure(), this, this.getScenePane(), intNodeVal, intParentVal);
+            InsertPressed insertPressed = new InsertPressed(this.getTreeDataStructure(), this, this.getScenePane(), intNodeVal, intParentVal);
 
             insertPressed.run();
 
@@ -87,19 +87,7 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the inserted node invades the balance property of tree. Do you still want to insert it?");
-
-            ButtonType insertButton = new ButtonType("Yes");
-            ButtonType cancelButton = new ButtonType("No");
-            alert.getButtonTypes().setAll(insertButton, cancelButton);
-            alert.showAndWait().ifPresent(response -> {
-                if (response == insertButton) {
-                    // Handle the "Insert" button action here
-                    System.out.println("Insert button clicked!");
-                } else if (response == cancelButton) {
-                    // Handle the "Cancel" button action here
-                    System.out.println("Cancel button clicked!");
-                }
-            });
+            alert.showAndWait();
         }
         this.getTfNodeInsert().clear();
         this.getTfParentInsert().clear();
@@ -129,7 +117,6 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the inserted node will invade the balance property of tree..");
-
             alert.showAndWait();
         }
         this.getTfNodeDelete().clear();

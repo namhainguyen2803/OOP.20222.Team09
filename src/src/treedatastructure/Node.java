@@ -2,11 +2,14 @@ package src.treedatastructure;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 
 public class Node extends StackPane {
     /*
@@ -65,7 +68,13 @@ public class Node extends StackPane {
         this.getChildren().addAll(circle, tfId);
 
         // Hiep fixes
-        this.setLayoutX(600);
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        double screenWidth = screenBounds.getWidth();
+
+        Bounds bounds = this.getBoundsInParent();
+        double centerX = (screenWidth - bounds.getWidth()) / 2.0;
+
+        this.setLayoutX(centerX - 100);
         this.setLayoutY(55);
     }
 
@@ -141,9 +150,9 @@ public class Node extends StackPane {
         if (this.getListOfChildren().isEmpty()) {
             childNode.setLayoutX(this.getLayoutX());
         } else if (childNode.getDepth() == 1) {
-            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 500);
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 400);
         } else if (childNode.getDepth() == 2) {
-            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 220);
+            childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 180);
         } else {
             childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 80);
         }
@@ -171,9 +180,9 @@ public class Node extends StackPane {
 
         int distance;
         if (depth == 0) {
-            distance = 250;
+            distance = 200;
         } else if (depth == 1) {
-            distance = 110;
+            distance = 90;
         } else {
             distance = 40;
         }
