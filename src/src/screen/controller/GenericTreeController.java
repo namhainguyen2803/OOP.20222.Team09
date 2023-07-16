@@ -143,6 +143,21 @@ public class GenericTreeController extends TreeController {
     private Rectangle recPseudoBFS5;
 
     @FXML
+    private Rectangle recPseudoDFS1;
+
+    @FXML
+    private Rectangle recPseudoDFS2;
+
+    @FXML
+    private Rectangle recPseudoDFS3;
+
+    @FXML
+    private Rectangle recPseudoDFS4;
+
+    @FXML
+    private Rectangle recPseudoDFS5;
+
+    @FXML
     private VBox vBoxBFS;
 
     @FXML
@@ -162,6 +177,14 @@ public class GenericTreeController extends TreeController {
     private Scene mainScene;
 
     private String algorithm;
+    @FXML
+    private Button forwardTraverseBtn;
+    @FXML
+    private Button backwardTraverseBtn;
+    @FXML
+    private Button pauseTraverseBtn;
+    @FXML
+    private Button continueTraverseBtn;
 
     private String treeType;
 
@@ -201,6 +224,25 @@ public class GenericTreeController extends TreeController {
         return recPseudoBFS5;
     }
 
+    public Rectangle getRecPseudoDFS1() {
+        return recPseudoDFS1;
+    }
+
+    public Rectangle getRecPseudoDFS2() {
+        return recPseudoDFS2;
+    }
+
+    public Rectangle getRecPseudoDFS3() {
+        return recPseudoDFS3;
+    }
+
+    public Rectangle getRecPseudoDFS4() {
+        return recPseudoDFS4;
+    }
+
+    public Rectangle getRecPseudoDFS5() {
+        return recPseudoDFS5;
+    }
 
     @FXML // done
     void btnOpsInsertPressed(ActionEvent event) {
@@ -311,6 +353,35 @@ public class GenericTreeController extends TreeController {
 
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    public void forwardTraverseBtnPressed(ActionEvent e){
+        if (algorithm.equals("BFS")) {
+            this.getTreeDataStructure().forwardBFS1Step();
+        }
+        else{
+            this.getTreeDataStructure().forwardDFS1Step();
+        }
+    }
+
+    @FXML
+    public void backwardTraverseBtnPressed(ActionEvent e){
+        if (algorithm.equals("BFS")) {
+            this.getTreeDataStructure().backwardBFS1Step();
+        }
+        else{
+            this.getTreeDataStructure().backwardDFS1Step();
+        }
+
+    }
+    @FXML
+    public void pauseTraverseBtnPressed(ActionEvent e){
+        this.getTreeDataStructure().pauseTraverse();
+    }
+    @FXML
+    public void continueTraverseBtnPressed(ActionEvent e){
+        this.getTreeDataStructure().continueTraverse();
     }
 
     @FXML

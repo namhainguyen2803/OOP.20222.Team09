@@ -9,22 +9,26 @@ import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
 public class GenericTree extends Tree {
     private Node rootNode;
-    private GenericTreeController treeController;
 
     private double timesleep = 1;
 
     private Color recColor1 = Color.web("#99f28a");
     private Color recColor2 = Color.BLUE;
 
+    private Color NOT_VISIT_COLOR = Color.WHITE;
+
     private Color VISIT_COLOR = Color.BLUE;
 
     private ArrayList<Node> queue;
+
+    private ArrayList<Node> stack;
 
     private Timeline timeline;
 
@@ -79,101 +83,318 @@ public class GenericTree extends Tree {
         this.rootNode = new Node(id);
     }
 
-    public void traverseTreeBFS() {
+    /*
+    Các method cho traverse BFS
+     */
+    public void forwardBFS1Step(){
+        if (traverseNode == null) {
+            // thay đổi màu
+            this.getTreeController().getRecPseudoBFS1().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor2);
+
+            traverseNode = queue.remove(0);
+        }
+        if (traverseNode.getState() == 1) { // TH1
+            // Nếu đã được add vào queue và đc remove ra (xong state1) thì tiếp state2 (Sys.print)
+            try { // duyệt
+                traverseNode.getCircle().setFill(VISIT_COLOR);
+                System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
+                traverseNode.setState(2);
+            } catch (NullPointerException e) {
+                traverseNode.getCircle().setFill(VISIT_COLOR);
+                System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth()); // print node tmp
+                traverseNode.setState(2);
+            }
+        } else if (traverseNode.getState() == 2) { //TH2
+            // thay đổi màu
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS4().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS5().setFill(recColor2);
+
+            if (traverseNode.getNumChildren() > 0) { // add con nếu có
+                for (Node n : traverseNode.getListOfChildren()) {
+                    queue.add(n);
+                    n.setState(1);
+                }
+            }
+            traverseNode.setState(3);
+        } else if (traverseNode.getState() == 3) { //TH3
+            // thay đổi màu
+            this.getTreeController().getRecPseudoBFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS5().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor2);
+
+            if (queue.size() > 0) { // lấy node đầu của queue ra
+                traverseNode = queue.remove(0);
+            } else {
+                timeline.stop();
+
+            }
+        }
+    }
+
+    public void backwardBFS1Step(){
+        if (traverseNode==null){
+            return;
+        }
+        if (traverseNode.getState()==1){
+            queue.add(0,traverseNode);
+            this.getTreeController().getRecPseudoBFS4().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS5().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor1);
+
+            /*
+            TH0: nó ko có bố mẹ (nó là root)
+             */
+            if (traverseNode.isRootNode()){
+                traverseNode = null;
+                this.getTreeController().getRecPseudoBFS4().setFill(recColor1);
+                this.getTreeController().getRecPseudoBFS5().setFill(recColor1);
+                this.getTreeController().getRecPseudoBFS1().setFill(recColor2);
+                return;
+            }
+
+            boolean traverseNodeIsFirstChild;
+            try{
+                traverseNodeIsFirstChild = traverseNode.isFirstChild();
+            }catch (NodeNotExistsException e){
+                JOptionPane.showMessageDialog(null,e.getMessage());
+                return;
+            }
+
+            /*
+            TH1: nó có anh em ở trước
+             */
+            if (!traverseNodeIsFirstChild){
+                traverseNode = traverseNode.getLeftSibling();
+                return;
+            }
+
+            /*
+            TH2: nó ko có anh em ở trước (nó là con đầu)
+             */
+
+            //TH2.1: Nếu cha là rootNode
+            Node parent = traverseNode.getParentNode();
+            if (parent.isRootNode()){
+                traverseNode = rootNode;
+            }
+
+            //TH2.2: Nếu cha nó ko phải rootNode
+            else{
+                Node leftSblingOfParent = parent.getLeftSibling();
+                /*
+                Nếu cha của nó có leftSibling
+                 */
+                if (leftSblingOfParent!=null) {
+                    /*
+                    Nếu leftSibling đó có con
+                     */
+                    if (leftSblingOfParent.getNumChildren()>0) {
+                        traverseNode = traverseNode.getParentNode().getLeftSibling().getTheLastChild();
+                    }
+
+                    /*
+                    Nếu leftSibling đó ko có con
+                     */
+                    else{
+                        traverseNode = parent.getParentNode().getTheLastChild();
+                    }
+                }
+                /*
+                Nếu cha nó là con đầu của ông nó
+                 */
+                else{
+                    Node grandpa = parent.getParentNode();
+                    traverseNode = grandpa.getTheLastChild();
+                }
+            }
+        }
+
+        else if (traverseNode.getState()==2){
+            try { // duyệt
+                traverseNode.getCircle().setFill(NOT_VISIT_COLOR);
+                System.out.println("Backward traverse" + traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
+                traverseNode.setState(1);
+            } catch (NullPointerException e) {
+                traverseNode.getCircle().setFill(NOT_VISIT_COLOR);
+                System.out.println("Backward traverse" + traverseNode.getNodeId() + " " + traverseNode.getDepth()); // print node tmp
+                traverseNode.setState(1);
+            }
+        }
+        else if (traverseNode.getState()==3){
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor2);
+            this.getTreeController().getRecPseudoBFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS5().setFill(recColor1);
+
+            if (traverseNode.getNumChildren() > 0) { // add con nếu có
+                for (Node n : traverseNode.getListOfChildren()) {
+                    queue.remove(n);
+                    n.setState(0);
+                }
+            }
+
+            traverseNode.setState(2);
+        }
+    }
+
+    public void startTraverseTreeBFS() {
         queue = new ArrayList<Node>();
 
         queue.add(rootNode);
-        treeController.getRecPseudoBFS1().setFill(recColor2);
+        this.getTreeController().getRecPseudoBFS1().setFill(recColor2);
         rootNode.setState(1);
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
-                if (traverseNode == null) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS1().setFill(recColor1);
-                    treeController.getRecPseudoBFS2().setFill(recColor2);
-                    treeController.getRecPseudoBFS3().setFill(recColor2);
-
-                    traverseNode = queue.remove(0);
-                }
-                if (traverseNode.getState() == 1) { // Nếu đã được add vào queue và đc remove ra (xong state1) thì tiếp state2 (Sys.print)
-                    try { // duyệt
-                        traverseNode.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
-                        traverseNode.setState(2);
-                    } catch (NullPointerException e) {
-                        traverseNode.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth()); // print node tmp
-                        traverseNode.setState(2);
-                    }
-                } else if (traverseNode.getState() == 2) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS2().setFill(recColor1);
-                    treeController.getRecPseudoBFS3().setFill(recColor1);
-                    treeController.getRecPseudoBFS4().setFill(recColor2);
-                    treeController.getRecPseudoBFS5().setFill(recColor2);
-
-                    if (traverseNode.getNumChildren() > 0) { // add con nếu có
-                        for (Node n : traverseNode.getListOfChildren()) {
-                            queue.add(n);
-                            n.setState(1);
-                        }
-                    }
-                    traverseNode.setState(3);
-                } else if (traverseNode.getState() == 3) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS4().setFill(recColor1);
-                    treeController.getRecPseudoBFS5().setFill(recColor1);
-                    treeController.getRecPseudoBFS2().setFill(recColor2);
-                    treeController.getRecPseudoBFS3().setFill(recColor2);
-
-                    if (queue.size() > 0) { // lấy node đầu của queue ra
-                        traverseNode = queue.remove(0);
-                    } else {
-                        timeline.stop();
-
-                    }
-                }
+                forwardBFS1Step();
             }
         }));
+
         timeline.setCycleCount(-1);
         timeline.play();
     }
 
-    public void backWardTraverseBFS(){
-        timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+    /*
+    Các method cho traverse DFS
+     */
+    public void forwardDFS1Step(){
+        if (traverseNode==null){
+            this.getTreeController().getRecPseudoDFS1().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor2);
+            traverseNode = stack.remove(stack.size()-1);
+        }
 
+        if (traverseNode.getState()==1){
+            try{
+                traverseNode.getCircle().setFill(VISIT_COLOR);
+                System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
+                traverseNode.setState(2);
+            }catch (NullPointerException e){
+                traverseNode.getCircle().setFill(VISIT_COLOR);
+                System.out.println(traverseNode.getNodeId()+" "+traverseNode.getDepth()); // print node tmp
+                traverseNode.setState(2);
             }
-        }));
+        }
+
+        else if (traverseNode.getState()==2){
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS4().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS5().setFill(recColor2);
+
+            if (traverseNode.getNumChildren() > 0) {
+                for (int i = traverseNode.getNumChildren()-1; i >=0; i--) {
+                    stack.add(traverseNode.getListOfChildren().get(i));
+                    traverseNode.getListOfChildren().get(i).setState(1);
+                }
+            }
+            traverseNode.setState(3);
+        }
+
+        else if (traverseNode.getState()==3){
+            this.getTreeController().getRecPseudoDFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS5().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor2);
+
+            if (stack.size()>0){
+                traverseNode = stack.remove(stack.size()-1);
+            }
+            else{
+                timeline.stop();
+            }
+        }
     }
 
-    public void traverseTreeDFS(){
-        ArrayList<Node> stack = new ArrayList<Node>();
+    public void backwardDFS1Step(){
+        if (traverseNode==null){
+            return;
+        }
 
+        if (traverseNode.getState()==1){
+            stack.add(traverseNode);
+            this.getTreeController().getRecPseudoDFS4().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS5().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor1);
+
+            if (traverseNode.isRootNode()){
+                traverseNode = null;
+                this.getTreeController().getRecPseudoDFS4().setFill(recColor1);
+                this.getTreeController().getRecPseudoDFS5().setFill(recColor1);
+                this.getTreeController().getRecPseudoDFS1().setFill(recColor2);
+                return;
+            }
+
+            boolean traverseNodeIsFisrtChild;
+            try {
+                traverseNodeIsFisrtChild = traverseNode.isFirstChild();
+            }catch(NodeNotExistsException e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+                return;
+            }
+
+            if (traverseNodeIsFisrtChild){
+                traverseNode = traverseNode.getParentNode();
+                return;
+            }
+
+
+            Node leftSibling = traverseNode.getLeftSibling();
+            traverseNode = leftSibling;
+            while (traverseNode.getNumChildren()>0){
+                traverseNode = traverseNode.getListOfChildren().get(traverseNode.getNumChildren()-1);
+            }
+        }
+
+        else if (traverseNode.getState()==2){
+            traverseNode.setState(1);
+
+            try{
+                traverseNode.getCircle().setFill(NOT_VISIT_COLOR);
+                System.out.println("Backward " + traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
+
+            }catch (NullPointerException e){
+                traverseNode.getCircle().setFill(NOT_VISIT_COLOR);
+                System.out.println("Backward " + traverseNode.getNodeId()+" "+traverseNode.getDepth()); // print node tmp
+
+            }
+
+        }
+        else if (traverseNode.getState()==3){
+            traverseNode.setState(2);
+
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor2);
+            this.getTreeController().getRecPseudoDFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS5().setFill(recColor1);
+
+            if (traverseNode.getNumChildren() > 0) {
+                for (int i = traverseNode.getNumChildren()-1; i >=0; i--) {
+                    stack.remove(traverseNode.getListOfChildren().get(i));
+                    traverseNode.getListOfChildren().get(i).setState(0);
+                }
+            }
+        }
+    }
+    public void startTraverseTreeDFS(){
+        stack = new ArrayList<Node>();
+
+        this.getTreeController().getRecPseudoDFS1().setFill(recColor2);
         stack.add(rootNode);
+        rootNode.setState(1);
         timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (stack.size() > 0){
-                    Node tmp = stack.remove(stack.size()-1); // lấy phần tử đầu miệng của stack (nghĩa là cuối arrayList)
-                    try{
-                        tmp.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(tmp.getNodeId() + " " + tmp.getDepth() + " " + tmp.getParentNode().getNodeId()); // print node tmp
-                    }catch (NullPointerException e){
-                        tmp.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(tmp.getNodeId()+" "+tmp.getDepth()); // print node tmp
-                    }
-
-                    if (tmp.getNumChildren() > 0) {
-                        for (int i = tmp.getNumChildren()-1; i >=0; i--) {
-                            stack.add(tmp.getListOfChildren().get(i));
-                        }
-                    }
-                }
+                forwardDFS1Step();
             }
         }));
 
@@ -181,15 +402,25 @@ public class GenericTree extends Tree {
         timeline.play();
     }
 
+    /*
+    Các method cho traverse chung
+     */
+    public void pauseTraverse(){
+        timeline.pause();
+    }
+
+    public void continueTraverse(){
+        timeline.play();
+    }
     public void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException {
         if (!algorithm.equals("BFS") & !algorithm.equals("DFS")){
             throw new NoneAlgorithmSpecifiedException("The algorithm should be BFS or DFS!");
         }
         if (algorithm.equals("BFS")){
-            traverseTreeBFS();
+            startTraverseTreeBFS();
         }
         else{
-            traverseTreeDFS();
+            startTraverseTreeDFS();
         }
     }
 
