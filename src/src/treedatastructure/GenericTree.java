@@ -318,5 +318,13 @@ public class GenericTree extends Tree {
 
     }
 
+    public void deleteNode(int delId) {
+        Node delNode = this.searchNode(delId);
+        Node parentDelNode = delNode.getParentNode();
+        parentDelNode.getListOfChildren().remove(delNode);
+    }
 
+    public void checkDeleteNode(int delId) throws TreeException {
+        this.checkNodeExisted(delId);
+    }
 }

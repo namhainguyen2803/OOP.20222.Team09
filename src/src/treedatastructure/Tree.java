@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class Tree {
 
     public boolean checkBinary;
-    private ArrayList<Node> data;
+//    private ArrayList<Node> data;
     private String treeType;
 
     private TreeController treeController;
@@ -35,17 +35,17 @@ public abstract class Tree {
         this.treeType = type;
     }
 
-    public void addData(Node node) {
-        this.data.add(node);
-    }
-
-    public void addData(ArrayList<Node> nodeList) {
-        this.data.addAll(nodeList);
-    }
-
-    public ArrayList<Node> getData() {
-        return this.data;
-    }
+//    public void addData(Node node) {
+//        this.data.add(node);
+//    }
+//
+//    public void addData(ArrayList<Node> nodeList) {
+//        this.data.addAll(nodeList);
+//    }
+//
+//    public ArrayList<Node> getData() {
+//        return this.data;
+//    }
 
     public abstract void createTree(int rootId);
     public abstract Node getRootNode();

@@ -1,115 +1,171 @@
-//package src.treedatastructure;
-//
-//import src.exception.NodeExistedException;
-//import src.exception.NodeFullChildrenException;
-//import src.exception.NodeNotExistsException;
-//import src.exception.TreeNotBalancedException;
-//
-//import javax.swing.*;
-//import java.util.ArrayList;
-//
-//public class BalancedTree extends GenericTree{
-//    public static int MAX_DIFF_DISTANCE;
-//
-//    public BalancedTree(int MAX_DIFF_DISTANCE){
-//        this.MAX_DIFF_DISTANCE = MAX_DIFF_DISTANCE;
-//    }
-//
-//    public boolean isBalanced(){
-//        boolean balance = true;
-//        Node rootNode = this.getRootNode();
-//        ArrayList<Node> listOfLeaves = new ArrayList<Node>();
-//
-//        // 1. Lấy danh sách các Leaf: O(N) với N = số node của cây
-//        ArrayList<Node> queue = new ArrayList<Node>();
-//        if (rootNode.isLeaf()){
-//            listOfLeaves.add(rootNode);
-//        }
-//        queue.add(rootNode);
-//
-//        Node tmp;
-//        while (queue.size() > 0){
-//            tmp = queue.remove(0); // lấy node đầu tiên của queue
-//            if (tmp.getNumChildren() > 0) {
-//                for (Node n : tmp.getListOfChildren()) {
-//                    if (n.isLeaf()) {
-//                        listOfLeaves.add(n);
-//                    }
-//                    queue.add(n);
-//                }
-//            }
-//        }
-//
-//        // 2. Check xem có balance không ? O(M^2) với M là số lá của cây
-//        int diff_distance;
-//        int numberOfLeaves = listOfLeaves.size();
-//        for (int i=0; i<numberOfLeaves; i++){
-//            for(int j=i+1; j<numberOfLeaves; j++){
-//                diff_distance = Math.abs(listOfLeaves.get(i).getDepth() - listOfLeaves.get(j).getDepth());
-//                if (diff_distance > MAX_DIFF_DISTANCE){
-//                    balance = false;
-//                }
-//            }
-//        }
-//        return balance;
-//    }
-//
-//    public Node nodeMakeUnbalanced(Node root){
-//        Node node = null;
-//        ArrayList<Node> queue = new ArrayList<Node>();
-//        ArrayList<Node> listOfLeaves = new ArrayList<Node>();
-//        if (root.isLeaf()){
-//            return node;
-//        }
-//
-//        queue.add(root);
-//
-//        Node tmp;
-//        while (queue.size() > 0){
-//            tmp = queue.remove(0); // lấy node đầu tiên của queue
-//
-//            if (tmp.getNumChildren() > 0) {
-//                for (Node n : tmp.getListOfChildren()) {
-//                    if (n.isLeaf()){
-//                        listOfLeaves.add(n);
-//                    }
-//                    queue.add(n);
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < listOfLeaves.size(); i++){
-//            for (int j = i; j < listOfLeaves.size(); j++){
-//                int diff = listOfLeaves.get(i).getDepth() - listOfLeaves.get(j).getDepth();
-//                if (Math.abs(diff) > MAX_DIFF_DISTANCE){
-//                    if (diff > 0){
-//                        node = listOfLeaves.get(i);
-//                    }
-//                    else{
-//                        node = listOfLeaves.get(j);
-//                    }
-//
-//                    return node; // node có depth lớn hơn.
-//                }
-//            }
-//        }
-//        return node;
-//    }
-//
+package src.treedatastructure;
+
+import javafx.fxml.FXML;
+import src.exception.*;
+
+import javax.swing.*;
+import java.util.ArrayList;
+
+public class BalancedTree extends GenericTree{
+    private int MAX_DIFF_DISTANCE;
+
+    public BalancedTree(int MAX_DIFF_DISTANCE){
+        this.MAX_DIFF_DISTANCE = MAX_DIFF_DISTANCE;
+    }
+
+    public void setMaxDiffDistance(int maxDiff) {
+        this.MAX_DIFF_DISTANCE = maxDiff;
+    }
+
+    public int getMaxDiffDistance() {
+        return this.MAX_DIFF_DISTANCE;
+    }
+
+    public boolean isBalanced() {
+        boolean balance = true;
+        Node rootNode = this.getRootNode();
+        ArrayList<Node> listOfLeaves = new ArrayList<Node>();
+
+        // 1. Lấy danh sách các Leaf: O(N) với N = số node của cây
+        ArrayList<Node> queue = new ArrayList<Node>();
+        if (rootNode.isLeaf()){
+            listOfLeaves.add(rootNode);
+        }
+        queue.add(rootNode);
+
+        Node tmp;
+        while (queue.size() > 0){
+            tmp = queue.remove(0); // lấy node đầu tiên của queue
+            if (tmp.getNumChildren() > 0) {
+                for (Node n : tmp.getListOfChildren()) {
+                    if (n.isLeaf()) {
+                        listOfLeaves.add(n);
+                    }
+                    queue.add(n);
+                }
+            }
+        }
+
+        // 2. Check xem có balance không ? O(M^2) với M là số lá của cây
+        int diff_distance;
+        int numberOfLeaves = listOfLeaves.size();
+        for (int i=0; i<numberOfLeaves; i++){
+            for(int j=i+1; j<numberOfLeaves; j++){
+                diff_distance = Math.abs(listOfLeaves.get(i).getDepth() - listOfLeaves.get(j).getDepth());
+                if (diff_distance > MAX_DIFF_DISTANCE){
+                    balance = false;
+                }
+            }
+        }
+        return balance;
+    }
+
+    public Node nodeMakeUnbalanced(Node root){
+        Node node = null;
+        ArrayList<Node> queue = new ArrayList<Node>();
+        ArrayList<Node> listOfLeaves = new ArrayList<Node>();
+        if (root.isLeaf()){
+            return node;
+        }
+
+        queue.add(root);
+
+        Node tmp;
+        while (queue.size() > 0){
+            tmp = queue.remove(0); // lấy node đầu tiên của queue
+
+            if (tmp.getNumChildren() > 0) {
+                for (Node n : tmp.getListOfChildren()) {
+                    if (n.isLeaf()){
+                        listOfLeaves.add(n);
+                    }
+                    queue.add(n);
+                }
+            }
+        }
+
+        for (int i = 0; i < listOfLeaves.size(); i++){
+            for (int j = i; j < listOfLeaves.size(); j++){
+                int diff = listOfLeaves.get(i).getDepth() - listOfLeaves.get(j).getDepth();
+                if (Math.abs(diff) > MAX_DIFF_DISTANCE){
+                    if (diff > 0){
+                        node = listOfLeaves.get(i);
+                    }
+                    else{
+                        node = listOfLeaves.get(j);
+                    }
+
+                    return node; // node có depth lớn hơn.
+                }
+            }
+        }
+        return node;
+    }
+
+    @Override
+    public void checkInsertNode(int parentId, int childId) throws TreeException {
+        super.checkInsertNode(parentId, childId);
+        Node childNode = this.insertNode(parentId, childId);
+        Node newRoot = copyTree(this.getRootNode());
+        BalancedTree tmpBalancedTree = new BalancedTree(this.getMaxDiffDistance());
+        tmpBalancedTree.setRootNode(newRoot);
+        if (!tmpBalancedTree.isBalanced()) {
+            throw new TreeNotBalancedException("The inserted node will invade the balance property of tree.");
+        }
+    }
+
+    public Node copyTree(Node oldRoot) {
+        ArrayList<Node> oldQueue = new ArrayList<Node>();
+        ArrayList<Node> newQueue = new ArrayList<Node>();
+        oldQueue.add(oldRoot);
+        Node newRoot = new Node(oldRoot.getNodeId());
+        newQueue.add(newRoot);
+        while (oldQueue.size() > 0) {
+            Node tmp = oldQueue.remove(0);
+            Node newTmp = newQueue.remove(0);
+            if (tmp.getListOfChildren().size() > 0) {
+                for (Node childNode: tmp.getListOfChildren()) {
+                    oldQueue.add(childNode);
+                    Node copiedChildNode = new Node(childNode.getNodeId());
+                    newQueue.add(copiedChildNode);
+                    newTmp.getListOfChildren().add(copiedChildNode);
+                }
+            }
+        }
+        return newRoot;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    @Override
-//    public void checkInsertNode(int parentId, int childId) throws NodeExistedException, NodeNotExistsException, NodeFullChildrenException, TreeNotBalancedException {
-//        super.checkInsertNode(parentId, childId);
-//
-//        if (!this.isBalanced()) {
-//            throw new TreeNotBalancedException("The inserted node will invade the balance property of tree.");
-//        }
-//    }
-//
-//    @Override
-//    public Node insertNode(int parentId, int childId) {
-//        return super.insertNode(parentId, childId);
-//    }
-//
+    public void checkDeleteNode(int parentId, int childId) throws TreeException {
+        super.checkInsertNode(parentId, childId);
+
+        if (!this.isBalanced()) {
+            throw new TreeNotBalancedException("The inserted node will invade the balance property of tree.");
+        }
+    }
+
+
+
+
+
+
+
+
+
 //    @Override
 //    public void deleteNode(int delId) throws NodeNotExistsException,NodeExistedException,NodeFullChildrenException {
 //        /*
@@ -145,7 +201,7 @@
 //            }
 //
 //        }
-//
+
 //        /*
 //        2, Nếu không thoả mãn ĐK cần để mất balance thì delete
 //         */
@@ -233,4 +289,5 @@
 //    public void delInCopy(int delId) throws NodeFullChildrenException, NodeExistedException, NodeNotExistsException{
 //        super.deleteNode(delId);
 //    }
-//}
+
+}

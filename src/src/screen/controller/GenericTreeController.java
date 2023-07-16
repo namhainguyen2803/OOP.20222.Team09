@@ -246,22 +246,197 @@ public class GenericTreeController extends TreeController {
     }
 
     @FXML
-    private void radioBtnRandomPressed(ActionEvent event) {
+    void radioBtnRandomPressed(ActionEvent event) {
         hBoxManual.setVisible(false);
     }
 
     @FXML
-    private void radioBtnManualPressed(ActionEvent event) {
+    void radioBtnManualPressed(ActionEvent event) {
         hBoxManual.setVisible(true);
     }
 
     @FXML
-    private void tfRootCreateTyping(ActionEvent event) {}
+    void tfRootCreateTyping(ActionEvent event) {}
 
 
+    public Button getBtnOpsCreate() {
+        return btnOpsCreate;
+    }
+
+    public Button getBtnOpsInsert() {
+        return btnOpsInsert;
+    }
+
+    public Button getBtnOpsDelete() {
+        return btnOpsDelete;
+    }
+
+    public Button getBtnOpsUpdate() {
+        return btnOpsUpdate;
+    }
+
+    public Button getBtnOpsTraverse() {
+        return btnOpsTraverse;
+    }
+
+    public StackPane getStackPaneInput() {
+        return stackPaneInput;
+    }
+
+    public HBox gethBoxCreate() {
+        return hBoxCreate;
+    }
+
+    public HBox gethBoxManual() {
+        return hBoxManual;
+    }
+
+    public TextField getTfRootCreate() {
+        return tfRootCreate;
+    }
+
+    public Button getBtnCreate() {
+        return btnCreate;
+    }
+
+    public HBox gethBoxTraverse() {
+        return hBoxTraverse;
+    }
+
+    public RadioButton getRadioBtnBFS() {
+        return radioBtnBFS;
+    }
+
+    public RadioButton getRadioBtnDFS() {
+        return radioBtnDFS;
+    }
+
+    public TextField getTfNodeTraverse() {
+        return tfNodeTraverse;
+    }
+
+    public Button getBtnTraverse() {
+        return btnTraverse;
+    }
+
+    public HBox gethBoxDelete() {
+        return hBoxDelete;
+    }
+
+    public TextField getTfNodeDelete() {
+        return tfNodeDelete;
+    }
+
+    public Button getBtnDelete() {
+        return btnDelete;
+    }
+
+    public HBox gethBoxInsert() {
+        return hBoxInsert;
+    }
+
+    public HBox gethBoxSearch() {
+        return hBoxSearch;
+    }
+
+    public TextField getTfParentInsert() {
+        return tfParentInsert;
+    }
+
+    public TextField getTfNodeInsert() {
+        return tfNodeInsert;
+    }
+
+    public Button getBtnInsert() {
+        return btnInsert;
+    }
+
+    public Button getBtnSearch() {
+        return btnSearch;
+    }
+
+    public HBox gethBoxUpdate() {
+        return hBoxUpdate;
+    }
+
+    public TextField getTfOldNodeUpdate() {
+        return tfOldNodeUpdate;
+    }
+
+    public TextField getTfNewNodeUpdate() {
+        return tfNewNodeUpdate;
+    }
+
+    public Button getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    public VBox getvBoxPseudo() {
+        return vBoxPseudo;
+    }
+
+    public StackPane getStackPanePseudo() {
+        return stackPanePseudo;
+    }
+
+    public StackPane getStackPaneController() {
+        return stackPaneController;
+    }
+
+    public String getValRootNodeCreate() {
+        return valRootNodeCreate;
+    }
+
+    public Pane getScenePane() {
+        return scenePane;
+    }
+
+    public TextField getTfNodeSearch() {
+        return tfNodeSearch;
+    }
+
+    public VBox getvBoxBFS() {
+        return vBoxBFS;
+    }
+
+    public VBox getvBoxDFS() {
+        return vBoxDFS;
+    }
+
+    public RadioButton getRadioBtnManual() {
+        return radioBtnManual;
+    }
+
+    public RadioButton getRadioBtnRandom() {
+        return radioBtnRandom;
+    }
+
+    public Label getMainLabel() {
+        return mainLabel;
+    }
+
+    public Stage getMenuStage() {
+        return menuStage;
+    }
+
+    public Scene getMainScene() {
+        return mainScene;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public String getTreeType() {
+        return treeType;
+    }
+
+    public ArrayList<UserAction> getHistory() {
+        return history;
+    }
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) {
+    protected void btnCreatePressed(ActionEvent event) {
         this.resetPressed();
         CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
@@ -318,7 +493,7 @@ public class GenericTreeController extends TreeController {
 
 
     @FXML
-    private void btnDeletePressed(ActionEvent event) throws TreeException {
+    protected void btnDeletePressed(ActionEvent event) throws TreeException {
         String delNodeVal = tfNodeDelete.getText();
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
@@ -347,7 +522,7 @@ public class GenericTreeController extends TreeController {
     private void tfNodeInsertTyping(ActionEvent event) {}
 
     @FXML
-    private void btnInsertPressed(ActionEvent event) throws TreeException {
+    protected void btnInsertPressed(ActionEvent event) throws TreeException {
 
         try {
 
@@ -428,7 +603,7 @@ public class GenericTreeController extends TreeController {
     }
 
     @FXML
-    void btnSearchPressed(ActionEvent event) throws TreeException {
+    protected void btnSearchPressed(ActionEvent event) throws TreeException {
         String val_node = tfNodeSearch.getText();
         int intNodeVal = Integer.parseInt(val_node);
 
@@ -740,9 +915,18 @@ public class GenericTreeController extends TreeController {
     }
 
     @FXML
-    public void helpPressed() {
-
+    void helpPressed() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/help.fxml"));
+        HelpController helpController = new HelpController();
+        loader.setController(helpController);
+        Stage helpStage = new Stage();
+        Scene scene = new Scene(loader.load());
+        helpStage.setScene(scene);
+        helpStage.setTitle("Help");
+        helpStage.initOwner(menuStage);
+        helpStage.showAndWait();
     }
+
 
     @FXML
     public void undoPressed() {
@@ -770,3 +954,5 @@ public class GenericTreeController extends TreeController {
         this.menuStage.show();
     }
 }
+
+
