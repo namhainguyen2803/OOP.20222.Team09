@@ -70,10 +70,12 @@ public abstract class Tree {
 
     public abstract void backwardDFS1Step();
 
-
     public abstract void pauseTraverse();
 
     public abstract void continueTraverse();
+
+    public abstract void okTraverse();
+
 
     public abstract void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException;
 

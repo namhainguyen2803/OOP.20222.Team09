@@ -413,6 +413,62 @@ public class GenericTree extends Tree {
     public void continueTraverse(){
         timeline.play();
     }
+
+    public void okTraverse(){
+        timeline.stop();
+        //0. Empty cái stack/queue và empty cái traverse node = null
+        String algo = this.getTreeController().getAlgorithm();
+        if (algo.equals("BFS")){
+            queue = null;
+        }
+        else{
+            stack = null;
+        }
+        traverseNode = null;
+        //1. Set lại state=0 và colorCircle = NOT_VISIT_COLOR
+        queue = new ArrayList<Node>();
+        queue.add(rootNode);
+        Node tmp;
+
+        while (queue.size()>0){
+            tmp = queue.remove(0);
+            tmp.setState(0);
+            tmp.getCircle().setFill(NOT_VISIT_COLOR);
+
+            if (tmp.getNumChildren()>0){
+                for (Node n: tmp.getListOfChildren()){
+                    queue.add(n);
+                }
+            }
+        }
+
+        queue = null;
+        //2. Set lại màu của các pseudoCode
+        if (algo.equals("BFS")){
+            this.getTreeController().getRecPseudoBFS1().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS3().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoBFS5().setFill(recColor1);
+        }
+        else{
+            this.getTreeController().getRecPseudoDFS1().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS2().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS3().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS4().setFill(recColor1);
+            this.getTreeController().getRecPseudoDFS5().setFill(recColor1);
+        }
+        //3. set visible = false cho cái stackPane
+        this.getTreeController().getStackPanePseudo().setVisible(false);
+        this.getTreeController().getStackPaneController().setVisible(false);
+        if (algo.equals("BFS")){
+            this.getTreeController().getvBoxBFS().setVisible(false);
+        }
+        if (algo.equals("BFS")){
+            this.getTreeController().getvBoxDFS().setVisible(false);
+        }
+
+    }
     public void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException {
         if (!algorithm.equals("BFS") & !algorithm.equals("DFS")){
             throw new NoneAlgorithmSpecifiedException("The algorithm should be BFS or DFS!");
