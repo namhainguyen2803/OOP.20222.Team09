@@ -76,7 +76,7 @@ public class BinaryTreeController extends GenericTreeController{
             binaryTree.checkFullChildrenNode(intDelNodeVal);
             binaryTree.checkBinaryProperty(nodeToDelete);
 
-            DeletePressed deletePressed = new DeletePressed((GenericTree) this.getTreeDataStructure(), scenePane, this, intDelNodeVal);
+            DeletePressed deletePressed = new DeletePressed((BinaryTree) this.getTreeDataStructure(), scenePane, this, intDelNodeVal);
             deletePressed.run();
             history.add(deletePressed);
 

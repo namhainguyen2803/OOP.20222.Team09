@@ -261,7 +261,7 @@ public class GenericTreeController extends TreeController {
 
 
     @FXML
-    private void btnCreatePressed(ActionEvent event) {
+    private void btnCreatePressed(ActionEvent event) throws TreeException {
         this.resetPressed();
         CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {

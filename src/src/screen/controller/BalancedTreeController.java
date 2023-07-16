@@ -2,9 +2,14 @@ package src.screen.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import src.exception.*;
 import src.screen.controller.operation.DeletePressed;
 import src.screen.controller.operation.InsertPressed;
@@ -13,10 +18,23 @@ import src.treedatastructure.BinaryTree;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
 
+import java.io.IOException;
+import java.util.Optional;
+
 public class BalancedTreeController extends GenericTreeController{
+
+    @FXML
+    private Label mainLabel;
+    private Window stage;
 
     public BalancedTreeController(Stage stage, String treeType) {
         super(stage, treeType);
+
+    }
+    private int maxDiffDistance;
+
+    public void setMaxDiffDistance(int maxDiffDistance) {
+        this.maxDiffDistance = maxDiffDistance;
     }
 
     @FXML

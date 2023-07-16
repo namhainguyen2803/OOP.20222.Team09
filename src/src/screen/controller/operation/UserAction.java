@@ -6,6 +6,6 @@ import src.exception.NodeNotExistsException;
 import src.exception.TreeException;
 
 public interface UserAction {
-    public void run();
+    public void run() throws TreeException;
     public void undo();
 }

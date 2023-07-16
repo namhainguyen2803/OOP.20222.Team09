@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
+import src.exception.TreeException;
 import src.screen.controller.BinaryTreeController;
 import src.screen.controller.GenericTreeController;
 import src.treedatastructure.*;
@@ -38,7 +39,7 @@ public class CreatePressed implements UserAction {
     }
 
     @Override
-    public void run() {
+    public void run() throws TreeException {
         if (this.isRandom) {
 
             Random randint = new Random();

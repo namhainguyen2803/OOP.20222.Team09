@@ -232,14 +232,8 @@ public class BalancedTree extends GenericTree{
     }
     public void checkDeleteNode(int delId) throws TreeException, NodeNotRemovableException {
 
-        Node nodeToDelete = searchNode(delId);
-        if (nodeToDelete == null) {
-            throw new NodeNotExistsException("The node to delete does not exist in the tree.");
-        }
-
-        if (nodeToDelete.getParentNode() == null && nodeToDelete.getNumChildren() > 0) {
-            throw new NodeNotRemovableException("Cannot delete the root node of a balanced tree with children.");
-        }
+        super.checkNodeExisted(delId);
+        super.checkNodeNotExisted(delId);
 
 
         BalancedTree tmpTree = copyAndDel(delId);
