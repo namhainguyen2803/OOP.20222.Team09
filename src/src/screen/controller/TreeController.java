@@ -1,6 +1,8 @@
 package src.screen.controller;
 
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import src.treedatastructure.Node;
 import src.treedatastructure.Tree;
@@ -54,4 +56,19 @@ public abstract class TreeController {
     public abstract Rectangle getRecPseudoDFS4();
 
     public abstract Rectangle getRecPseudoDFS5();
+
+    public abstract String getAlgorithm();
+
+    public abstract StackPane getStackPanePseudo();
+
+    public abstract StackPane getStackPaneController();
+
+    public abstract VBox getvBoxBFS();
+
+    public abstract VBox getvBoxDFS();
+
+
+
+
+
 }

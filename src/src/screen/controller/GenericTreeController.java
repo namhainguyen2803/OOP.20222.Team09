@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -185,6 +186,8 @@ public class GenericTreeController extends TreeController {
     private Button pauseTraverseBtn;
     @FXML
     private Button continueTraverseBtn;
+    @FXML
+    private Button okTraverseBtn;
 
 
     private ArrayList<UserAction> history = new ArrayList<UserAction>();
@@ -552,6 +555,11 @@ public class GenericTreeController extends TreeController {
     @FXML
     public void continueTraverseBtnPressed(ActionEvent e){
         this.getTreeDataStructure().continueTraverse();
+    }
+
+    @FXML
+    public void okTraverseBtnPressed(ActionEvent e){
+        this.getTreeDataStructure().okTraverse();
     }
 
     @FXML
