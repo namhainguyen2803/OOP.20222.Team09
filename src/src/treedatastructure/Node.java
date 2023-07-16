@@ -10,6 +10,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import src.exception.NodeNotExistsException;
+
+import javax.swing.*;
 
 public class Node extends StackPane {
     /*
@@ -275,6 +278,40 @@ public class Node extends StackPane {
         return false;
     }
 
+    public boolean isFirstChild() throws NodeNotExistsException { // check this có phải con đầu tiên của cha nó ko ?
+        if (this.isRootNode()){
+            throw new NodeNotExistsException("This node do not have parent! This node's ID = "+this.getNodeId());
+        }
+        return this.equals(this.getParentNode().getListOfChildren().get(0));
+    }
+
+    public Node getLeftSibling(){
+        boolean isFirstChild;
+        try{
+            isFirstChild = this.isFirstChild();
+        } catch (NodeNotExistsException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+
+        if (isFirstChild){
+            return null;
+        }
+        for (int i=0; i<this.getParentNode().getNumChildren(); i++){
+            if (this.getParentNode().getListOfChildren().get(i+1).equals(this)){
+                return this.getParentNode().getListOfChildren().get(i);
+            }
+        }
+        return null;
+    }
+
+    public boolean isRootNode(){
+        return this.getParentNode()==null;
+    }
+
+    public Node getTheLastChild(){
+        return this.getListOfChildren().get(this.getNumChildren()-1);
+    }
 
 }
 

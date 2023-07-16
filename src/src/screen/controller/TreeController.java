@@ -1,5 +1,7 @@
 package src.screen.controller;
 
+import javafx.scene.Scene;
+import javafx.scene.shape.Rectangle;
 import src.treedatastructure.Node;
 import src.treedatastructure.Tree;
 
@@ -32,4 +34,24 @@ public abstract class TreeController {
     public abstract void rebuildTree();
 
     public abstract void resetPressed();
+
+    public abstract Rectangle getRecPseudoBFS1();
+
+    public abstract Rectangle getRecPseudoBFS2();
+
+    public abstract Rectangle getRecPseudoBFS3();
+
+    public abstract Rectangle getRecPseudoBFS4();
+
+    public abstract Rectangle getRecPseudoBFS5();
+
+    public abstract Rectangle getRecPseudoDFS1();
+
+    public abstract Rectangle getRecPseudoDFS2();
+
+    public abstract Rectangle getRecPseudoDFS3();
+
+    public abstract Rectangle getRecPseudoDFS4();
+
+    public abstract Rectangle getRecPseudoDFS5();
 }

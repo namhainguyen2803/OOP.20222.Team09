@@ -62,6 +62,19 @@ public abstract class Tree {
 
     public abstract Node searchNode(int intParentVal);
 
+    public abstract void forwardBFS1Step();
+
+    public abstract void backwardBFS1Step();
+
+    public abstract void forwardDFS1Step();
+
+    public abstract void backwardDFS1Step();
+
+
+    public abstract void pauseTraverse();
+
+    public abstract void continueTraverse();
+
     public abstract void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException;
 
     public abstract ArrayList<Node> getPathToRoot(Node nodeObject);
