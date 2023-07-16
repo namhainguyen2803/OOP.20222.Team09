@@ -10,7 +10,9 @@ import src.exception.*;
 import src.screen.controller.operation.DeletePressed;
 import src.screen.controller.operation.InsertPressed;
 import src.treedatastructure.BalancedTree;
+import src.treedatastructure.BinaryTree;
 import src.treedatastructure.GenericTree;
+import src.treedatastructure.Node;
 
 import java.util.Optional;
 
@@ -19,29 +21,13 @@ public class BalancedTreeController extends GenericTreeController {
     public BalancedTreeController(Stage stage, String treeType) {
         super(stage, treeType);
         this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedTree());
     }
 
-    @FXML
-    @Override
-    protected void initialize() {
-        this.getStackPaneInput().setVisible(false);
-        this.getStackPanePseudo().setVisible(false);
-        this.getStackPaneController().setVisible(false);
-        this.getMainLabel().setText(this.getTreeType());
-
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(null);
-        dialog.setHeaderText("Enter the maximum difference in distance\n from root of the leaf nodes");
-        dialog.setContentText("MAX_DIFF_DISTANCE:");
-        dialog.setGraphic(null);
-
-        Optional<String> result = dialog.showAndWait();
-
-        int max_depth = Integer.parseInt(result.get());
-
-        BalancedTree balancedTree = new BalancedTree(max_depth);
-
-        this.setTreeDataStructure(balancedTree);
+    public BalancedTreeController(Stage stage, String treeType, int max_depth) {
+        super(stage, treeType);
+        this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedTree(max_depth));
     }
 
     @FXML
@@ -87,7 +73,15 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the inserted node invades the balance property of tree. Do you still want to insert it?");
-            alert.showAndWait();
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    System.out.println("User clicked OK");
+                    BalancedTree balancedTree = (BalancedTree) this.getTreeDataStructure();
+                    Node newNode = balancedTree.makeBalance(intNodeVal);
+                    this.getScenePane().getChildren().add(newNode);
+                    this.getScenePane().getChildren().add(newNode.getParentLine());
+                }
+            });;
         }
         this.getTfNodeInsert().clear();
         this.getTfParentInsert().clear();

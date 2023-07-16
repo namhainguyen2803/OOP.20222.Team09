@@ -6,6 +6,7 @@ import src.exception.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BalancedTree extends GenericTree{
     private int MAX_DIFF_DISTANCE;
@@ -82,20 +83,16 @@ public class BalancedTree extends GenericTree{
 
     public BalancedTree copyBalanceTree(BalancedTree oldTree) {
         ArrayList<Node> oldQueue = new ArrayList<Node>();
-//        ArrayList<Node> newQueue = new ArrayList<Node>();
         BalancedTree newTree = new BalancedTree(this.getMaxDiffDistance());
         oldQueue.add(oldTree.getRootNode());
         Node newRoot = new Node(oldTree.getRootNode().getNodeId());
         newTree.setRootNode(newRoot);
-//        newQueue.add(newRoot);
         while (oldQueue.size() > 0) {
             Node tmp = oldQueue.remove(0);
-//            Node newTmp = newQueue.remove(0);
             if (tmp.getListOfChildren().size() > 0) {
                 for (Node childNode: tmp.getListOfChildren()) {
                     Node newChild = newTree.insertNode(tmp.getNodeId(), childNode.getNodeId());
                     oldQueue.add(childNode);
-//                    newQueue.add(newChild);
                 }
             }
         }
@@ -106,7 +103,6 @@ public class BalancedTree extends GenericTree{
     @Override
     public void checkDeleteNode(int oldNode) throws TreeException {
         super.checkDeleteNode(oldNode);
-
         BalancedTree tmpBalancedTree = copyBalanceTree(this);
         System.out.println("hello " + tmpBalancedTree.getRootNode().getNodeId());
         tmpBalancedTree.deleteNode(oldNode);
@@ -116,6 +112,29 @@ public class BalancedTree extends GenericTree{
         }
     }
 
+    public Node makeBalance(int newNodeVal) {
+        ArrayList<Node> queue = new ArrayList<Node>();
+        HashMap<Integer, Integer> depthLeaf = new HashMap<Integer, Integer>();
+
+        int minDepth = 100;
+        Node minNode = new Node(0);
+        Node newRoot = new Node(this.getRootNode().getNodeId());
+        queue.add(this.getRootNode());
+        while (queue.size() > 0) {
+            Node tmp = queue.remove(0);
+            if (tmp.getListOfChildren().size() > 0) {
+                queue.addAll(tmp.getListOfChildren());
+            }
+            if (tmp.getNumChildren() == 0) {
+                if (minDepth > tmp.getDepth()) {
+                    minDepth = tmp.getDepth();
+                    minNode = tmp;
+                }
+            }
+        }
+        Node newNode = minNode.addChild(newNodeVal);
+        return newNode;
+    }
 }
 
 

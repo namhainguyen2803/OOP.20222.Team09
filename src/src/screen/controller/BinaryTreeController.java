@@ -66,20 +66,8 @@ public class BinaryTreeController extends GenericTreeController{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Looks like the inserted node invades the binary property of tree. Do you still want to insert it?");
+            alert.setContentText("Looks like the inserted node invades the binary property of tree.");
             alert.showAndWait();
-//            ButtonType insertButton = new ButtonType("Yes");
-//            ButtonType cancelButton = new ButtonType("No");
-//            alert.getButtonTypes().setAll(insertButton, cancelButton);
-//            alert.showAndWait().ifPresent(response -> {
-//                if (response == insertButton) {
-//                    // Handle the "Insert" button action here
-//                    System.out.println("Insert button clicked!");
-//                } else if (response == cancelButton) {
-//                    // Handle the "Cancel" button action here
-//                    System.out.println("Cancel button clicked!");
-//                }
-//            });
         }
         this.getTfNodeInsert().clear();
         this.getTfParentInsert().clear();

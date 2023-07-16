@@ -17,29 +17,14 @@ public class BalancedBinaryTreeController extends BalancedTreeController {
 
     public BalancedBinaryTreeController(Stage stage, String treeType) {
         super(stage, treeType);
+        this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedBinaryTree());
     }
 
-    @FXML
-    @Override
-    protected void initialize() {
-        this.getStackPaneInput().setVisible(false);
-        this.getStackPanePseudo().setVisible(false);
-        this.getStackPaneController().setVisible(false);
-        this.getMainLabel().setText(this.getTreeType());
-
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(null);
-        dialog.setHeaderText("Enter the maximum difference in distance\n from root of the leaf nodes");
-        dialog.setContentText("MAX_DIFF_DISTANCE:");
-        dialog.setGraphic(null);
-
-        Optional<String> result = dialog.showAndWait();
-
-        int max_depth = Integer.parseInt(result.get());
-
-        BalancedBinaryTree balancedTree = new BalancedBinaryTree(max_depth);
-
-        this.setTreeDataStructure(balancedTree);
+    public BalancedBinaryTreeController(Stage stage, String treeType, int max_depth) {
+        super(stage, treeType);
+        this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedBinaryTree(max_depth));
     }
 
     @FXML

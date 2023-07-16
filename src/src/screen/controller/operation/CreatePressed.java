@@ -1,29 +1,23 @@
 package src.screen.controller.operation;
 
 import javafx.scene.layout.Pane;
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
-import src.screen.controller.BinaryTreeController;
 import src.screen.controller.GenericTreeController;
-import src.screen.controller.TreeController;
 import src.treedatastructure.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Random;
 
 public class CreatePressed implements UserAction {
     private boolean isRandom;
     private String rootId;
-    private TreeController genericTreeController;
+    private GenericTreeController genericTreeController;
     private Pane scenePane;
-    private Tree genericTree;
+    private GenericTree genericTree;
     private String treeType;
 
 
-    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane, String rootId) {
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane, String rootId) {
         this.rootId = rootId;
         this.isRandom = false;
         this.genericTreeController = genericTreeController;
@@ -31,7 +25,7 @@ public class CreatePressed implements UserAction {
         this.genericTree = genericTree;
     }
 
-    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane) {
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane) {
         this.isRandom = true;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;
@@ -56,15 +50,27 @@ public class CreatePressed implements UserAction {
                 listValNodes.add(newVal);
             }
 
-//            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedBinaryTree) {
-//                System.out.println("Create Balanced Binary Tree");
-//            }
-//
-//            else if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
-//                System.out.println("Create Balanced Tree");
-//            }
+            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
+                System.out.println("Create Balanced Tree");
 
-            if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
+                Node root = new Node(listValNodes.get(0));
+                this.rootId = String.valueOf(listValNodes.get(0));
+                genericTree.setTreeController(genericTreeController);
+                genericTree.setRootNode(root);
+                scenePane.getChildren().add(root);
+
+                for (int i = 1; i < listValNodes.size(); i ++) {
+                    Node childNode = root.addChild(listValNodes.get(i));
+                    System.out.println(rootId + " " + childNode.getNodeId());
+                    scenePane.getChildren().add(childNode.getParentLine());
+                    scenePane.getChildren().add(childNode);
+                    root = childNode;
+                }
+
+
+            }
+
+            else if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
 
                 System.out.println("Create Binary Tree");
 

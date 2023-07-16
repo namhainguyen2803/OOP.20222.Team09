@@ -6,6 +6,11 @@ import javax.swing.*;
 
 public class BalancedBinaryTree extends BalancedTree {
     public static final int MAX_CHILDREN = 2;
+
+    public BalancedBinaryTree() {
+        super(2);
+    }
+
     public BalancedBinaryTree(int MAX_DIFF_DISTANCE) {
         super(MAX_DIFF_DISTANCE);
     }
@@ -27,4 +32,5 @@ public class BalancedBinaryTree extends BalancedTree {
         Node node = this.searchNode(nodeVal);
         return node.getNumChildren() == MAX_CHILDREN;
     }
+
 }

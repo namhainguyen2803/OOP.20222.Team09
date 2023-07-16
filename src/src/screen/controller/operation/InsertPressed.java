@@ -1,12 +1,10 @@
 package src.screen.controller.operation;
 
-import javafx.scene.control.Alert;
+import javafx.animation.SequentialTransition;
 import javafx.scene.layout.Pane;
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
 import src.screen.controller.GenericTreeController;
-import src.screen.controller.TreeController;
 import src.treedatastructure.*;
 
 import java.util.ArrayList;
@@ -17,11 +15,11 @@ public class InsertPressed implements UserAction {
     private int parentval;
 
     private Node parent;
-    private TreeController genericTreeController;
-    private Tree genericTree;
+    private GenericTreeController genericTreeController;
+    private GenericTree genericTree;
     private Pane scenePane;
 
-    public InsertPressed(Tree genericTree, TreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
+    public InsertPressed(GenericTree genericTree, GenericTreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
         this.genericTree = genericTree;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;
@@ -37,7 +35,7 @@ public class InsertPressed implements UserAction {
         ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
         search_direction.add(this.genericTree.getRootNode());
         Collections.reverse(search_direction);
-        this.genericTreeController.drawAnimationsInsert(search_direction, parentval, nodeVal);
+        drawAnimationsInsert(search_direction, parentval, nodeVal);
         System.out.println("Insert operation.");
 
     }
@@ -50,5 +48,28 @@ public class InsertPressed implements UserAction {
         this.scenePane.getChildren().remove(insertedObject.getParentLine());
         this.genericTreeController.rebuildTree();
         System.out.println("Insert operation undo.");
+    }
+
+    public void drawAnimationsInsert(ArrayList<Node> search_direction, int intParentVal, int intNodeVal) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = genericTreeController.drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsInsert(listLines, listStackPane, intParentVal, intNodeVal));
+        seq.play();
+    }
+
+    private void turnOffAnimationsInsert(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, int intParentVal, int intNodeVal) {
+        try {
+            Node childNode = this.genericTree.insertNode(intParentVal, intNodeVal);
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+            scenePane.getChildren().add(childNode.getParentLine());
+            scenePane.getChildren().add(childNode);
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
