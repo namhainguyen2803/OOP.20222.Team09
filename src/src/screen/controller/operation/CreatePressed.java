@@ -50,15 +50,27 @@ public class CreatePressed implements UserAction {
                 listValNodes.add(newVal);
             }
 
-//            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedBinaryTree) {
-//                System.out.println("Create Balanced Binary Tree");
-//            }
-//
-//            else if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
-//                System.out.println("Create Balanced Tree");
-//            }
+            if (this.genericTreeController.getTreeDataStructure() instanceof BalancedTree) {
+                System.out.println("Create Balanced Tree");
 
-            if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
+                Node root = new Node(listValNodes.get(0));
+                this.rootId = String.valueOf(listValNodes.get(0));
+                genericTree.setTreeController(genericTreeController);
+                genericTree.setRootNode(root);
+                scenePane.getChildren().add(root);
+
+                for (int i = 1; i < listValNodes.size(); i ++) {
+                    Node childNode = root.addChild(listValNodes.get(i));
+                    System.out.println(rootId + " " + childNode.getNodeId());
+                    scenePane.getChildren().add(childNode.getParentLine());
+                    scenePane.getChildren().add(childNode);
+                    root = childNode;
+                }
+
+
+            }
+
+            else if (this.genericTreeController.getTreeDataStructure() instanceof BinaryTree) {
 
                 System.out.println("Create Binary Tree");
 

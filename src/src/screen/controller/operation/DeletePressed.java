@@ -1,6 +1,9 @@
 package src.screen.controller.operation;
 
+import javafx.animation.SequentialTransition;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
 import src.exception.NodeExistedException;
 import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
@@ -53,7 +56,7 @@ public class DeletePressed implements UserAction {
             ArrayList<Node> search_direction = this.genericTree.getPathToRoot(nodeObject);
             search_direction.add(this.genericTree.getRootNode());
             Collections.reverse(search_direction);
-            this.genericTreeController.drawAnimationsDelete(search_direction, nodeObject);
+            drawAnimationsDelete(search_direction, nodeObject);
             System.out.println("Delete operation.");
 
         }
@@ -79,5 +82,29 @@ public class DeletePressed implements UserAction {
             this.scenePane.getChildren().add(tmp.getParentLine());
         }
         System.out.println("Delete operation undo.");
+    }
+
+    private void turnOffAnimationsDelete(ArrayList<Line> listLines, ArrayList<StackPane> listPanes, Node delRootNode) {
+        try {
+            int secondsToSleep = 1;
+            long millisecondsToSleep = secondsToSleep * 1000;
+
+            this.genericTreeController.deleteSubtree(delRootNode);
+
+            Thread.sleep(millisecondsToSleep);
+            scenePane.getChildren().removeAll(listLines);
+            scenePane.getChildren().removeAll(listPanes);
+            this.genericTreeController.rebuildTree();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void drawAnimationsDelete(ArrayList<Node> search_direction, Node delNode) {
+        ArrayList<Line> listLines = new ArrayList<Line>();
+        ArrayList<StackPane> listStackPane = new ArrayList<StackPane>();
+        SequentialTransition seq = this.genericTreeController.drawAnimations(search_direction, listLines, listStackPane);
+        seq.setOnFinished(event -> turnOffAnimationsDelete(listLines, listStackPane, delNode));
+        seq.play();
     }
 }

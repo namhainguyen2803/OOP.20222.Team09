@@ -66,7 +66,7 @@ public class BinaryTreeController extends GenericTreeController{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Looks like the inserted node invades the binary property of tree. Do you still want to insert it?");
+            alert.setContentText("Looks like the inserted node invades the binary property of tree.");
             alert.showAndWait();
         }
         this.getTfNodeInsert().clear();
