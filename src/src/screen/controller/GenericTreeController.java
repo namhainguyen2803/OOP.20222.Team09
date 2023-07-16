@@ -771,6 +771,27 @@ public class GenericTreeController {
 
     }
 
+
+    public void buildGUI(Node root) {
+        scenePane.getChildren().add(root);
+        ArrayList<Node> listNode = new ArrayList<Node>();
+        listNode.add(root);
+
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNode.addAll(tmp.getListOfChildren());
+            }
+            if (!tmp.equals(root)) {
+                scenePane.getChildren().add(tmp);
+                scenePane.getChildren().add(tmp.getParentLine());
+            }
+        }
+    }
+
+
+
+
     public void rebuildTree() {
         Node root = this.getTreeDataStructure().getRootNode();
 

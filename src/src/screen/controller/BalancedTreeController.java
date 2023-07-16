@@ -12,6 +12,7 @@ import src.screen.controller.operation.InsertPressed;
 import src.treedatastructure.BalancedTree;
 import src.treedatastructure.BinaryTree;
 import src.treedatastructure.GenericTree;
+import src.treedatastructure.Node;
 
 import java.util.Optional;
 
@@ -72,7 +73,15 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the inserted node invades the balance property of tree. Do you still want to insert it?");
-            alert.showAndWait();
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    System.out.println("User clicked OK");
+                    BalancedTree balancedTree = (BalancedTree) this.getTreeDataStructure();
+                    Node newNode = balancedTree.makeBalance(intNodeVal);
+                    this.getScenePane().getChildren().add(newNode);
+                    this.getScenePane().getChildren().add(newNode.getParentLine());
+                }
+            });;
         }
         this.getTfNodeInsert().clear();
         this.getTfParentInsert().clear();
