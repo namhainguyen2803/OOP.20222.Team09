@@ -77,7 +77,7 @@ public class GenericTreeController extends TreeController {
     private HBox hBoxDelete;
 
     @FXML
-    private TextField tfNodeDelete;
+    protected TextField tfNodeDelete;
 
     @FXML
     private Button btnDelete;
@@ -89,10 +89,10 @@ public class GenericTreeController extends TreeController {
     private HBox hBoxSearch;
 
     @FXML
-    private TextField tfParentInsert;
+    protected TextField tfParentInsert;
 
     @FXML
-    private TextField tfNodeInsert;
+    protected TextField tfNodeInsert;
 
     @FXML
     private Button btnInsert;
@@ -126,7 +126,7 @@ public class GenericTreeController extends TreeController {
     private String valRootNodeCreate;
 
     @FXML
-    private Pane scenePane;
+    Pane scenePane;
 
     @FXML
     private TextField tfNodeSearch;
@@ -165,7 +165,7 @@ public class GenericTreeController extends TreeController {
 
     private String treeType;
 
-    private ArrayList<UserAction> history = new ArrayList<UserAction>();
+    ArrayList<UserAction> history = new ArrayList<UserAction>();
 
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
@@ -318,7 +318,7 @@ public class GenericTreeController extends TreeController {
 
 
     @FXML
-    private void btnDeletePressed(ActionEvent event) throws TreeException {
+    protected void btnDeletePressed(ActionEvent event) throws TreeException {
         String delNodeVal = tfNodeDelete.getText();
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
@@ -347,7 +347,7 @@ public class GenericTreeController extends TreeController {
     private void tfNodeInsertTyping(ActionEvent event) {}
 
     @FXML
-    private void btnInsertPressed(ActionEvent event) throws TreeException {
+    protected void btnInsertPressed(ActionEvent event) throws TreeException {
 
         try {
 
@@ -549,6 +549,8 @@ public class GenericTreeController extends TreeController {
             scenePane.getChildren().removeAll(listLines);
             scenePane.getChildren().removeAll(listPanes);
         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (TreeException e) {
             throw new RuntimeException(e);
         }
     }

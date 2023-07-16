@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public abstract class GenericTree extends Tree {
+public class GenericTree extends Tree {
     private Node rootNode;
     private GenericTreeController treeController;
 
@@ -319,7 +319,7 @@ public abstract class GenericTree extends Tree {
     }
 
 
-    public void deleteNode(int delId) throws NodeNotExistsException,NodeExistedException,NodeFullChildrenException{
+    public void deleteNode(int delId) throws TreeException {
 
     }
 }

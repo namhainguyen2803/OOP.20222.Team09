@@ -20,4 +20,6 @@ module com.example.treedatastructure {
     opens src.screen.controller to javafx.fxml;
     exports src.screen.controller.operation;
     opens src.screen.controller.operation to javafx.fxml;
+    exports src.exception;
+    opens src.exception to javafx.fxml;
 }

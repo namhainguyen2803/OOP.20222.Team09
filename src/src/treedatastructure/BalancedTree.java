@@ -108,7 +108,7 @@ public class BalancedTree extends GenericTree{
     }
 
     @Override
-    public void deleteNode(int delId) throws NodeNotExistsException,NodeExistedException,NodeFullChildrenException {
+    public void deleteNode(int delId) throws TreeException {
         /*
         Kiểm tra nodeDel có tồn tại không ?
          */
@@ -203,7 +203,7 @@ public class BalancedTree extends GenericTree{
         ancestorBigger.addChild(tmp);
     }
 
-    public BalancedTree copyAndDel(int delId) throws NodeNotExistsException, NodeExistedException, NodeFullChildrenException{
+    public BalancedTree copyAndDel(int delId) throws TreeException {
         ArrayList<Node> queue = new ArrayList<Node>();
         BalancedTree tmpTree = new BalancedTree(this.MAX_DIFF_DISTANCE);
 
@@ -227,7 +227,24 @@ public class BalancedTree extends GenericTree{
         return tmpTree;
     }
 
-    public void delInCopy(int delId) throws NodeFullChildrenException, NodeExistedException, NodeNotExistsException{
+    public void delInCopy(int delId) throws TreeException {
         super.deleteNode(delId);
+    }
+    public void checkDeleteNode(int delId) throws TreeException, NodeNotRemovableException {
+
+        Node nodeToDelete = searchNode(delId);
+        if (nodeToDelete == null) {
+            throw new NodeNotExistsException("The node to delete does not exist in the tree.");
+        }
+
+        if (nodeToDelete.getParentNode() == null && nodeToDelete.getNumChildren() > 0) {
+            throw new NodeNotRemovableException("Cannot delete the root node of a balanced tree with children.");
+        }
+
+
+        BalancedTree tmpTree = copyAndDel(delId);
+        if (!tmpTree.isBalanced()) {
+            throw new TreeNotBalancedException("Deleting the node will make the tree unbalanced.");
+        }
     }
 }
