@@ -8,9 +8,9 @@ import src.exception.TreeException;
 public class BinaryTree extends GenericTree {
     public static final int MAX_CHILDREN = 2;
 
-    public BinaryTree() {
-        this.setTreeType("binary");
-    }
+//    public BinaryTree() {
+//        this.setTreeType("binary");
+//    }
 
     @Override
     public void checkInsertNode(int parentId, int childId) throws TreeException {

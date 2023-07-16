@@ -65,7 +65,7 @@ public class Node extends StackPane {
         this.getChildren().addAll(circle, tfId);
 
         // Hiep fixes
-        this.setLayoutX(410);
+        this.setLayoutX(600);
         this.setLayoutY(55);
     }
 

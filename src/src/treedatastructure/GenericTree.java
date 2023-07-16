@@ -15,7 +15,6 @@ import java.util.Stack;
 
 public class GenericTree extends Tree {
     private Node rootNode;
-    private GenericTreeController treeController;
 
     private double timesleep = 1;
 
@@ -30,9 +29,9 @@ public class GenericTree extends Tree {
 
     private Node traverseNode; // Node này sử dụng cho hàm traverse
 
-    public GenericTree () {
-        this.setTreeType("generic");
-    }
+//    public GenericTree () {
+//        this.setTreeType("generic");
+//    }
 
     @Override
     public Node getRootNode() {
@@ -72,6 +71,7 @@ public class GenericTree extends Tree {
     @Override
     public void createTree(int rootId) {
         this.rootNode = new Node(rootId);
+        System.out.println(rootId + "");
     }
 
     public void createTree() {
@@ -79,68 +79,68 @@ public class GenericTree extends Tree {
         this.rootNode = new Node(id);
     }
 
-    public void traverseTreeBFS() {
-        queue = new ArrayList<Node>();
-
-        queue.add(rootNode);
-        treeController.getRecPseudoBFS1().setFill(recColor2);
-        rootNode.setState(1);
-
-        timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                if (traverseNode == null) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS1().setFill(recColor1);
-                    treeController.getRecPseudoBFS2().setFill(recColor2);
-                    treeController.getRecPseudoBFS3().setFill(recColor2);
-
-                    traverseNode = queue.remove(0);
-                }
-                if (traverseNode.getState() == 1) { // Nếu đã được add vào queue và đc remove ra (xong state1) thì tiếp state2 (Sys.print)
-                    try { // duyệt
-                        traverseNode.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
-                        traverseNode.setState(2);
-                    } catch (NullPointerException e) {
-                        traverseNode.getCircle().setFill(VISIT_COLOR);
-                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth()); // print node tmp
-                        traverseNode.setState(2);
-                    }
-                } else if (traverseNode.getState() == 2) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS2().setFill(recColor1);
-                    treeController.getRecPseudoBFS3().setFill(recColor1);
-                    treeController.getRecPseudoBFS4().setFill(recColor2);
-                    treeController.getRecPseudoBFS5().setFill(recColor2);
-
-                    if (traverseNode.getNumChildren() > 0) { // add con nếu có
-                        for (Node n : traverseNode.getListOfChildren()) {
-                            queue.add(n);
-                            n.setState(1);
-                        }
-                    }
-                    traverseNode.setState(3);
-                } else if (traverseNode.getState() == 3) {
-                    // thay đổi màu
-                    treeController.getRecPseudoBFS4().setFill(recColor1);
-                    treeController.getRecPseudoBFS5().setFill(recColor1);
-                    treeController.getRecPseudoBFS2().setFill(recColor2);
-                    treeController.getRecPseudoBFS3().setFill(recColor2);
-
-                    if (queue.size() > 0) { // lấy node đầu của queue ra
-                        traverseNode = queue.remove(0);
-                    } else {
-                        timeline.stop();
-
-                    }
-                }
-            }
-        }));
-        timeline.setCycleCount(-1);
-        timeline.play();
-    }
+//    public void traverseTreeBFS() {
+//        queue = new ArrayList<Node>();
+//
+//        queue.add(rootNode);
+//        treeController.getRecPseudoBFS1().setFill(recColor2);
+//        rootNode.setState(1);
+//
+//        timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//
+//                if (traverseNode == null) {
+//                    // thay đổi màu
+//                    treeController.getRecPseudoBFS1().setFill(recColor1);
+//                    treeController.getRecPseudoBFS2().setFill(recColor2);
+//                    treeController.getRecPseudoBFS3().setFill(recColor2);
+//
+//                    traverseNode = queue.remove(0);
+//                }
+//                if (traverseNode.getState() == 1) { // Nếu đã được add vào queue và đc remove ra (xong state1) thì tiếp state2 (Sys.print)
+//                    try { // duyệt
+//                        traverseNode.getCircle().setFill(VISIT_COLOR);
+//                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth() + " " + traverseNode.getParentNode().getNodeId()); // print node tmp
+//                        traverseNode.setState(2);
+//                    } catch (NullPointerException e) {
+//                        traverseNode.getCircle().setFill(VISIT_COLOR);
+//                        System.out.println(traverseNode.getNodeId() + " " + traverseNode.getDepth()); // print node tmp
+//                        traverseNode.setState(2);
+//                    }
+//                } else if (traverseNode.getState() == 2) {
+//                    // thay đổi màu
+//                    treeController.getRecPseudoBFS2().setFill(recColor1);
+//                    treeController.getRecPseudoBFS3().setFill(recColor1);
+//                    treeController.getRecPseudoBFS4().setFill(recColor2);
+//                    treeController.getRecPseudoBFS5().setFill(recColor2);
+//
+//                    if (traverseNode.getNumChildren() > 0) { // add con nếu có
+//                        for (Node n : traverseNode.getListOfChildren()) {
+//                            queue.add(n);
+//                            n.setState(1);
+//                        }
+//                    }
+//                    traverseNode.setState(3);
+//                } else if (traverseNode.getState() == 3) {
+//                    // thay đổi màu
+//                    treeController.getRecPseudoBFS4().setFill(recColor1);
+//                    treeController.getRecPseudoBFS5().setFill(recColor1);
+//                    treeController.getRecPseudoBFS2().setFill(recColor2);
+//                    treeController.getRecPseudoBFS3().setFill(recColor2);
+//
+//                    if (queue.size() > 0) { // lấy node đầu của queue ra
+//                        traverseNode = queue.remove(0);
+//                    } else {
+//                        timeline.stop();
+//
+//                    }
+//                }
+//            }
+//        }));
+//        timeline.setCycleCount(-1);
+//        timeline.play();
+//    }
 
     public void backWardTraverseBFS(){
         timeline = new Timeline(new KeyFrame(Duration.seconds(timesleep), new EventHandler<ActionEvent>() {
@@ -181,17 +181,17 @@ public class GenericTree extends Tree {
         timeline.play();
     }
 
-    public void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException {
-        if (!algorithm.equals("BFS") & !algorithm.equals("DFS")){
-            throw new NoneAlgorithmSpecifiedException("The algorithm should be BFS or DFS!");
-        }
-        if (algorithm.equals("BFS")){
-            traverseTreeBFS();
-        }
-        else{
-            traverseTreeDFS();
-        }
-    }
+//    public void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException {
+//        if (!algorithm.equals("BFS") & !algorithm.equals("DFS")){
+//            throw new NoneAlgorithmSpecifiedException("The algorithm should be BFS or DFS!");
+//        }
+//        if (algorithm.equals("BFS")){
+//            traverseTreeBFS();
+//        }
+//        else{
+//            traverseTreeDFS();
+//        }
+//    }
 
     public void checkNodeExisted(int searchId) throws TreeException {
         Node tmp = searchNode(searchId);
@@ -210,10 +210,10 @@ public class GenericTree extends Tree {
 
     public Node searchNode (int searchId){
         ArrayList<Node> queue = new ArrayList<Node>();
-        if (rootNode.getNodeId() == searchId) {
-            return rootNode;
+        if (this.getRootNode().getNodeId() == searchId) {
+            return this.getRootNode();
         }
-        queue.add(rootNode);
+        queue.add(this.getRootNode());
         Node tmp;
         while (queue.size() > 0) {
             tmp = queue.remove(0); // lấy node đầu tiên của queue
@@ -227,6 +227,11 @@ public class GenericTree extends Tree {
             }
         }
         return null;
+    }
+
+    @Override
+    public void traverseTree(String algorithm) throws NoneAlgorithmSpecifiedException {
+
     }
 
     public Node searchNodeByBFS ( int searchId){
@@ -318,10 +323,21 @@ public class GenericTree extends Tree {
 
     }
 
-    public void deleteNode(int delId) {
-        Node delNode = this.searchNode(delId);
-        Node parentDelNode = delNode.getParentNode();
-        parentDelNode.getListOfChildren().remove(delNode);
+    protected void deleteNode(int rootId) {
+        Node root = this.searchNode(rootId);
+        if (!root.equals(this.getRootNode())) {
+            root.getParentNode().getListOfChildren().remove(root);
+        }
+
+        ArrayList<Node> listNode = new ArrayList<Node>(root.getListOfChildren());
+        while (listNode.size() > 0) {
+            Node tmp = listNode.remove(0);
+            if (tmp.getListOfChildren().size() > 0){
+                listNode.addAll(tmp.getListOfChildren());
+            }
+            tmp.getParentNode().getListOfChildren().remove(tmp);
+            tmp.setId(null);
+        }
     }
 
     public void checkDeleteNode(int delId) throws TreeException {

@@ -163,21 +163,20 @@ public class GenericTreeController extends TreeController {
 
     private String algorithm;
 
-    private String treeType;
 
     private ArrayList<UserAction> history = new ArrayList<UserAction>();
 
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
-        this.treeType = treeType;
+        this.setTreeType(treeType);
         this.setTreeDataStructure(new GenericTree());
     }
     @FXML
-    private void initialize() {
+    protected void initialize() {
         stackPaneInput.setVisible(false);
         stackPanePseudo.setVisible(false);
         stackPaneController.setVisible(false);
-        mainLabel.setText(this.treeType);
+        mainLabel.setText(this.getTreeType());
     }
 
 
@@ -427,10 +426,6 @@ public class GenericTreeController extends TreeController {
         return algorithm;
     }
 
-    public String getTreeType() {
-        return treeType;
-    }
-
     public ArrayList<UserAction> getHistory() {
         return history;
     }
@@ -440,10 +435,10 @@ public class GenericTreeController extends TreeController {
         this.resetPressed();
         CreatePressed createPressed;
         if (radioBtnManual.isSelected()) {
-            createPressed = new CreatePressed(this, (GenericTree) this.getTreeDataStructure(), scenePane, tfRootCreate.getText());
+            createPressed = new CreatePressed(this, this.getTreeDataStructure(), scenePane, tfRootCreate.getText());
         }
         else {
-            createPressed = new CreatePressed(this, (GenericTree) this.getTreeDataStructure(), scenePane);
+            createPressed = new CreatePressed(this, this.getTreeDataStructure(), scenePane);
         }
         createPressed.run();
         history.add((UserAction) createPressed);
@@ -498,7 +493,7 @@ public class GenericTreeController extends TreeController {
 
         int intDelNodeVal = Integer.parseInt(delNodeVal);
         try {
-            this.getTreeDataStructure().checkNodeExisted(intDelNodeVal);
+            this.getTreeDataStructure().checkDeleteNode(intDelNodeVal);
             DeletePressed deletePressed = new DeletePressed((GenericTree) this.getTreeDataStructure(), scenePane, this, intDelNodeVal);
             deletePressed.run();
             history.add(deletePressed);
@@ -628,7 +623,7 @@ public class GenericTreeController extends TreeController {
         for (Node node : list_nodes) {
 
             Line connectedLine = node.getParentLine();
-            Duration durationLine = Duration.seconds(1);
+            Duration durationLine = Duration.seconds(0.1);
             Color fromLineColor = node.getColorStrokeLine();
             Color toLineColor = node.getColorFontText();
             Line copiedLine = new Line(connectedLine.getStartX(), connectedLine.getStartY(), connectedLine.getEndX(), connectedLine.getEndY());
@@ -636,7 +631,7 @@ public class GenericTreeController extends TreeController {
             StrokeTransition strokeLineTransition = new StrokeTransition(durationLine, copiedLine, fromLineColor, toLineColor);
             strokeLineTransition.setAutoReverse(true);
 
-            Duration durationNode = Duration.seconds(1);
+            Duration durationNode = Duration.seconds(0.1);
             Color fromNodeColor = node.getColorStrokeCircle();
             Color toNodeColor = node.getColorFontText();
             Circle copied_circle = new Circle(node.getCircle().getRadius(), node.getColorCircle());

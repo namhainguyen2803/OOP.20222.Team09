@@ -25,15 +25,15 @@ public abstract class Tree {
         return this.treeController;
     }
 
-    public void setTreeType(String type) {
-        ArrayList<String> possibleTypes = new ArrayList<String>();
-        possibleTypes.add("generic");
-        possibleTypes.add("binary");
-        possibleTypes.add("balanced");
-        possibleTypes.add("balanced binary");
-        assert possibleTypes.contains(type): "Wrong tree type";
-        this.treeType = type;
-    }
+//    public void setTreeType(String type) {
+//        ArrayList<String> possibleTypes = new ArrayList<String>();
+//        possibleTypes.add("generic");
+//        possibleTypes.add("binary");
+//        possibleTypes.add("balanced");
+//        possibleTypes.add("balanced binary");
+//        assert possibleTypes.contains(type): "Wrong tree type";
+//        this.treeType = type;
+//    }
 
 //    public void addData(Node node) {
 //        this.data.add(node);
@@ -70,4 +70,5 @@ public abstract class Tree {
 
     public abstract void checkNodeExisted(int nodeVal) throws TreeException;
 
+    public abstract void checkDeleteNode(int intDelNodeVal) throws TreeException;
 }

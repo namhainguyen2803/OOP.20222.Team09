@@ -7,7 +7,17 @@ import java.util.ArrayList;
 
 public abstract class TreeController {
 
+    private String treeType;
+
     private Tree treeDataStructure;
+
+    public String getTreeType() {
+        return treeType;
+    }
+
+    public void setTreeType(String treeType) {
+        this.treeType = treeType;
+    }
 
     public void setTreeDataStructure (Tree tree) {
         this.treeDataStructure = tree;
@@ -20,4 +30,6 @@ public abstract class TreeController {
     public abstract void drawAnimationsInsert(ArrayList<Node> searchDirection, int parentval, int nodeVal);
 
     public abstract void rebuildTree();
+
+    public abstract void resetPressed();
 }

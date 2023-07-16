@@ -6,6 +6,7 @@ import src.exception.NodeFullChildrenException;
 import src.exception.NodeNotExistsException;
 import src.screen.controller.BinaryTreeController;
 import src.screen.controller.GenericTreeController;
+import src.screen.controller.TreeController;
 import src.treedatastructure.*;
 
 import java.util.ArrayList;
@@ -16,13 +17,13 @@ import java.util.Random;
 public class CreatePressed implements UserAction {
     private boolean isRandom;
     private String rootId;
-    private GenericTreeController genericTreeController;
+    private TreeController genericTreeController;
     private Pane scenePane;
-    private GenericTree genericTree;
+    private Tree genericTree;
     private String treeType;
 
 
-    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane, String rootId) {
+    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane, String rootId) {
         this.rootId = rootId;
         this.isRandom = false;
         this.genericTreeController = genericTreeController;
@@ -30,7 +31,7 @@ public class CreatePressed implements UserAction {
         this.genericTree = genericTree;
     }
 
-    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane) {
+    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane) {
         this.isRandom = true;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;

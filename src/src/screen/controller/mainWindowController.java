@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import src.treedatastructure.BalancedTree;
 import src.treedatastructure.BinaryTree;
 
 import java.io.IOException;
@@ -61,8 +62,8 @@ public class mainWindowController {
     void btnBalancedTreePressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/GenericTree.fxml"));
         mainStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        GenericTreeController genericController = new GenericTreeController(mainStage, "Balanced Tree Visualizer");
-        loader.setController(genericController);
+        BalancedTreeController balancedTreeControlloer = new BalancedTreeController(mainStage, "Balanced Tree Visualizer");
+        loader.setController(balancedTreeControlloer);
         Scene scene = new Scene(loader.load(), 1024, 768);
         this.mainStage.setTitle("Balanced Tree");
 //        this.mainStage.setFullScreen(true);
