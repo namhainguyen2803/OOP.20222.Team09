@@ -23,11 +23,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
-public class GenericTreeController extends TreeController {
+public class GenericTreeController {
 
     @FXML
     private Button btnOpsCreate;
@@ -192,6 +191,15 @@ public class GenericTreeController extends TreeController {
 
     private ArrayList<UserAction> history = new ArrayList<UserAction>();
 
+
+    private String treeType;
+
+    private GenericTree treeDataStructure;
+
+    public GenericTree getTreeDataStructure() {
+        return this.treeDataStructure;
+    }
+
     public GenericTreeController(Stage stage, String treeType) {
         this.menuStage = stage;
         this.setTreeType(treeType);
@@ -205,7 +213,17 @@ public class GenericTreeController extends TreeController {
         mainLabel.setText(this.getTreeType());
     }
 
+    public String getTreeType() {
+        return treeType;
+    }
 
+    public void setTreeType(String treeType) {
+        this.treeType = treeType;
+    }
+
+    public void setTreeDataStructure (GenericTree tree) {
+        this.treeDataStructure = tree;
+    }
     public Rectangle getRecPseudoBFS1() {
         return recPseudoBFS1;
     }

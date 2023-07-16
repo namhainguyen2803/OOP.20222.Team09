@@ -10,6 +10,7 @@ import src.exception.*;
 import src.screen.controller.operation.DeletePressed;
 import src.screen.controller.operation.InsertPressed;
 import src.treedatastructure.BalancedTree;
+import src.treedatastructure.BinaryTree;
 import src.treedatastructure.GenericTree;
 
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class BalancedTreeController extends GenericTreeController {
     public BalancedTreeController(Stage stage, String treeType) {
         super(stage, treeType);
         this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedTree());
     }
 
     @FXML

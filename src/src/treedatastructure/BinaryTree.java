@@ -8,10 +8,6 @@ import src.exception.TreeException;
 public class BinaryTree extends GenericTree {
     public static final int MAX_CHILDREN = 2;
 
-//    public BinaryTree() {
-//        this.setTreeType("binary");
-//    }
-
     @Override
     public void checkInsertNode(int parentId, int childId) throws TreeException {
         super.checkInsertNode(parentId, childId);
@@ -35,9 +31,5 @@ public class BinaryTree extends GenericTree {
     public boolean checkFullChildrenNode(int nodeVal){
         Node node = this.searchNode(nodeVal);
         return node.getNumChildren() == MAX_CHILDREN;
-    }
-
-    public boolean checkBinaryProperty(Node node) {
-        return node.getNumChildren() <= 1;
     }
 }

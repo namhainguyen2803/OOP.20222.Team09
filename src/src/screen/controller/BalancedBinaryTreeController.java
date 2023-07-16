@@ -17,6 +17,8 @@ public class BalancedBinaryTreeController extends BalancedTreeController {
 
     public BalancedBinaryTreeController(Stage stage, String treeType) {
         super(stage, treeType);
+        this.setTreeType(treeType);
+        this.setTreeDataStructure(new BalancedBinaryTree());
     }
 
     @FXML

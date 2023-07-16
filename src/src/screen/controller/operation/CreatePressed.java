@@ -1,29 +1,23 @@
 package src.screen.controller.operation;
 
 import javafx.scene.layout.Pane;
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
-import src.screen.controller.BinaryTreeController;
 import src.screen.controller.GenericTreeController;
-import src.screen.controller.TreeController;
 import src.treedatastructure.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Random;
 
 public class CreatePressed implements UserAction {
     private boolean isRandom;
     private String rootId;
-    private TreeController genericTreeController;
+    private GenericTreeController genericTreeController;
     private Pane scenePane;
-    private Tree genericTree;
+    private GenericTree genericTree;
     private String treeType;
 
 
-    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane, String rootId) {
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane, String rootId) {
         this.rootId = rootId;
         this.isRandom = false;
         this.genericTreeController = genericTreeController;
@@ -31,7 +25,7 @@ public class CreatePressed implements UserAction {
         this.genericTree = genericTree;
     }
 
-    public CreatePressed(TreeController genericTreeController, Tree genericTree, Pane scenePane) {
+    public CreatePressed(GenericTreeController genericTreeController, GenericTree genericTree, Pane scenePane) {
         this.isRandom = true;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;

@@ -1,12 +1,7 @@
 package src.screen.controller.operation;
 
-import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
-import src.exception.NodeExistedException;
-import src.exception.NodeFullChildrenException;
-import src.exception.NodeNotExistsException;
 import src.screen.controller.GenericTreeController;
-import src.screen.controller.TreeController;
 import src.treedatastructure.*;
 
 import java.util.ArrayList;
@@ -17,11 +12,11 @@ public class InsertPressed implements UserAction {
     private int parentval;
 
     private Node parent;
-    private TreeController genericTreeController;
-    private Tree genericTree;
+    private GenericTreeController genericTreeController;
+    private GenericTree genericTree;
     private Pane scenePane;
 
-    public InsertPressed(Tree genericTree, TreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
+    public InsertPressed(GenericTree genericTree, GenericTreeController genericTreeController, Pane scenePane, int nodeVal, int parentval) {
         this.genericTree = genericTree;
         this.genericTreeController = genericTreeController;
         this.scenePane = scenePane;

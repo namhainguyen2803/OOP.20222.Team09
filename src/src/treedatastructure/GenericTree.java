@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class GenericTree extends Tree {
+public class GenericTree {
     private Node rootNode;
 
     private double timesleep = 1;
@@ -34,17 +34,27 @@ public class GenericTree extends Tree {
 
     private Node traverseNode; // Node này sử dụng cho hàm traverse
 
-//    public GenericTree () {
-//        this.setTreeType("generic");
-//    }
+    private GenericTreeController treeController;
 
-    @Override
+    private String treeType;
+
+    public String getTreeType() {
+        return this.treeType;
+    }
+
+    public void setTreeController(GenericTreeController treeController) {
+        this.treeController = treeController;
+    }
+
+    public GenericTreeController getTreeController() {
+        return this.treeController;
+    }
+
     public Node getRootNode() {
         return this.rootNode;
     }
 
     //    why we need this method?
-    @Override
     public void setRootNode(Node newRoot) {
         this.rootNode = newRoot;
         this.rootNode.setDepth(0);
@@ -73,7 +83,6 @@ public class GenericTree extends Tree {
     }
 
 
-    @Override
     public void createTree(int rootId) {
         this.rootNode = new Node(rootId);
         System.out.println(rootId + "");
@@ -578,7 +587,6 @@ public class GenericTree extends Tree {
         return list_node;
     }
 
-    @Override
     public Node insertNode (int parentId, int childId) {
         Node parent = searchNode(parentId);
         Node childNode = parent.addChild(childId);
@@ -592,7 +600,6 @@ public class GenericTree extends Tree {
     }
 
 
-    @Override
     public void updateNode ( int oldId, int newId) {
         Node oldNode = searchNode(oldId);
         oldNode.updateId(newId);

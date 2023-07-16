@@ -82,20 +82,16 @@ public class BalancedTree extends GenericTree{
 
     public BalancedTree copyBalanceTree(BalancedTree oldTree) {
         ArrayList<Node> oldQueue = new ArrayList<Node>();
-//        ArrayList<Node> newQueue = new ArrayList<Node>();
         BalancedTree newTree = new BalancedTree(this.getMaxDiffDistance());
         oldQueue.add(oldTree.getRootNode());
         Node newRoot = new Node(oldTree.getRootNode().getNodeId());
         newTree.setRootNode(newRoot);
-//        newQueue.add(newRoot);
         while (oldQueue.size() > 0) {
             Node tmp = oldQueue.remove(0);
-//            Node newTmp = newQueue.remove(0);
             if (tmp.getListOfChildren().size() > 0) {
                 for (Node childNode: tmp.getListOfChildren()) {
                     Node newChild = newTree.insertNode(tmp.getNodeId(), childNode.getNodeId());
                     oldQueue.add(childNode);
-//                    newQueue.add(newChild);
                 }
             }
         }
@@ -106,7 +102,6 @@ public class BalancedTree extends GenericTree{
     @Override
     public void checkDeleteNode(int oldNode) throws TreeException {
         super.checkDeleteNode(oldNode);
-
         BalancedTree tmpBalancedTree = copyBalanceTree(this);
         System.out.println("hello " + tmpBalancedTree.getRootNode().getNodeId());
         tmpBalancedTree.deleteNode(oldNode);
