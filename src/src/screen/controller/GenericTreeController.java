@@ -791,7 +791,6 @@ public class GenericTreeController {
 
 
 
-
     public void rebuildTree() {
         Node root = this.getTreeDataStructure().getRootNode();
 
