@@ -9,13 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
-import src.treedatastructure.BalancedTree;
-import src.treedatastructure.BinaryTree;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class mainWindowController {
+public class MainWindowController {
     @FXML
     private Label welcomeText;
 

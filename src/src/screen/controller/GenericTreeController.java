@@ -5,7 +5,6 @@ import src.screen.controller.operation.*;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -522,7 +521,7 @@ public class GenericTreeController {
     private void tfNodeTraverseTyping(ActionEvent event) {}
 
     @FXML
-    private void btnTraversePressed(ActionEvent event) {
+    protected void btnTraversePressed(ActionEvent event) {
         try {
             stackPanePseudo.setVisible(true);
             if (algorithm.equals("BFS")){
@@ -866,7 +865,7 @@ public class GenericTreeController {
     public void backPressed() throws IOException {
 //        System.out.println("Back pressed"); for debugging
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
-        mainWindowController mainController = new mainWindowController();
+        MainWindowController mainController = new MainWindowController();
         loader.setController(mainController);
         Scene scene = new Scene(loader.load(), 1024, 768);
         this.menuStage.setTitle("Tree View Visualizer");
@@ -907,7 +906,7 @@ public class GenericTreeController {
     @FXML
     public void mainLabelPressed() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/mainWindow.fxml"));
-        mainWindowController mainController = new mainWindowController();
+        MainWindowController mainController = new MainWindowController();
         loader.setController(mainController);
         Scene scene = new Scene(loader.load(), 1024, 768);
         this.menuStage.setTitle("Tree View Visualizer");

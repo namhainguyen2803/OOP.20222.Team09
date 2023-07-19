@@ -20,10 +20,6 @@ public class BalancedTree extends GenericTree{
         this.MAX_DIFF_DISTANCE = MAX_DIFF_DISTANCE;
     }
 
-    public void setMaxDiffDistance(int maxDiff) {
-        this.MAX_DIFF_DISTANCE = maxDiff;
-    }
-
     public int getMaxDiffDistance() {
         return this.MAX_DIFF_DISTANCE;
     }
