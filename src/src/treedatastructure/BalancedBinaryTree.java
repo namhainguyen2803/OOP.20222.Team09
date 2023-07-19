@@ -24,10 +24,6 @@ public class BalancedBinaryTree extends BalancedTree {
         }
     }
 
-    public boolean checkFullChildrenNode(Node node){
-        return node.getNumChildren() == MAX_CHILDREN;
-    }
-
     public boolean checkFullChildrenNode(int nodeVal){
         Node node = this.searchNode(nodeVal);
         return node.getNumChildren() == MAX_CHILDREN;

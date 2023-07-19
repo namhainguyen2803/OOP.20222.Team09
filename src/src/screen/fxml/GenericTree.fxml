@@ -120,19 +120,22 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hBoxTraverse" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;" visible="false">
+            <HBox fx:id="hBoxTraverse" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: A076F9;">
                <children>
                   <Label text="Algorithm: ">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <RadioButton fx:id="radioBtnBFS" mnemonicParsing="false" onAction="#radioBtnBFSPressed" text="BFS">
+                  <RadioButton fx:id="radioBtnBFS" mnemonicParsing="false" onAction="#radioBtnBFSPressed" selected="true" text="BFS">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="radioBtnAlgo" />
+                     </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="radioBtnDFS" mnemonicParsing="false" onAction="#radioBtnDFSPressed" text="DFS">
+                  <RadioButton fx:id="radioBtnDFS" mnemonicParsing="false" onAction="#radioBtnDFSPressed" text="DFS" toggleGroup="$radioBtnAlgo">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

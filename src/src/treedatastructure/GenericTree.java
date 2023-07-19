@@ -36,12 +36,6 @@ public class GenericTree {
 
     private GenericTreeController treeController;
 
-    private String treeType;
-
-    public String getTreeType() {
-        return this.treeType;
-    }
-
     public void setTreeController(GenericTreeController treeController) {
         this.treeController = treeController;
     }
@@ -523,58 +517,6 @@ public class GenericTree {
                 }
             }
         }
-        return null;
-    }
-
-    public Node searchNodeByBFS ( int searchId){
-        ArrayList<Node> queue = new ArrayList<Node>();
-        if (rootNode.getNodeId() == searchId) {
-            return rootNode;
-        }
-        queue.add(rootNode);
-
-        Node tmp;
-        while (queue.size() > 0) {
-            tmp = queue.remove(0); // lấy node đầu tiên của queue
-
-            if (tmp.getNumChildren() > 0) {
-                for (Node n : tmp.getListOfChildren()) {
-                    if (n.getNodeId() == searchId) {
-                        return n;
-                    }
-                    queue.add(n);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public ArrayList<Node> getDirectionByDFS ( int searchId){
-        Stack<Node> stack = new Stack<Node>();
-        ArrayList<Node> visited_nodes = new ArrayList<Node>();
-
-        stack.push(rootNode);
-        visited_nodes.add(rootNode);
-        if (rootNode.getNodeId() == searchId) {
-            return visited_nodes;
-        }
-
-        Node tmp;
-        while (stack.size() > 0) {
-            tmp = stack.remove(stack.size() - 1); // lấy node đầu tiên của queue
-
-            if (tmp.getNumChildren() > 0) {
-                for (Node n : tmp.getListOfChildren()) {
-                    stack.push(n);
-                    visited_nodes.add(n);
-                    if (n.getNodeId() == searchId) {
-                        return visited_nodes;
-                    }
-                }
-            }
-        }
-
         return null;
     }
 

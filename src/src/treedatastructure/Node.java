@@ -209,32 +209,6 @@ public class Node extends StackPane {
         }
     }
 
-
-    public void addChildMakeBalance(Node child){ // method này dùng cho makeBalance() trong BalancedTree
-        child.depth = this.depth + 1;
-        child.parentNode = this;
-        listOfChildren.add(child);
-
-        if (child.getNumChildren()>0){ // nếu là 1 subtree
-
-            ArrayList<Node> queue = new ArrayList<Node>();
-            queue.add(child);
-
-            Node tmp;
-            while (queue.size() > 0){
-                tmp = queue.remove(0); // lấy node đầu tiên của queue
-
-                if (tmp.getNumChildren() > 0) {
-                    for (Node n : tmp.getListOfChildren()) {
-                        n.depth = tmp.depth + 1;
-                        queue.add(n);
-                    }
-                }
-            }
-        }
-    }
-
-
     public int getNumChildren(){
         return this.listOfChildren.size();
     }
@@ -245,28 +219,6 @@ public class Node extends StackPane {
 
     public boolean isLeaf(){
         return this.getNumChildren() == 0;
-    }
-
-    public boolean isAncestor(Node node){
-        ArrayList<Node> queue = new ArrayList<Node>();
-
-        queue.add(this);
-
-        Node tmp;
-        while (queue.size() > 0){
-            tmp = queue.remove(0); // lấy node đầu tiên của queue
-
-            if (tmp.getNumChildren() > 0) {
-                for (Node n : tmp.getListOfChildren()) {
-                    if (n.equals(node)){
-                        return true;
-                    }
-                    queue.add(n);
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override

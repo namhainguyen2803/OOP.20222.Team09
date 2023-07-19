@@ -1,6 +1,6 @@
 package src.test;
 
-import src.screen.controller.mainWindowController;
+import src.screen.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,12 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class mainWindowApplication extends Application {
+public class MainWindowApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader mainLoader = new FXMLLoader(mainWindowApplication.class.getResource("/src/screen/fxml/mainWindow.fxml"));
-            mainWindowController mainController = new mainWindowController();
+            FXMLLoader mainLoader = new FXMLLoader(MainWindowApplication.class.getResource("/src/screen/fxml/mainWindow.fxml"));
+            MainWindowController mainController = new MainWindowController();
             mainLoader.setController(mainController);
             Scene scene = new Scene(mainLoader.load());
             stage.setTitle("Tree View Visualizer");
