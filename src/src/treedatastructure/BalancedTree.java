@@ -1,10 +1,7 @@
 package src.treedatastructure;
 
-import javafx.fxml.FXML;
-import javafx.stage.Stage;
 import src.exception.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -108,7 +105,7 @@ public class BalancedTree extends GenericTree{
         }
     }
 
-    public Node makeBalance(int newNodeVal) {
+    public Node makeBalanceInsert(int newNodeVal) {
         ArrayList<Node> queue = new ArrayList<Node>();
         HashMap<Integer, Integer> depthLeaf = new HashMap<Integer, Integer>();
 
