@@ -48,8 +48,11 @@ public class GenericTree {
         return this.rootNode;
     }
 
-    //    why we need this method?
     public void setRootNode(Node newRoot) {
+        if (newRoot==null){
+            this.rootNode = null;
+            return;
+        }
         this.rootNode = newRoot;
         this.rootNode.setDepth(0);
         this.rootNode.setParentNode(null);
@@ -574,5 +577,25 @@ public class GenericTree {
 
     public void checkDeleteNode(int delId) throws TreeException {
         this.checkNodeExisted(delId);
+    }
+
+    public void printBFS(){
+        if (this.rootNode==null){
+            System.out.println("Root = null");
+            return;
+        }
+        queue = new ArrayList<Node>();
+        queue.add(this.rootNode);
+        while (queue.size()>0){
+            Node tmp = queue.remove(0);
+            System.out.print("Node " + tmp.getNodeId() + " ("+tmp.getDepth()+") " + "child: ");
+            if(tmp.getNumChildren()>0){
+                for (Node child : tmp.getListOfChildren()){
+                    System.out.print(child.getNodeId()+" ");
+                    queue.add(child);
+                }
+            }
+            System.out.println("");
+        }
     }
 }

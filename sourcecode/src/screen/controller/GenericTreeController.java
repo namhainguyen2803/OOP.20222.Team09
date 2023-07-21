@@ -607,18 +607,6 @@ public class GenericTreeController {
 
 
     @FXML
-    private void tfParentInsertTyping(ActionEvent event) {}
-
-    @FXML
-    private void tfNodeInsertTyping(ActionEvent event) {}
-
-    @FXML
-    private void tfOldNodeUpdateTyping(ActionEvent event) {}
-
-    @FXML
-    private void tfNewNodeUpdateTyping(ActionEvent event) {}
-
-    @FXML
     protected void btnInsertPressed(ActionEvent event) throws TreeException {
 
         try {
@@ -913,6 +901,11 @@ public class GenericTreeController {
         this.menuStage.setFullScreen(true);
         this.menuStage.setScene(scene);
         this.menuStage.show();
+    }
+
+    @FXML
+    public void printBtnPressed(ActionEvent e){
+        this.getTreeDataStructure().printBFS();
     }
 }
 

@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox prefHeight="63.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
@@ -73,7 +61,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfNodeSearch" onAction="#tfNodeSearchTyping" prefHeight="26.0" prefWidth="80.0">
+                  <TextField fx:id="tfNodeSearch" prefHeight="26.0" prefWidth="80.0">
                      <HBox.margin>
                         <Insets left="4.0" />
                      </HBox.margin>
@@ -106,7 +94,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfRootCreate" onAction="#tfRootCreateTyping" prefHeight="26.0" prefWidth="80.0">
+                        <TextField fx:id="tfRootCreate" prefHeight="26.0" prefWidth="80.0">
                            <HBox.margin>
                               <Insets right="30.0" />
                            </HBox.margin>
@@ -157,7 +145,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfNodeDelete" onAction="#tfNodeDeleteTyping" prefHeight="26.0" prefWidth="80.0">
+                  <TextField fx:id="tfNodeDelete" prefHeight="26.0" prefWidth="80.0">
                      <HBox.margin>
                         <Insets left="4.0" />
                      </HBox.margin>
@@ -179,7 +167,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfParentInsert" onAction="#tfParentInsertTyping" prefHeight="26.0" prefWidth="80.0">
+                  <TextField fx:id="tfParentInsert" prefHeight="26.0" prefWidth="80.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -192,7 +180,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                        <TextField fx:id="tfNodeInsert" onAction="#tfNodeInsertTyping" prefHeight="26.0" prefWidth="80.0">
+                        <TextField fx:id="tfNodeInsert" prefHeight="26.0" prefWidth="80.0">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -214,7 +202,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfOldNodeUpdate" onAction="#tfOldNodeUpdateTyping" prefHeight="26.0" prefWidth="80.0">
+                  <TextField fx:id="tfOldNodeUpdate" prefHeight="26.0" prefWidth="80.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -227,7 +215,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfNewNodeUpdate" onAction="#tfNewNodeUpdateTyping" prefHeight="26.0" prefWidth="80.0">
+                  <TextField fx:id="tfNewNodeUpdate" prefHeight="26.0" prefWidth="80.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -433,7 +421,7 @@
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: EDE4FF;" BorderPane.alignment="CENTER">
          <children>
-                  <TitledPane animated="false" prefHeight="218.0" prefWidth="65.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#6528f7">
+                  <TitledPane animated="false" prefHeight="284.0" prefWidth="100.0" style="-fx-background-color: EFE1D1;" text="Operations" textFill="#6528f7">
                      <content>
                         <VBox prefHeight="373.0" prefWidth="95.0">
                            <children>
@@ -463,6 +451,7 @@
                            </VBox.margin>
                         </Button>
                         <Button fx:id="btnOpsSearch" mnemonicParsing="false" onAction="#btnOpsSearchPressed" prefHeight="26.0" prefWidth="97.0" text="Search" />
+                        <Button mnemonicParsing="false" onAction="#printBtnPressed" text="printBtn" />
                            </children>
                         </VBox>
                      </content>
