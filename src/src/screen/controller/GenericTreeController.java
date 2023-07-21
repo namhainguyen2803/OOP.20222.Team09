@@ -792,35 +792,36 @@ public class GenericTreeController {
 
     public void rebuildTree() {
         Node root = this.getTreeDataStructure().getRootNode();
-
-        scenePane.getChildren().remove(root);
-        ArrayList<Node> listNodeDel = new ArrayList<Node>(root.getListOfChildren());
-        while (listNodeDel.size() > 0) {
-            Node tmp = listNodeDel.remove(0);
-            if (tmp.getListOfChildren().size() > 0){
-                listNodeDel.addAll(tmp.getListOfChildren());
-            }
-            scenePane.getChildren().remove(tmp);
-            scenePane.getChildren().remove(tmp.getParentLine());
-        }
-
-        scenePane.getChildren().add(root);
-        ArrayList<Node> listNode = new ArrayList<Node>();
-        listNode.add(root);
-        while (listNode.size() > 0) {
-            Node tmp = listNode.remove(0);
-            if (tmp.getListOfChildren().size() > 0){
-                ArrayList<Node> tmpListNode = new ArrayList<Node>(tmp.getListOfChildren());
-                tmp.getListOfChildren().removeAll(tmp.getListOfChildren());
-                for (Node childNode: tmpListNode) {
-                    tmp.addChild(childNode);
-                    listNode.add(childNode);
+        if (root != null) {
+            scenePane.getChildren().remove(root);
+            ArrayList<Node> listNodeDel = new ArrayList<Node>(root.getListOfChildren());
+            while (listNodeDel.size() > 0) {
+                Node tmp = listNodeDel.remove(0);
+                if (tmp.getListOfChildren().size() > 0) {
+                    listNodeDel.addAll(tmp.getListOfChildren());
                 }
+                scenePane.getChildren().remove(tmp);
+                scenePane.getChildren().remove(tmp.getParentLine());
             }
 
-            if (!tmp.equals(root)) {
-                scenePane.getChildren().add(tmp);
-                scenePane.getChildren().add(tmp.getParentLine());
+            scenePane.getChildren().add(root);
+            ArrayList<Node> listNode = new ArrayList<Node>();
+            listNode.add(root);
+            while (listNode.size() > 0) {
+                Node tmp = listNode.remove(0);
+                if (tmp.getListOfChildren().size() > 0) {
+                    ArrayList<Node> tmpListNode = new ArrayList<Node>(tmp.getListOfChildren());
+                    tmp.getListOfChildren().removeAll(tmp.getListOfChildren());
+                    for (Node childNode : tmpListNode) {
+                        tmp.addChild(childNode);
+                        listNode.add(childNode);
+                    }
+                }
+
+                if (!tmp.equals(root)) {
+                    scenePane.getChildren().add(tmp);
+                    scenePane.getChildren().add(tmp.getParentLine());
+                }
             }
         }
     }
@@ -842,6 +843,9 @@ public class GenericTreeController {
             tmp.setId(null);
             scenePane.getChildren().remove(tmp);
             scenePane.getChildren().remove(tmp.getParentLine());
+        }
+        if (root.equals(this.getTreeDataStructure().getRootNode())) {
+            this.getTreeDataStructure().devastateRootNode();
         }
     }
 

@@ -48,6 +48,10 @@ public class GenericTree {
         return this.rootNode;
     }
 
+    public void devastateRootNode() {
+        this.rootNode = null;
+    }
+
     //    why we need this method?
     public void setRootNode(Node newRoot) {
         this.rootNode = newRoot;
