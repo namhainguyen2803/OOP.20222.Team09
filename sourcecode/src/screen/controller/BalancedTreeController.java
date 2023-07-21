@@ -107,9 +107,20 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setTitle("Exception");
             alert.setHeaderText(null);
             alert.setContentText("Looks like the deleted node will invade the balance property of tree..");
-            alert.showAndWait();
+            alert.showAndWait().ifPresent(response -> {
+                if (response==ButtonType.OK){
+                    this.removeTreeFromGUI();
+                    BalancedTree tree = (BalancedTree) this.getTreeDataStructure();
+                    tree.makeBalanceDelete(intDelNodeVal);
+
+                }
+            });
         }
         this.getTfNodeDelete().clear();
+    }
+
+    public void removeTreeFromGUI(){
+        this.getScenePane().getChildren().clear();
     }
 
 

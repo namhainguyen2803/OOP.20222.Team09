@@ -265,6 +265,60 @@ public class Node extends StackPane {
         return this.getListOfChildren().get(this.getNumChildren()-1);
     }
 
+    public void addChild_NO_GUI(int id){
+        Node child = new Node(id);
+        child.depth = this.depth + 1;
+        child.parentNode = this;
+        listOfChildren.add(child);
+
+    }
+    public void addChildmakeBalanceDel(Node child){ // method này dùng cho makeBalance() trong BalancedTree
+        child.depth = this.depth + 1;
+        child.parentNode = this;
+        listOfChildren.add(child);
+
+        if (child.getNumChildren()>0){ // nếu là 1 subtree
+
+            ArrayList<Node> queue = new ArrayList<Node>();
+            queue.add(child);
+
+            Node tmp;
+            while (queue.size() > 0){
+                tmp = queue.remove(0); // lấy node đầu tiên của queue
+
+                if (tmp.getNumChildren() > 0) {
+                    for (Node n : tmp.getListOfChildren()) {
+                        n.depth = tmp.depth + 1;
+                        queue.add(n);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean isAncestor(Node node){
+        if (this.nodeId==node.nodeId){
+            System.out.println("isAncestor: nó là chính nó");
+            return false;
+        }
+
+        ArrayList<Node> queue = new ArrayList<Node>();
+        queue.add(this);
+        while (queue.size()>0){
+            Node tmp = queue.remove(0);
+            if (tmp.getNumChildren()>0){
+                for (Node child: tmp.getListOfChildren()){
+                    if (child.nodeId==node.nodeId){
+                        return true;
+                    }
+                    queue.add(child);
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
 
