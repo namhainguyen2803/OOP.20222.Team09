@@ -110,7 +110,7 @@ public class BalancedTreeController extends GenericTreeController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Looks like the inserted node will invade the balance property of tree..");
+            alert.setContentText("Looks like the deleted node will invade the balance property of tree..");
             alert.showAndWait();
         }
         this.getTfNodeDelete().clear();
