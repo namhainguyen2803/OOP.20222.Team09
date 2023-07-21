@@ -451,7 +451,6 @@
                            </VBox.margin>
                         </Button>
                         <Button fx:id="btnOpsSearch" mnemonicParsing="false" onAction="#btnOpsSearchPressed" prefHeight="26.0" prefWidth="97.0" text="Search" />
-                        <Button mnemonicParsing="false" onAction="#printBtnPressed" text="printBtn" />
                            </children>
                         </VBox>
                      </content>

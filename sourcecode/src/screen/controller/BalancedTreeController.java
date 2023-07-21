@@ -50,7 +50,7 @@ public class BalancedTreeController extends GenericTreeController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Look likes the parent node does not exist.");
+            alert.setContentText("Look likes the child node has existed.");
 
             alert.showAndWait();
         }
@@ -59,7 +59,7 @@ public class BalancedTreeController extends GenericTreeController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Looks like the child node has existed.");
+            alert.setContentText("Looks like the parent node does not exist.");
 
             alert.showAndWait();
         }
@@ -106,7 +106,8 @@ public class BalancedTreeController extends GenericTreeController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Exception");
             alert.setHeaderText(null);
-            alert.setContentText("Looks like the deleted node will invade the balance property of tree..");
+            alert.getDialogPane().setPrefSize(480, 320);
+            alert.setContentText("Looks like the deleted node will invade the balance property of tree..\nDo you want to delete?\nWARNING: We will change the tree to restore its balance!");
             alert.showAndWait().ifPresent(response -> {
                 if (response==ButtonType.OK){
                     this.removeTreeFromGUI();

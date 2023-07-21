@@ -907,10 +907,6 @@ public class GenericTreeController {
         this.menuStage.show();
     }
 
-    @FXML
-    public void printBtnPressed(ActionEvent e){
-        this.getTreeDataStructure().printBFS();
-    }
 }
 
 
