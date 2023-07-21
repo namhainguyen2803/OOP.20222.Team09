@@ -64,7 +64,15 @@ public class DeletePressed implements UserAction {
 
     @Override
     public void undo() {
-        Node newNode = this.parentDelNode.addChild(intDelNodeVal);
+        Node newNode;
+        if (this.parentDelNode != null) {
+            newNode = this.parentDelNode.addChild(intDelNodeVal);
+        }
+        else {
+//            if user delete root
+            newNode = new Node(intDelNodeVal);
+            this.genericTree.setRootNode(newNode);
+        }
 
         ArrayList<Node> createdDelNode = new ArrayList<Node>();
         createdDelNode.add(newNode);
@@ -81,6 +89,7 @@ public class DeletePressed implements UserAction {
             this.scenePane.getChildren().add(tmp);
             this.scenePane.getChildren().add(tmp.getParentLine());
         }
+
         System.out.println("Delete operation undo.");
     }
 
@@ -95,6 +104,7 @@ public class DeletePressed implements UserAction {
             scenePane.getChildren().removeAll(listLines);
             scenePane.getChildren().removeAll(listPanes);
             this.genericTreeController.rebuildTree();
+//            System.out.println("hello Delete operation, root node: " + this.genericTree.getRootNode().getNodeId());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

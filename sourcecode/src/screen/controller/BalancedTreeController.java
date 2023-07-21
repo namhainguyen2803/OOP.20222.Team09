@@ -4,17 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import src.exception.*;
 import src.screen.controller.operation.DeletePressed;
 import src.screen.controller.operation.InsertPressed;
 import src.treedatastructure.BalancedTree;
-import src.treedatastructure.BinaryTree;
 import src.treedatastructure.GenericTree;
 import src.treedatastructure.Node;
-
-import java.util.Optional;
 
 public class BalancedTreeController extends GenericTreeController {
 
@@ -77,7 +73,7 @@ public class BalancedTreeController extends GenericTreeController {
                 if (response == ButtonType.OK) {
                     System.out.println("User clicked OK");
                     BalancedTree balancedTree = (BalancedTree) this.getTreeDataStructure();
-                    Node newNode = balancedTree.makeBalance(intNodeVal);
+                    Node newNode = balancedTree.makeBalanceInsert(intNodeVal);
                     this.getScenePane().getChildren().add(newNode);
                     this.getScenePane().getChildren().add(newNode.getParentLine());
                 }
