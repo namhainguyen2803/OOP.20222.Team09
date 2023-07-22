@@ -15,10 +15,10 @@ The project "Visualization of Operations on Tree Data Structures" aims to design
 
 ## Demo
 
-Main window interface:
+### Main window interface:
 <img src="images/mainWindow.png" alt="Main window interface" width="300">
 
-Tree operation interface:
+### Tree operation interface:
 <img src="images/treeOperation.png" alt="Tree operation interface" width="300">
 
 Demo video link: https://drive.google.com/drive/folders/1R8Xx4x7oW1D-R2rHKEMiOvf4afPVoH-P?usp=sharing
