@@ -108,7 +108,7 @@ public class BalancedTree extends GenericTree{
         }
     }
 
-    public Node makeBalanceInsert(int newNodeVal) { // đổi tên từ makeBalance -> makeBalanceInsert
+    public Node findMinDepthLeaf() { // đổi tên từ makeBalance -> makeBalanceInsert
         ArrayList<Node> queue = new ArrayList<Node>();
         HashMap<Integer, Integer> depthLeaf = new HashMap<Integer, Integer>();
 
@@ -128,8 +128,7 @@ public class BalancedTree extends GenericTree{
                 }
             }
         }
-        Node newNode = minNode.addChild(newNodeVal);
-        return newNode;
+        return minNode;
     }
 
     public void makeBalanceDelete(int delId){

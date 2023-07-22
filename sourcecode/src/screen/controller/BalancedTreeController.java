@@ -73,9 +73,10 @@ public class BalancedTreeController extends GenericTreeController {
                 if (response == ButtonType.OK) {
                     System.out.println("User clicked OK");
                     BalancedTree balancedTree = (BalancedTree) this.getTreeDataStructure();
-                    Node newNode = balancedTree.makeBalanceInsert(intNodeVal);
-                    this.getScenePane().getChildren().add(newNode);
-                    this.getScenePane().getChildren().add(newNode.getParentLine());
+                    Node minDepthNode = balancedTree.findMinDepthLeaf();
+                    InsertPressed insertMakeBalance = new InsertPressed(this.getTreeDataStructure(), this, this.getScenePane(), intNodeVal, minDepthNode.getNodeId());
+                    insertMakeBalance.run();
+                    this.getHistory().add(insertMakeBalance);
                 }
             });;
         }

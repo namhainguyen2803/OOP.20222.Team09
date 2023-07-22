@@ -43,6 +43,7 @@ public class InsertPressed implements UserAction {
     @Override
     public void undo() {
         Node insertedObject = this.genericTree.searchNode(this.nodeVal);
+        System.out.println(this.nodeVal);
         this.parent.getListOfChildren().remove(insertedObject);
         this.scenePane.getChildren().remove(insertedObject);
         this.scenePane.getChildren().remove(insertedObject.getParentLine());
