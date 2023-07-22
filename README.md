@@ -1,7 +1,10 @@
 # OOP.20222.Team09
-# Members and assignments:
-+ Nguyễn Nam Hải – 20214894: diagram (30%), GUI (100%), animated operations (100%), data structures (50%), node (40%), exception handler (70%), report (20%)
-+ Nguyễn Song Hào – 20214895: diagram (30%), data structures (50%), traverse (100%), backward (100%), forward operations (100%), node (40%), report (40%)
-+ Hà Hoàng Hiệp – 20214921: diagram (20%), node (20%), exception handler (30%), help button (100%), report (10%)
-+ Trần Thị Hiền – 20214896: diagram (10%), testing, decoration, slide, report (30%)
+## Skills Assessment
+
+| Name            | Skills                                                                                         |
+|-----------------|------------------------------------------------------------------------------------------------|
+| Nguyễn Nam Hải  | Diagram (35%), GUI (100%), Animated Operations (excluding traverse) (100%), Tree Data Structure (50%), Exception Handler (70%), Nodes (40%), Report (30%), Slide (45%) |
+| Nguyễn Song Hào | Diagram (35%), Tree Data Structures (50%), Traverse Operation (100%), Forward Operation (100%), Backward Operation (100%), Node (40%), Report (40%), Slide (45%), Testing (70%) |
+| Hà Hoàng Hiệp   | Diagram (20%), Node (20%), Exception Handler (30%), Help Button (100%), Report (10%)         |
+| Trần Thị Hiền   | Diagram (10%), Report (20%), Slide (10%), Testing (30%), Balanced Binary Tree (50%)         |
 * Demo video link: https://drive.google.com/drive/folders/1R8Xx4x7oW1D-R2rHKEMiOvf4afPVoH-P?usp=sharing
