@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: EFE1D1;" BorderPane.alignment="CENTER">
+         <center>
+            <VBox alignment="CENTER" prefHeight="190.0" prefWidth="242.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btnGenericTree" mnemonicParsing="false" onAction="#btnGenericTreePressed" prefHeight="2.0" prefWidth="242.0" style="-fx-background-color: A78295;" text="Generic Tree">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="btnBinaryTree" mnemonicParsing="false" onAction="#btnBinaryTreePressed" prefHeight="26.0" prefWidth="242.0" style="-fx-background-color: A78295;" text="Binary Tree">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="btnBalancedTree" mnemonicParsing="false" onAction="#btnBalancedTreePressed" prefHeight="26.0" prefWidth="242.0" style="-fx-background-color: A78295;" text="Balanced Tree">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="btnBalancedBinaryTree" mnemonicParsing="false" onAction="#btnBalancedBinaryTreePressed" prefHeight="26.0" prefWidth="242.0" style="-fx-background-color: A78295;" text="Balanced Binary Tree">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#btnExitPressed" prefHeight="26.0" prefWidth="242.0" text="Exit" />
+               </children>
+            </VBox>
+         </center>
+         <top>
+            <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" prefHeight="110.0" prefWidth="600.0" text="Tree Data Structure Visualizer" textAlignment="CENTER" textFill="#688d8f" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>
