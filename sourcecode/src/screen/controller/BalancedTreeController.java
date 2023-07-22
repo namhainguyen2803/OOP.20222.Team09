@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import src.exception.*;
+import src.screen.controller.operation.DeleteMakeBalancedPressed;
 import src.screen.controller.operation.DeletePressed;
 import src.screen.controller.operation.InsertPressed;
 import src.treedatastructure.BalancedTree;
@@ -111,9 +112,9 @@ public class BalancedTreeController extends GenericTreeController {
             alert.setContentText("Looks like the deleted node will invade the balance property of tree..\nDo you want to delete?\nWARNING: We will change the tree to restore its balance!");
             alert.showAndWait().ifPresent(response -> {
                 if (response==ButtonType.OK){
-                    this.removeTreeFromGUI();
-                    BalancedTree tree = (BalancedTree) this.getTreeDataStructure();
-                    tree.makeBalanceDelete(intDelNodeVal);
+                    DeleteMakeBalancedPressed deleteMakeBalancedPressed = new DeleteMakeBalancedPressed(this,this.getTreeDataStructure(),intDelNodeVal);
+                    deleteMakeBalancedPressed.run();
+                    this.getHistory().add(deleteMakeBalancedPressed);
 
                 }
             });

@@ -132,14 +132,16 @@ public class BalancedTree extends GenericTree{
     }
 
     public void makeBalanceDelete(int delId){
+        BalancedTree copiedTree;
+        copiedTree = this.copyTreeHao();
 
-        //1. Delete trên cây gốc
+        //1. Delete trên cây copiedTree
         ArrayList<Node> queue = new ArrayList<Node>();
-        if (this.getRootNode().getNodeId()==delId){
-            this.setRootNode(null);
+        if (copiedTree.getRootNode().getNodeId()==delId){
+            copiedTree.setRootNode(null);
             return;
         }
-        queue.add(this.getRootNode());
+        queue.add(copiedTree.getRootNode());
         Node tmp = null; // đây là node cha của node bị delete. Đây chính là nguyên nhân gây ra unbalanced
         boolean kdDel = false;
         while (queue.size()>0){
@@ -158,14 +160,12 @@ public class BalancedTree extends GenericTree{
                 break;
             }
         }
-        System.out.println("1. Delete node tren cây gốc (Done)");
-        this.printBFS();
+        System.out.println("1. Delete node tren cây copiedTree (Done)");
+        copiedTree.printBFS();
         System.out.println("tmp.id = "+tmp.getNodeId());
 
         //2. Copy tree từ cây gốc
         System.out.println("Bắt đầu bước 2. của hàm makeBalanceDelete; tmp==null: ");
-        BalancedTree copiedTree;
-        copiedTree = this.copyTreeHao();
         //2.1. Make balanced cho cây copiedTree
         System.out.println("Trước khi make balance (xoay cây) cho cây copiedTree, cây copiedTree: "+copiedTree.isBalanced());
         copiedTree.printBFS();
