@@ -5,7 +5,8 @@ The project "Visualization of Operations on Tree Data Structures" aims to design
 
 
 ## Skills Assessment
-![assignment_task](https://github.com/namhainguyen2803/OOP.20222.Team09/assets/121554894/b80ab3fc-58fc-491d-9418-e1cf17785ece)
+![IMG_7895](https://github.com/namhainguyen2803/OOP.20222.Team09/assets/121554894/911a87cd-fb7c-4e00-b94b-575af417d723)
+
 
 
 ## Demo
