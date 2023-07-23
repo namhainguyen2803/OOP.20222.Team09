@@ -316,88 +316,8 @@ public class GenericTreeController {
         hBoxManual.setVisible(true);
     }
 
-    @FXML
-    void tfRootCreateTyping(ActionEvent event) {}
-
-
-    public Button getBtnOpsCreate() {
-        return btnOpsCreate;
-    }
-
-    public Button getBtnOpsInsert() {
-        return btnOpsInsert;
-    }
-
-    public Button getBtnOpsDelete() {
-        return btnOpsDelete;
-    }
-
-    public Button getBtnOpsUpdate() {
-        return btnOpsUpdate;
-    }
-
-    public Button getBtnOpsTraverse() {
-        return btnOpsTraverse;
-    }
-
-    public StackPane getStackPaneInput() {
-        return stackPaneInput;
-    }
-
-    public HBox gethBoxCreate() {
-        return hBoxCreate;
-    }
-
-    public HBox gethBoxManual() {
-        return hBoxManual;
-    }
-
-    public TextField getTfRootCreate() {
-        return tfRootCreate;
-    }
-
-    public Button getBtnCreate() {
-        return btnCreate;
-    }
-
-    public HBox gethBoxTraverse() {
-        return hBoxTraverse;
-    }
-
-    public RadioButton getRadioBtnBFS() {
-        return radioBtnBFS;
-    }
-
-    public RadioButton getRadioBtnDFS() {
-        return radioBtnDFS;
-    }
-
-    public TextField getTfNodeTraverse() {
-        return tfNodeTraverse;
-    }
-
-    public Button getBtnTraverse() {
-        return btnTraverse;
-    }
-
-    public HBox gethBoxDelete() {
-        return hBoxDelete;
-    }
-
     public TextField getTfNodeDelete() {
         return tfNodeDelete;
-    }
-
-    public Button getBtnDelete() {
-        return btnDelete;
-    }
-
-    public HBox gethBoxInsert() {
-        return hBoxInsert;
-    }
-
-    public HBox gethBoxSearch() {
-        return hBoxSearch;
     }
 
     public TextField getTfParentInsert() {
@@ -406,34 +326,6 @@ public class GenericTreeController {
 
     public TextField getTfNodeInsert() {
         return tfNodeInsert;
-    }
-
-    public Button getBtnInsert() {
-        return btnInsert;
-    }
-
-    public Button getBtnSearch() {
-        return btnSearch;
-    }
-
-    public HBox gethBoxUpdate() {
-        return hBoxUpdate;
-    }
-
-    public TextField getTfOldNodeUpdate() {
-        return tfOldNodeUpdate;
-    }
-
-    public TextField getTfNewNodeUpdate() {
-        return tfNewNodeUpdate;
-    }
-
-    public Button getBtnUpdate() {
-        return btnUpdate;
-    }
-
-    public VBox getvBoxPseudo() {
-        return vBoxPseudo;
     }
 
     public StackPane getStackPanePseudo() {
@@ -472,18 +364,6 @@ public class GenericTreeController {
         return radioBtnRandom;
     }
 
-    public Label getMainLabel() {
-        return mainLabel;
-    }
-
-    public Stage getMenuStage() {
-        return menuStage;
-    }
-
-    public Scene getMainScene() {
-        return mainScene;
-    }
-
     public String getAlgorithm() {
         return algorithm;
     }
@@ -516,9 +396,6 @@ public class GenericTreeController {
     private void radioBtnDFSPressed(ActionEvent event) {
         this.algorithm = "DFS";
     }
-
-    @FXML
-    private void tfNodeTraverseTyping(ActionEvent event) {}
 
     @FXML
     protected void btnTraversePressed(ActionEvent event) {
@@ -578,10 +455,6 @@ public class GenericTreeController {
     public void okTraverseBtnPressed(ActionEvent e){
         this.getTreeDataStructure().okTraverse();
     }
-
-    @FXML
-    private void tfNodeDeleteTyping(ActionEvent event) {}
-
 
     @FXML
     protected void btnDeletePressed(ActionEvent event) throws TreeException {
@@ -836,9 +709,6 @@ public class GenericTreeController {
             this.getTreeDataStructure().devastateRootNode();
         }
     }
-
-    @FXML
-    void tfNodeSearchTyping(ActionEvent event) {}
 
     private void setControl(HBox hBoxOn) {
         ArrayList<HBox> setHBox = new ArrayList<HBox>(Arrays.asList(hBoxCreate, hBoxTraverse, hBoxInsert, hBoxDelete, hBoxUpdate, hBoxSearch));
