@@ -146,6 +146,10 @@ public class Node extends StackPane {
     }
 
     public void addChild(Node childNode) {
+        /*
+        This function is inspired by the following repository:
+        https://github.com/tamht194450/OOP.DSAI.20202.Team13/blob/main/sourcecode/treeDataStructure/Node.java
+         */
         this.addUpdate();
         childNode.setDepth(this.getDepth() + 1);
 
@@ -159,7 +163,8 @@ public class Node extends StackPane {
         } else {
             childNode.setLayoutX(this.getListOfChildren().get(this.getListOfChildren().size() - 1).getLayoutX() + 80);
         }
-        
+
+        //      our modification for animation (different from the reference)
         System.out.println(this.getLayoutX() + " " + this.getLayoutY());
         System.out.println(childNode.getLayoutX() + " " + childNode.getLayoutY());
 
@@ -177,6 +182,10 @@ public class Node extends StackPane {
     }
 
     public void addUpdate() {
+        /*
+        This function is inspired by the following repository:
+        https://github.com/tamht194450/OOP.DSAI.20202.Team13/blob/main/sourcecode/treeDataStructure/Node.java
+         */
         ArrayList<Node> queue = new ArrayList<Node>();
         queue.add(this);
         Node currentNode;
@@ -195,6 +204,7 @@ public class Node extends StackPane {
             if (!currentNode.getListOfChildren().isEmpty()) {
                 for (Node node : currentNode.getListOfChildren()) {
                     node.setLayoutX(node.getLayoutX() - distance);
+//      our modification for animation (different from the reference)
 
                     Line line = node.getParentLine();
                     line.setStartX(currentNode.getLayoutX() + this.circleRadius);
