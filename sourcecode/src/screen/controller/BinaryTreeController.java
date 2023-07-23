@@ -23,7 +23,6 @@ public class BinaryTreeController extends GenericTreeController{
         this.setTreeType(treeType);
     }
 
-
     @FXML
     @Override
     protected void btnInsertPressed(ActionEvent event) throws TreeException {

@@ -832,6 +832,7 @@ public class GenericTreeController {
             scenePane.getChildren().remove(tmp);
             scenePane.getChildren().remove(tmp.getParentLine());
         }
+
         if (root.equals(this.getTreeDataStructure().getRootNode())) {
             this.getTreeDataStructure().devastateRootNode();
         }
