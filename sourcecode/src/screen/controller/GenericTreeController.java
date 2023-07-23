@@ -122,9 +122,6 @@ public class GenericTreeController {
 
 
     @FXML
-    private String valRootNodeCreate;
-
-    @FXML
     private Pane scenePane;
 
     @FXML
@@ -336,10 +333,6 @@ public class GenericTreeController {
         return stackPaneController;
     }
 
-    public String getValRootNodeCreate() {
-        return valRootNodeCreate;
-    }
-
     public Pane getScenePane() {
         return scenePane;
     }
@@ -452,7 +445,7 @@ public class GenericTreeController {
     }
 
     @FXML
-    public void okTraverseBtnPressed(ActionEvent e){
+    protected void okTraverseBtnPressed(ActionEvent e){
         this.getTreeDataStructure().okTraverse();
     }
 
@@ -737,7 +730,7 @@ public class GenericTreeController {
     }
 
     @FXML
-    void helpPressed() throws IOException {
+    public void helpPressed() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/screen/fxml/help.fxml"));
         HelpController helpController = new HelpController();
         loader.setController(helpController);
