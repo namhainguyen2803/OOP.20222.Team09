@@ -8,8 +8,9 @@ The project "Visualization of Operations on Tree Data Structures" aims to design
 
 | Name            | Skills                                                                                         |
 |-----------------|------------------------------------------------------------------------------------------------|
-| Nguyễn Nam Hải  | Diagram (35%), GUI (100%), Animated Operations (excluding traverse) (100%), Tree Data Structure (50%), Exception Handler (70%), Nodes (40%), Report (30%), Slide (45%) |
-| Nguyễn Song Hào | Diagram (35%), Tree Data Structures (50%), Traverse Operation (100%), Forward Operation (100%), Backward Operation (100%), Node (40%), Report (40%), Slide (45%), Testing (70%) |
+| Nguyễn Nam Hải  | Package exception {NodeExistedException, NodeFullChildrenException, NodeNotExistsException}, Package operation {CreatePressed
+,DeletePressed, InsertPressed, SearchPressed, UpdatePressed, UserAction}, Report (30%), Slide (45%) |
+| Nguyễn Song Hào | Diagram (35%), Tree Data Structures (50%), Traverse Operation (100%), Forward Operation (100%), Backward Operation (100%), Node (40%), Package controller {GenericTreeController (the other 5 operations and 2 buttons: Reset & Undo), BalancedTreeController (insert operation), BinaryTreeController (100%), BalancedTreeController (100%), Package fxml {MainWindow.fxml (100%), GenericTree.fxml (100%)}BalancedBinaryTreeController (100%)}, Report (40%), Slide (45%), Testing (70%) |
 | Hà Hoàng Hiệp   | Diagram (20%), Node (20%), Exception Handler (30%), Help Button (100%), Report (10%)         |
 | Trần Thị Hiền   | Report (20%), Slide (10%), Testing (30%)         |
 
